@@ -1,64 +1,873 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sentama | Technology Beyond Expectations</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
-<link rel="stylesheet" href="css/style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentama | SmartHUB 2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* --- CSS Variables for Premium Theme --- */
+        :root {
+            --primary-dark: #0B1727;
+            --primary-blue: #163a7d;
+            --primary-blue-hover: #102a5c;
+            --accent-green: #67c80f;
+            --accent-green-hover: #55a60c;
+            --bg-light: #F4F7FB;
+            --surface: #FFFFFF;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-light: rgba(0, 0, 0, 0.05);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 20px 40px -10px rgba(22, 58, 125, 0.15);
+            --radius-md: 16px;
+            --radius-lg: 24px;
+        }
+
+        /* --- Reset & Base Styles --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        section {
+            padding: 100px 0;
+        }
+
+        h1, h2, h3, h4 {
+            color: var(--primary-dark);
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 60px;
+        }
+
+        a {
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* --- Buttons --- */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--primary-blue);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 16px;
+            border: 2px solid var(--primary-blue);
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            background: var(--primary-blue-hover);
+            border-color: var(--primary-blue-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn.accent {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: white;
+        }
+
+        .btn.accent:hover {
+            background: var(--accent-green-hover);
+            border-color: var(--accent-green-hover);
+        }
+
+        .btn.outline {
+            background: transparent;
+            color: var(--primary-blue);
+        }
+
+        .btn.outline:hover {
+            background: var(--primary-blue);
+            color: white;
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            padding: 15px 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-light);
+            z-index: 100;
+            transition: padding 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-link {
+            display: inline-block;
+        }
+
+        .logo-img {
+            max-height: 55px; 
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-main);
+            font-weight: 500;
+            font-size: 15px;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-green);
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 180px 0 100px;
+            background: linear-gradient(135deg, #ffffff 0%, var(--bg-light) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(103, 200, 15, 0.1);
+            color: var(--accent-green-hover);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            font-size: 64px;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span {
+            background: linear-gradient(135deg, var(--accent-green), #4a9e08);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 18px;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 90%;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .stats {
+            display: flex;
+            gap: 40px;
+            padding-top: 32px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .stats div h3 {
+            font-size: 32px;
+            color: var(--primary-blue);
+            margin-bottom: 4px;
+        }
+
+        .stats div small {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Dual Image Showcase (Hero) --- */
+        .image-showcase {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .img-main {
+            width: 85%;
+            height: auto;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            background: white;
+            transition: transform 0.5s ease;
+        }
+
+        .img-secondary {
+            width: 65%;
+            height: auto;
+            border-radius: var(--radius-md);
+            box-shadow: 0 25px 50px -12px rgba(22, 58, 125, 0.25);
+            border: 6px solid var(--surface);
+            position: absolute;
+            bottom: 20px;
+            right: 0;
+            z-index: 2;
+            background: white;
+            transition: transform 0.5s ease;
+        }
+
+        .image-showcase:hover .img-main {
+            transform: translateY(-5px);
+        }
+
+        .image-showcase:hover .img-secondary {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        /* --- Modules & Cards Grid --- */
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 24px;
+        }
+
+        .card {
+            background: var(--surface);
+            padding: 32px 24px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-light);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(22, 58, 125, 0.1);
+        }
+
+        .card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 15px;
+        }
+
+        .icon-box {
+            width: 56px;
+            height: 56px;
+            background: rgba(22, 58, 125, 0.05);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 24px;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .icon-box {
+            background: var(--primary-blue);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        /* --- Why Sentama (Timeline Section) --- */
+        .split-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+        }
+
+        .feature-image {
+            width: 100%;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+            margin-top: 40px;
+        }
+
+        .step {
+            display: flex;
+            gap: 20px;
+        }
+
+        .step-num {
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+            border-radius: 50%;
+            background: var(--primary-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 18px;
+            box-shadow: 0 4px 15px rgba(22, 58, 125, 0.3);
+        }
+
+        .step-content h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+        }
+
+        /* --- Testimonials --- */
+        .testimonial-card {
+            background: var(--surface);
+            padding: 40px 32px;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .quote {
+            font-size: 16px;
+            font-style: italic;
+            color: var(--text-main);
+            margin-bottom: 24px;
+            line-height: 1.8;
+        }
+
+        .author {
+            font-weight: 700;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .author::before {
+            content: '';
+            width: 20px;
+            height: 2px;
+            background: var(--accent-green);
+            display: block;
+        }
+
+        /* --- Contact Section --- */
+        .contact-grid {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 40px;
+        }
+
+        .contact-card {
+            background: var(--bg-light);
+            padding: 40px 30px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            min-width: 280px;
+            flex: 1;
+            max-width: 400px;
+            border: 1px solid var(--border-light);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .contact-card .icon-box {
+            margin: 0 auto 20px;
+            background: rgba(103, 200, 15, 0.1);
+            color: var(--accent-green);
+        }
+
+        .contact-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .contact-card p {
+            color: var(--primary-blue);
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        /* --- CTA Section --- */
+        .cta-box {
+            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
+            border-radius: var(--radius-lg);
+            padding: 80px 40px;
+            text-align: center;
+            color: white;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 60px;
+        }
+
+        .cta-box h2 {
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .cta-box p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 18px;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background: white;
+            padding: 40px 0;
+            text-align: center;
+            color: var(--text-muted);
+            border-top: 1px solid var(--border-light);
+            font-size: 14px;
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .image-showcase { height: 380px; }
+        }
+
+        @media (max-width: 992px) {
+            .hero-grid, .split-section { grid-template-columns: 1fr; gap: 50px; }
+            .hero { text-align: center; padding-top: 140px; }
+            .hero p { margin: 0 auto 30px; }
+            .hero-buttons { justify-content: center; }
+            .stats { justify-content: center; }
+            .image-showcase { height: 450px; max-width: 600px; margin: 0 auto; }
+            .split-section > div:first-child { order: 2; }
+            .split-section > div:last-child { order: 1; }
+            .split-section h2 { text-align: center; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .hero h1 { font-size: 48px; }
+            .hero-buttons { flex-direction: column; }
+            .btn { width: 100%; }
+            section { padding: 70px 0; }
+            .stats { flex-wrap: wrap; gap: 20px; }
+            .image-showcase { height: 300px; }
+            .img-secondary { bottom: 0px; }
+        }
+
+        @media (max-width: 480px) {
+            .image-showcase { height: 220px; }
+            .logo-img { max-height: 45px; }
+        }
+    </style>
+	<script>
+    // 1. Block Right-Click (Context Menu)
+    document.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
+    });
+
+    // 2. Block Keyboard Shortcuts (F12, Inspect, Source, PrintScreen)
+    document.addEventListener('keydown', function (e) {
+        // Prevent F12
+        if (e.key === 'F12' || e.keyCode === 123) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Prevent Ctrl+Shift+I (Inspect Element) / Mac: Cmd+Option+I
+        if ((e.ctrlKey && e.shiftKey && e.key === 'I') || (e.metaKey && e.altKey && e.key === 'i')) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Prevent Ctrl+Shift+J (Console) / Mac: Cmd+Option+J
+        if ((e.ctrlKey && e.shiftKey && e.key === 'J') || (e.metaKey && e.altKey && e.key === 'j')) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Prevent Ctrl+Shift+C (Inspect Element) / Mac: Cmd+Option+C
+        if ((e.ctrlKey && e.shiftKey && e.key === 'C') || (e.metaKey && e.altKey && e.key === 'c')) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Prevent Ctrl+U (View Source) / Mac: Cmd+Option+U
+        if ((e.ctrlKey && e.key === 'u') || (e.metaKey && e.altKey && e.key === 'u')) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Prevent Ctrl+P (Print Page)
+        if ((e.ctrlKey && e.key === 'p') || (e.metaKey && e.key === 'p')) {
+            e.preventDefault();
+            return false;
+        }
+
+        // Attempt to block Print Screen key (Will not block OS snipping tools)
+        if (e.key === 'PrintScreen' || e.keyCode === 44) {
+            e.preventDefault();
+            // Optional: Clear the clipboard if they hit print screen
+            navigator.clipboard.writeText(''); 
+            return false;
+        }
+    });
+
+    // 3. Prevent Dragging Images
+    document.addEventListener('dragstart', function(e) {
+        if(e.target.nodeName.toUpperCase() === 'IMG') {
+            e.preventDefault();
+        }
+    });
+</script>
 </head>
 <body>
-<header class="navbar"><div class="container">
-<a class="logo" href="#"><img src="images/logo.png" alt="Sentama"></a>
-<nav>
-<a href="#home">Home</a>
-<a href="#product">SmartHUB</a>
-<a href="#features">Features</a>
-<a href="#industries">Industries</a>
-<a href="#contact">Contact</a>
-</nav>
-<a class="demo-btn" href="#contact">Request Demo</a>
-</div></header>
 
-<section class="hero" id="home">
-<div class="aurora aurora1"></div>
-<div class="aurora aurora2"></div>
-<div class="aurora aurora3"></div>
+    <!-- Navigation -->
+    <nav>
+        <div class="container nav-container">
+            <a href="#home" class="logo-link">
+                <img src="sentama.png" alt="Sentama Logo" class="logo-img">
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#smarthub">SmartHUB</a>
+                <a href="#features">Features</a>
+                <a href="#industries">Industries</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <a class="btn accent" style="display: none;" href="#contact">Launching Shortly</a>
+            <style>@media(min-width: 769px){ nav .btn.accent { display: inline-flex !important; } }</style>
+        </div>
+    </nav>
 
-<div class="container hero-grid">
-<div class="hero-left">
-<span class="badge"><i class="fa-solid fa-circle-check"></i>Technology Beyond Expectations</span>
-<h1>SmartHUB <span>2.0</span></h1>
-<h2>One Platform.<br>Every Business Process.</h2>
-<p>SmartHUB helps small and medium businesses manage HR, Payroll, CRM, Sales, Purchases, Inventory, Finance, Projects, Assets and Compliance.</p>
-<div class="hero-buttons">
-<a class="btn-primary" href="#">Book Free Demo</a>
-<a class="btn-secondary" href="#">Explore Features</a>
-</div>
-<div class="stats">
-<div><strong>25</strong><span>Modules</span></div>
-<div><strong>100</strong><span>Features</span></div>
-<div><strong>SME</strong><span>Focused</span></div>
-</div>
-</div>
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container hero-grid">
+            <div>
+                <div class="badge">Technology Beyond Expectations</div>
+                <h1>SmartHUB <span>2.0</span></h1>
+                <h2>One Platform. Every Process.</h2>
+                <p>Empower your business with a unified modern platform to seamlessly manage HR, Payroll, CRM, Sales, Purchases, Inventory, Finance, Projects, and Compliance.</p>
+                <div class="hero-buttons">
+                    <a class="btn" href="#contact">Book Free Demo</a>
+                    <a class="btn outline" href="#features">Explore Features</a>
+                </div>
+                <div class="stats">
+                    <div><h3>25+</h3><small>Modules</small></div>
+                    <div><h3>100+</h3><small>Features</small></div>
+                    <div><h3>SME</h3><small>Focused</small></div>
+                </div>
+            </div>
+            
+            <!-- Dual Image Showcase for CRM Models -->
+            <div class="image-showcase">
+                <img src="crm-image-1.png" alt="SmartHUB Main Dashboard" class="img-main">
+                <img src="crm-image-2.png" alt="SmartHUB Analytics View" class="img-secondary">
+            </div>
+        </div>
+    </section>
 
-<div class="hero-right">
-<div class="dashboard-card">
-<div class="topbar"></div>
-<div class="chart"></div>
-<div class="small-cards">
-<div class="mini"><i class="fa-solid fa-users"></i>HR</div>
-<div class="mini"><i class="fa-solid fa-chart-line"></i>CRM</div>
-<div class="mini"><i class="fa-solid fa-cart-shopping"></i>Sales</div>
-<div class="mini"><i class="fa-solid fa-money-bill"></i>Payroll</div>
-</div>
-</div>
-</div>
-</div>
-</section>
-<script src="js/main.js"></script>
+    <!-- Business Modules -->
+    <section id="features">
+        <div class="container">
+            <h2>Core Business Modules</h2>
+            <p class="subtitle">Everything you need to run your business efficiently, consolidated into a single pane of glass.</p>
+            <div class="grid-cards">
+                <div class="card">
+                    <h3>HR Management</h3>
+                    <p>Track Employees, Attendance, Leave workflows, and Shift planning.</p>
+                </div>
+                <div class="card">
+                    <h3>Payroll</h3>
+                    <p>Automate Salary processing, Payslips, PF, and ESI compliance.</p>
+                </div>
+                <div class="card">
+                    <h3>CRM</h3>
+                    <p>Manage Leads, Customer pipelines, and automated Followups.</p>
+                </div>
+                <div class="card">
+                    <h3>Sales</h3>
+                    <p>Generate Quotations, customized Invoices, and built-in POS.</p>
+                </div>
+                <div class="card">
+                    <h3>Purchase</h3>
+                    <p>Handle Suppliers, Purchase Orders, and GRN operations.</p>
+                </div>
+                <div class="card">
+                    <h3>Inventory</h3>
+                    <p>Monitor Stock levels, Multi-Warehouse setups, and Barcodes.</p>
+                </div>
+                <div class="card">
+                    <h3>Finance</h3>
+                    <p>Reconcile Income, track Expenses, and generate rich Reports.</p>
+                </div>
+                <div class="card">
+                    <h3>Assets</h3>
+                    <p>Manage AMC, equipment lifecycles, and scheduled Maintenance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Industries Section -->
+    <section style="background-color: white;" id="industries">
+        <div class="container">
+            <h2>Industries We Serve</h2>
+            <p class="subtitle">SmartHUB is built to adapt dynamically to diverse business verticals.</p>
+            <div class="grid-cards">
+                <div class="card">
+                    <div class="icon-box">🏪</div>
+                    <h3>Retail</h3>
+                    <p>Robust POS, rapid billing, real-time inventory, and customer retention.</p>
+                </div>
+                <div class="card">
+                    <div class="icon-box">🏭</div>
+                    <h3>Manufacturing</h3>
+                    <p>Advanced production planning, routing, and raw material tracking.</p>
+                </div>
+                <div class="card">
+                    <div class="icon-box">🚚</div>
+                    <h3>Distribution</h3>
+                    <p>Streamlined order fulfillment, logistics routing, and warehousing.</p>
+                </div>
+                <div class="card">
+                    <div class="icon-box">🏥</div>
+                    <h3>Healthcare</h3>
+                    <p>Shift rosters for staff, patient appointments, and seamless billing.</p>
+                </div>
+                <div class="card">
+                    <div class="icon-box">🎓</div>
+                    <h3>Education</h3>
+                    <p>Campus administration, fee collection, and faculty payroll.</p>
+                </div>
+                <div class="card">
+                    <div class="icon-box">🏗️</div>
+                    <h3>Construction</h3>
+                    <p>Project milestones, contracted labour management, and purchases.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Sentama (How it works) -->
+    <section id="smarthub">
+        <div class="container split-section">
+            <div>
+                <img src="crm-image-3.png" alt="SmartHUB Software Interface" class="feature-image">
+            </div>
+            <div>
+                <h2 style="text-align: left;">Why Choose Sentama?</h2>
+                <p style="color: var(--text-muted); font-size: 18px; margin-bottom: 20px;">Deploying an ERP shouldn't take months. SmartHUB gets you up and running in days.</p>
+                <div class="timeline">
+                    <div class="step">
+                        <div class="step-num">1</div>
+                        <div class="step-content">
+                            <h3>Rapid Setup</h3>
+                            <p>Configure your company profile, onboard users, and define your financial year instantly.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">2</div>
+                        <div class="step-content">
+                            <h3>Easy Migration</h3>
+                            <p>Bulk import your existing customers, product catalogs, and employee data securely.</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">3</div>
+                        <div class="step-content">
+                            <h3>Go Live & Scale</h3>
+                            <p>Run your complete business from a unified dashboard and watch your productivity soar.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section style="background-color: white;">
+        <div class="container">
+            <h2>Customer Success</h2>
+            <p class="subtitle">Hear from businesses that transformed their operations with SmartHUB.</p>
+            <div class="grid-cards" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+                <div class="testimonial-card">
+                    <p class="quote">"Consolidating our software replaced dozens of messy spreadsheets. We've recovered countless hours every single week."</p>
+                    <div class="author">SME Owner</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="quote">"Having Payroll, CRM, and Sales talking to each other in one place has eliminated all our data entry errors."</p>
+                    <div class="author">Operations Manager</div>
+                </div>
+                <div class="testimonial-card">
+                    <p class="quote">"The automated reporting tools provide real-time clarity. We finally have the insights to make faster, better business decisions."</p>
+                    <div class="author">Finance Director</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact & Call to Action -->
+    <section id="contact">
+        <div class="container">
+            <div class="cta-box">
+                <h2>Ready to Grow with SmartHUB 2.0?</h2>
+                <p>Join hundreds of modern SMEs. Book a personalized demo today and discover how Sentama can simplify and accelerate your business operations.</p>
+                <!-- This button acts as a trigger to email, or you can point it to a form -->
+                <a href="mailto:sentamatech@gmail.com" class="btn accent" style="padding: 18px 40px; font-size: 18px;">Launching Shortly</a>
+            </div>
+
+            <!-- New Small Contact Section -->
+            <h2>Get In Touch</h2>
+            <p class="subtitle" style="margin-bottom: 20px;">Have questions? Reach out to our team directly.</p>
+            
+            <div class="contact-grid">
+                <div class="contact-card">
+                    <div class="icon-box">📞</div>
+                    <h3>Call Us Today</h3>
+                    <p>+91 00000 00000</p>
+                </div>
+                <div class="contact-card">
+                    <div class="icon-box">✉️</div>
+                    <h3>Email Support</h3>
+                    <p>sentamatech@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            © 2026 Sentama Software Solutions. All rights reserved.
+        </div>
+    </footer>
+
+    <!-- Custom Smooth Scroll Script -->
+    <script>
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (!targetElement) return;
+
+                // Adjust for fixed navbar height (approx 85px)
+                const headerOffset = 85; 
+                const elementPosition = targetElement.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                // Animation Settings
+                const duration = 1200; // 1.2 seconds for slow motion effect
+                const startPosition = window.pageYOffset;
+                const distance = offsetPosition - startPosition;
+                let startTime = null;
+
+                // Easing function (Ease In Out Quart) for buttery smooth feeling
+                function easeInOutQuart(t) {
+                    return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+                }
+
+                function animation(currentTime) {
+                    if (startTime === null) startTime = currentTime;
+                    const timeElapsed = currentTime - startTime;
+                    const progress = Math.min(timeElapsed / duration, 1);
+                    
+                    const ease = easeInOutQuart(progress);
+                    window.scrollTo(0, startPosition + (distance * ease));
+
+                    if (timeElapsed < duration) {
+                        requestAnimationFrame(animation);
+                    } else {
+                        // Update URL without jumping
+                        window.history.pushState(null, null, targetId);
+                    }
+                }
+
+                requestAnimationFrame(animation);
+            });
+        });
+    </script>
 </body>
 </html>
