@@ -3,870 +3,627 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentama | SmartHUB 2.0</title>
+    <title>Sentama | SmartHUB 360 - One Platform. Infinite Possibilities.</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
-        /* --- CSS Variables for Premium Theme --- */
+        /* --- CSS Variables --- */
         :root {
             --primary-dark: #0B1727;
             --primary-blue: #163a7d;
             --primary-blue-hover: #102a5c;
             --accent-green: #67c80f;
             --accent-green-hover: #55a60c;
-            --bg-light: #F4F7FB;
+            --bg-light: #F8FAFC;
             --surface: #FFFFFF;
             --text-main: #1e293b;
             --text-muted: #64748b;
-            --border-light: rgba(0, 0, 0, 0.05);
+            --border-light: rgba(0, 0, 0, 0.08);
             --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 20px 40px -10px rgba(22, 58, 125, 0.15);
+            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+            --shadow-lg: 0 25px 50px -12px rgba(22, 58, 125, 0.15);
+            --radius-sm: 12px;
             --radius-md: 16px;
             --radius-lg: 24px;
         }
 
-        /* --- Reset & Base Styles --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        /* --- Reset & Base --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-light); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        .container { width: 100%; max-width: 1300px; margin: 0 auto; padding: 0 24px; }
+        section { padding: 90px 0; }
+        h1, h2, h3, h4 { color: var(--primary-dark); line-height: 1.2; }
+        h2 { font-size: 36px; font-weight: 700; margin-bottom: 12px; text-align: center; }
+        .subtitle { text-align: center; color: var(--text-muted); font-size: 16px; max-width: 800px; margin: 0 auto 50px; }
+        a { text-decoration: none; transition: all 0.3s ease; }
+        img { max-width: 100%; height: auto; display: block; }
 
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            line-height: 1.6;
-            overflow-x: hidden;
-        }
+        /* --- Animations --- */
+        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; } .delay-4 { transition-delay: 0.4s; }
 
-        .container {
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 24px;
-        }
-
-        section {
-            padding: 100px 0;
-        }
-
-        h1, h2, h3, h4 {
-            color: var(--primary-dark);
-            line-height: 1.2;
-        }
-
-        h2 {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            text-align: center;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 18px;
-            max-width: 600px;
-            margin: 0 auto 60px;
-        }
-
-        a {
-            text-decoration: none;
-            transition: all 0.3s ease;
-        }
-
-        img {
-            max-width: 100%;
-            height: auto;
-            display: block;
-        }
+        @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(103, 200, 15, 0.6); } 70% { box-shadow: 0 0 0 10px rgba(103, 200, 15, 0); } 100% { box-shadow: 0 0 0 0 rgba(103, 200, 15, 0); } }
 
         /* --- Buttons --- */
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--primary-blue);
-            color: white;
-            padding: 14px 32px;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 16px;
-            border: 2px solid var(--primary-blue);
-            cursor: pointer;
-            box-shadow: var(--shadow-sm);
-        }
+        .btn { display: inline-flex; align-items: center; justify-content: center; background: var(--primary-blue); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 15px; border: 2px solid var(--primary-blue); cursor: pointer; box-shadow: var(--shadow-sm); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .btn:hover { background: var(--primary-blue-hover); border-color: var(--primary-blue-hover); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .btn.accent { background: var(--accent-green); border-color: var(--accent-green); color: white; }
+        .btn.accent:hover { background: var(--accent-green-hover); border-color: var(--accent-green-hover); }
+        .btn.outline { background: transparent; color: var(--primary-blue); }
+        .btn.outline:hover { background: var(--primary-blue); color: white; }
 
-        .btn:hover {
-            background: var(--primary-blue-hover);
-            border-color: var(--primary-blue-hover);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn.accent {
-            background: var(--accent-green);
-            border-color: var(--accent-green);
-            color: white;
-        }
-
-        .btn.accent:hover {
-            background: var(--accent-green-hover);
-            border-color: var(--accent-green-hover);
-        }
-
-        .btn.outline {
-            background: transparent;
-            color: var(--primary-blue);
-        }
-
-        .btn.outline:hover {
-            background: var(--primary-blue);
-            color: white;
-        }
-
-        /* --- Navigation --- */
-        nav {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            padding: 15px 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border-light);
-            z-index: 100;
-            transition: padding 0.3s ease;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .nav-container {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo-link {
-            display: inline-block;
-        }
-
-        .logo-img {
-            max-height: 55px; 
-            width: auto;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 32px;
-            align-items: center;
-        }
-
-        .nav-links a {
-            color: var(--text-main);
-            font-weight: 500;
-            font-size: 15px;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-green);
-        }
+        /* --- Navbar --- */
+        nav { position: fixed; top: 0; width: 100%; padding: 15px 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-light); z-index: 1000; }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo-img { max-height: 45px; width: auto; }
+        .nav-links { display: flex; gap: 32px; align-items: center; }
+        .nav-links a { color: var(--text-main); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 0%; height: 2px; background: var(--accent-green); transition: width 0.3s ease; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
 
         /* --- Hero Section --- */
-        .hero {
-            padding: 180px 0 100px;
-            background: linear-gradient(135deg, #ffffff 0%, var(--bg-light) 100%);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .hero-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 60px;
-            align-items: center;
-        }
-
-        .badge {
-            display: inline-block;
-            background: rgba(103, 200, 15, 0.1);
-            color: var(--accent-green-hover);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
-
-        .hero h1 {
-            font-size: 64px;
-            letter-spacing: -1.5px;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 span {
-            background: linear-gradient(135deg, var(--accent-green), #4a9e08);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .hero p {
-            font-size: 18px;
-            color: var(--text-muted);
-            margin-bottom: 40px;
-            max-width: 90%;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 16px;
-            margin-bottom: 48px;
-        }
-
-        .stats {
-            display: flex;
-            gap: 40px;
-            padding-top: 32px;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .stats div h3 {
-            font-size: 32px;
-            color: var(--primary-blue);
-            margin-bottom: 4px;
-        }
-
-        .stats div small {
-            font-size: 14px;
-            color: var(--text-muted);
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* --- Dual Image Showcase (Hero) --- */
-        .image-showcase {
-            position: relative;
-            width: 100%;
-            height: 480px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .img-main {
-            width: 85%;
-            height: auto;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border-light);
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            background: white;
-            transition: transform 0.5s ease;
-        }
-
-        .img-secondary {
-            width: 65%;
-            height: auto;
-            border-radius: var(--radius-md);
-            box-shadow: 0 25px 50px -12px rgba(22, 58, 125, 0.25);
-            border: 6px solid var(--surface);
-            position: absolute;
-            bottom: 20px;
-            right: 0;
-            z-index: 2;
-            background: white;
-            transition: transform 0.5s ease;
-        }
-
-        .image-showcase:hover .img-main {
-            transform: translateY(-5px);
-        }
-
-        .image-showcase:hover .img-secondary {
-            transform: translateY(-10px) scale(1.02);
-        }
-
-        /* --- Modules & Cards Grid --- */
-        .grid-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 24px;
-        }
-
-        .card {
-            background: var(--surface);
-            padding: 32px 24px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-sm);
-            border: 1px solid var(--border-light);
-            transition: all 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-8px);
-            box-shadow: var(--shadow-md);
-            border-color: rgba(22, 58, 125, 0.1);
-        }
-
-        .card h3 {
-            font-size: 20px;
-            margin-bottom: 12px;
-        }
-
-        .card p {
-            color: var(--text-muted);
-            font-size: 15px;
-        }
-
-        .icon-box {
-            width: 56px;
-            height: 56px;
-            background: rgba(22, 58, 125, 0.05);
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 28px;
-            margin-bottom: 24px;
-            transition: all 0.3s ease;
-        }
-
-        .card:hover .icon-box {
-            background: var(--primary-blue);
-            color: white;
-            transform: scale(1.05);
-        }
-
-        /* --- Why Sentama (Timeline Section) --- */
-        .split-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
-        }
-
-        .feature-image {
-            width: 100%;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border-light);
-        }
-
-        .timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 32px;
-            margin-top: 40px;
-        }
-
-        .step {
-            display: flex;
-            gap: 20px;
-        }
-
-        .step-num {
-            width: 48px;
-            height: 48px;
-            flex-shrink: 0;
-            border-radius: 50%;
-            background: var(--primary-blue);
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            box-shadow: 0 4px 15px rgba(22, 58, 125, 0.3);
-        }
-
-        .step-content h3 {
-            font-size: 20px;
-            margin-bottom: 8px;
-        }
-
-        .step-content p {
-            color: var(--text-muted);
-        }
-
-        /* --- Testimonials --- */
-        .testimonial-card {
-            background: var(--surface);
-            padding: 40px 32px;
-            border-radius: var(--radius-md);
-            box-shadow: var(--shadow-md);
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-
-        .quote {
-            font-size: 16px;
-            font-style: italic;
-            color: var(--text-main);
-            margin-bottom: 24px;
-            line-height: 1.8;
-        }
-
-        .author {
-            font-weight: 700;
-            color: var(--primary-blue);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+        .hero { padding: 160px 0 80px; background: radial-gradient(circle at 90% 10%, rgba(103, 200, 15, 0.08) 0%, transparent 40%), radial-gradient(circle at 10% 90%, rgba(22, 58, 125, 0.05) 0%, transparent 40%), var(--bg-light); position: relative; }
+        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(103, 200, 15, 0.1); color: var(--accent-green-hover); padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; }
+        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); animation: pulseGlow 2s infinite; }
+        .hero h1 { font-size: 54px; letter-spacing: -1px; margin-bottom: 12px; }
+        .hero h1 span { color: var(--accent-green); }
+        .hero .tagline { font-size: 20px; color: var(--primary-blue); font-weight: 700; margin-bottom: 16px; }
+        .hero p { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; max-width: 95%; line-height: 1.7; }
+        .hero-buttons { display: flex; gap: 16px; margin-bottom: 40px; }
         
-        .author::before {
-            content: '';
-            width: 20px;
-            height: 2px;
-            background: var(--accent-green);
-            display: block;
-        }
+        .highlights-grid { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 30px; }
+        .highlight-item { background: white; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 16px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); flex: 1; min-width: 100px; transition: transform 0.3s ease; }
+        .highlight-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--accent-green); }
+        .highlight-icon { font-size: 24px; margin-bottom: 8px; }
+        .highlight-item h4 { font-size: 12px; color: var(--primary-dark); font-weight: 600; text-align: center; margin: 0; }
 
-        /* --- Contact Section --- */
-        .contact-grid {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-            margin-top: 40px;
-        }
+        .hero-showcase { position: relative; animation: floatSlow 6s ease-in-out infinite; }
+        .hero-showcase img { width: 100%; filter: drop-shadow(0 20px 40px rgba(22, 58, 125, 0.15)); }
 
-        .contact-card {
-            background: var(--bg-light);
-            padding: 40px 30px;
-            border-radius: var(--radius-md);
-            text-align: center;
-            min-width: 280px;
-            flex: 1;
-            max-width: 400px;
-            border: 1px solid var(--border-light);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
+        /* Floating Deployment Tags on Hero Image */
+        .deploy-tag { position: absolute; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 16px; border-radius: 12px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-light); max-width: 220px; z-index: 2; transition: transform 0.3s ease; }
+        .deploy-tag:hover { transform: scale(1.05); }
+        .deploy-tag.top-right { top: -20px; right: -30px; }
+        .deploy-tag.bottom-left { bottom: 10px; left: -30px; }
+        .deploy-tag h4 { font-size: 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; color: var(--primary-blue); }
+        .deploy-tag p { font-size: 11px; color: var(--text-muted); margin: 0; line-height: 1.4; }
 
-        .contact-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-md);
-        }
+        /* --- Special Trio Features Section --- */
+        .special-trio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: -30px; position: relative; z-index: 10; padding-bottom: 40px;}
+        .trio-card { background: white; border-radius: var(--radius-md); padding: 28px; border: 1px solid var(--border-light); box-shadow: var(--shadow-md); transition: transform 0.4s ease; position: relative; overflow: hidden; }
+        .trio-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); border-color: var(--primary-blue); }
+        .trio-card h3 { font-size: 17px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: var(--primary-blue); }
+        .trio-card p { font-size: 13px; color: var(--text-main); margin-bottom: 16px; font-weight: 500; }
+        .trio-card ul { list-style: none; padding: 0; }
+        .trio-card ul li { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px; }
+        .trio-card ul li::before { content: '✓'; color: var(--accent-green); font-weight: bold; font-size: 14px; }
+        .live-tag { position: absolute; top: 20px; right: 20px; background: var(--accent-green); color: white; font-size: 10px; font-weight: bold; padding: 4px 10px; border-radius: 50px; display: flex; align-items: center; gap: 4px; animation: pulseGlow 2s infinite; }
 
-        .contact-card .icon-box {
-            margin: 0 auto 20px;
-            background: rgba(103, 200, 15, 0.1);
-            color: var(--accent-green);
-        }
+        /* --- Interactive Industries Grid --- */
+        .industry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .industry-card { background: white; border-radius: var(--radius-md); padding: 30px 20px; text-align: center; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .industry-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-lg); border-color: var(--accent-green); }
+        .industry-card .icon-box { font-size: 36px; margin: 0 auto 16px; display: inline-block; transition: transform 0.3s ease; }
+        .industry-card:hover .icon-box { transform: scale(1.2); }
+        .industry-card h3 { font-size: 16px; margin-bottom: 8px; }
+        .industry-card .click-hint { display: inline-block; font-size: 11px; color: white; background: var(--primary-blue); padding: 6px 16px; border-radius: 50px; font-weight: 600; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
+        .industry-card:hover .click-hint { opacity: 1; transform: translateY(0); background: var(--accent-green); }
 
-        .contact-card h3 {
-            font-size: 20px;
-            margin-bottom: 10px;
-        }
+        /* --- 18 Modules Grid (Exactly as in image) --- */
+        .modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+        .module-card { background: white; padding: 24px 20px; border-radius: var(--radius-md); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
+        .module-card .mod-icon { width: 50px; height: 50px; background: rgba(22, 58, 125, 0.05); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; color: var(--primary-blue); transition: all 0.3s ease; }
+        .module-card h3 { font-size: 15px; margin-bottom: 8px; transition: color 0.3s ease; }
+        .module-card p { font-size: 11px; color: var(--text-muted); line-height: 1.5; transition: color 0.3s ease; margin: 0; }
+        
+        .module-card:hover { background: var(--primary-blue); transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--primary-blue); }
+        .module-card:hover .mod-icon { background: rgba(255, 255, 255, 0.15); color: #ffffff; transform: scale(1.15); }
+        .module-card:hover h3, .module-card:hover p { color: white; }
+        .module-card:hover p { opacity: 0.85; }
 
-        .contact-card p {
-            color: var(--primary-blue);
-            font-size: 20px;
-            font-weight: 700;
-        }
+        /* --- Why Businesses Love Section --- */
+        .benefits-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 40px; }
+        .benefit-item { text-align: center; background: white; padding: 24px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light); transition: all 0.3s ease; }
+        .benefit-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent-green); }
+        .benefit-item .b-icon { font-size: 32px; margin-bottom: 12px; display: block; }
+        .benefit-item h4 { font-size: 14px; margin-bottom: 6px; color: var(--primary-blue); }
+        .benefit-item p { font-size: 11px; color: var(--text-muted); }
 
-        /* --- CTA Section --- */
-        .cta-box {
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-blue) 100%);
-            border-radius: var(--radius-lg);
-            padding: 80px 40px;
-            text-align: center;
-            color: white;
-            box-shadow: var(--shadow-lg);
-            margin-bottom: 60px;
-        }
+        /* --- Bottom CTA / Deployment Banner --- */
+        .cta-banner { background: var(--primary-dark); border-radius: var(--radius-lg); padding: 0; color: white; margin-top: 60px; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg); }
+        .cta-top { background: rgba(255,255,255,0.05); padding: 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 20px; }
+        .cta-bottom { padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; text-align: center; }
+        .cta-bottom h3 { color: var(--accent-green); margin-bottom: 4px; font-size: 18px;}
+        .deploy-icons { display: flex; gap: 40px; align-items: center; justify-content: center; flex: 1; }
+        .deploy-item { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 500; }
+        .deploy-item span { font-size: 24px; }
+        
+        /* --- Unlimited Rich Modal Popup --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 23, 39, 0.85); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { background: var(--bg-light); width: 95%; max-width: 1000px; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.5); transform: scale(0.95) translateY(20px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-height: 90vh; display: flex; flex-direction: column; }
+        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
+        
+        .modal-header { position: relative; height: 220px; background-size: cover; background-position: center; padding: 40px; display: flex; align-items: flex-end; flex-shrink: 0; }
+        .modal-header::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,23,39,0.95) 0%, rgba(11,23,39,0.2) 100%); }
+        .modal-title-box { position: relative; z-index: 2; }
+        .modal-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 18px; z-index: 3; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
+        .modal-close:hover { background: white; color: var(--primary-dark); transform: rotate(90deg); }
+        
+        .modal-body { padding: 40px; overflow-y: auto; background: white; }
+        
+        /* Auto-fitting grid for UNLIMITED features */
+        .modal-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
+        .modal-feature-item { background: var(--bg-light); border-radius: 12px; padding: 16px; display: flex; align-items: flex-start; gap: 14px; border: 1px solid var(--border-light); transition: all 0.3s ease; opacity: 0; transform: translateX(-10px); }
+        
+        /* Staggered animation classes applied via JS */
+        .modal-feature-item.animate-in { opacity: 1; transform: translateX(0); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
 
-        .cta-box h2 {
-            color: white;
-            margin-bottom: 20px;
-        }
-
-        .cta-box p {
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 18px;
-            margin-bottom: 40px;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        .modal-feature-item:hover { background: white; border-color: var(--accent-green); box-shadow: var(--shadow-sm); transform: translateY(-3px) scale(1.02); }
+        .modal-feature-icon { font-size: 20px; width: 44px; height: 44px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0; color: var(--primary-blue); }
+        .modal-feature-item:hover .modal-feature-icon { transform: scale(1.15) rotate(10deg); color: var(--accent-green); }
+        .modal-feature-text h4 { font-size: 14px; color: var(--primary-dark); margin-bottom: 4px; }
+        .modal-feature-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; margin: 0; }
 
         /* --- Footer --- */
-        footer {
-            background: white;
-            padding: 40px 0;
-            text-align: center;
-            color: var(--text-muted);
-            border-top: 1px solid var(--border-light);
-            font-size: 14px;
-        }
-
-        /* --- Responsive Design --- */
-        @media (max-width: 1024px) {
-            .image-showcase { height: 380px; }
-        }
+        footer { background: var(--bg-light); padding: 30px 0; text-align: center; color: var(--text-muted); font-size: 13px; }
 
         @media (max-width: 992px) {
-            .hero-grid, .split-section { grid-template-columns: 1fr; gap: 50px; }
-            .hero { text-align: center; padding-top: 140px; }
-            .hero p { margin: 0 auto 30px; }
-            .hero-buttons { justify-content: center; }
-            .stats { justify-content: center; }
-            .image-showcase { height: 450px; max-width: 600px; margin: 0 auto; }
-            .split-section > div:first-child { order: 2; }
-            .split-section > div:last-child { order: 1; }
-            .split-section h2 { text-align: center; }
-        }
-
-        @media (max-width: 768px) {
+            .hero-grid, .special-trio-grid { grid-template-columns: 1fr; }
             .nav-links { display: none; }
-            .hero h1 { font-size: 48px; }
-            .hero-buttons { flex-direction: column; }
-            .btn { width: 100%; }
-            section { padding: 70px 0; }
-            .stats { flex-wrap: wrap; gap: 20px; }
-            .image-showcase { height: 300px; }
-            .img-secondary { bottom: 0px; }
+            .deploy-tag { display: none; }
+            .benefits-grid { grid-template-columns: repeat(2, 1fr); }
+            .deploy-icons { flex-direction: column; gap: 10px; }
         }
-
-        @media (max-width: 480px) {
-            .image-showcase { height: 220px; }
-            .logo-img { max-height: 45px; }
+        @media (max-width: 768px) {
+            .benefits-grid { grid-template-columns: 1fr; }
+            .cta-top, .cta-bottom { flex-direction: column; text-align: center; }
         }
     </style>
-	<script>
-    // 1. Block Right-Click (Context Menu)
-    document.addEventListener('contextmenu', function (e) {
-        e.preventDefault();
-    });
-
-    // 2. Block Keyboard Shortcuts (F12, Inspect, Source, PrintScreen)
-    document.addEventListener('keydown', function (e) {
-        // Prevent F12
-        if (e.key === 'F12' || e.keyCode === 123) {
-            e.preventDefault();
-            return false;
-        }
-
-        // Prevent Ctrl+Shift+I (Inspect Element) / Mac: Cmd+Option+I
-        if ((e.ctrlKey && e.shiftKey && e.key === 'I') || (e.metaKey && e.altKey && e.key === 'i')) {
-            e.preventDefault();
-            return false;
-        }
-
-        // Prevent Ctrl+Shift+J (Console) / Mac: Cmd+Option+J
-        if ((e.ctrlKey && e.shiftKey && e.key === 'J') || (e.metaKey && e.altKey && e.key === 'j')) {
-            e.preventDefault();
-            return false;
-        }
-
-        // Prevent Ctrl+Shift+C (Inspect Element) / Mac: Cmd+Option+C
-        if ((e.ctrlKey && e.shiftKey && e.key === 'C') || (e.metaKey && e.altKey && e.key === 'c')) {
-            e.preventDefault();
-            return false;
-        }
-
-        // Prevent Ctrl+U (View Source) / Mac: Cmd+Option+U
-        if ((e.ctrlKey && e.key === 'u') || (e.metaKey && e.altKey && e.key === 'u')) {
-            e.preventDefault();
-            return false;
-        }
-
-        // Prevent Ctrl+P (Print Page)
-        if ((e.ctrlKey && e.key === 'p') || (e.metaKey && e.key === 'p')) {
-            e.preventDefault();
-            return false;
-        }
-
-        // Attempt to block Print Screen key (Will not block OS snipping tools)
-        if (e.key === 'PrintScreen' || e.keyCode === 44) {
-            e.preventDefault();
-            // Optional: Clear the clipboard if they hit print screen
-            navigator.clipboard.writeText(''); 
-            return false;
-        }
-    });
-
-    // 3. Prevent Dragging Images
-    document.addEventListener('dragstart', function(e) {
-        if(e.target.nodeName.toUpperCase() === 'IMG') {
-            e.preventDefault();
-        }
-    });
-</script>
 </head>
 <body>
 
     <!-- Navigation -->
     <nav>
         <div class="container nav-container">
-            <a href="#home" class="logo-link">
-                <img src="sentama-logo.png" alt="Sentama Logo" class="logo-img">
+            <a href="#home">
+                <img src="sentama-logo.png" alt="Sentama 360 Logo" class="logo-img">
             </a>
             <div class="nav-links">
-                <a href="#home">HOME</a>
-                <a href="#smarthub">PRODUCT</a>
+                <a href="#home" class="active">Home</a>
                 <a href="#features">Features</a>
                 <a href="#industries">Industries</a>
+                <a href="#modules">Modules</a>
                 <a href="#contact">Contact</a>
             </div>
-            <a class="btn accent" style="display: none;" href="#contact">Launching Shortly</a>
-            <style>@media(min-width: 769px){ nav .btn.accent { display: inline-flex !important; } }</style>
+            <a class="btn accent" href="#contact">Book Free Demo</a>
         </div>
     </nav>
 
     <!-- Hero Section -->
     <section class="hero" id="home">
         <div class="container hero-grid">
-            <div>
-                <div class="badge">Technology Beyond Expectations</div>
+            <div class="reveal active">
+                <div class="badge"><span class="pulse-dot"></span> One Platform. Infinite Possibilities.</div>
                 <h1>SmartHUB <span>360</span></h1>
-                <h2>One Platform. Every Process.</h2>
-                <p>Empower your business with a unified modern platform to seamlessly manage HR, Payroll, CRM, Sales, Purchases, Inventory, Finance, Projects, and Compliance.</p>
+                <div class="tagline">Manage. Automate. Grow. Everyday.</div>
+                <p>SmartHUB 360 is an all-in-one business management platform for SMEs.<br>Run your business better, serve your customers faster and grow without limits.</p>
                 <div class="hero-buttons">
                     <a class="btn" href="#contact">Book Free Demo</a>
-                    <a class="btn outline" href="#features">Explore Features</a>
+                    <a class="btn outline" href="#modules">Explore Modules</a>
                 </div>
-                <div class="stats">
-                    <div><h3>25+</h3><small>Modules</small></div>
-                    <div><h3>100+</h3><small>Features</small></div>
-                    <div><h3>SME</h3><small>Focused</small></div>
+                
+                <div class="highlights-grid">
+                    <div class="highlight-item"><div class="highlight-icon">⚙️</div><h4>All-in-One<br>Platform</h4></div>
+                    <div class="highlight-item"><div class="highlight-icon">👆</div><h4>Easy to Use<br>& Affordable</h4></div>
+                    <div class="highlight-item"><div class="highlight-icon">🛡️</div><h4>Secure &<br>Reliable</h4></div>
+                    <div class="highlight-item"><div class="highlight-icon">📈</div><h4>Better Insights<br>Better Growth</h4></div>
                 </div>
             </div>
-            
-            <!-- Dual Image Showcase for CRM Models -->
-            <div class="image-showcase">
-                <img src="crm-image-1.png" alt="SmartHUB Main Dashboard" class="img-main">
-                <img src="crm-image-2.png" alt="SmartHUB Analytics View" class="img-secondary">
-            </div>
-        </div>
-    </section>
-
-    <!-- Business Modules -->
-    <section id="features">
-        <div class="container">
-            <h2>Core Business Modules</h2>
-            <p class="subtitle">Everything you need to run your business efficiently, consolidated into a single pane of glass.</p>
-            <div class="grid-cards">
-                <div class="card">
-                    <h3>HR Management</h3>
-                    <p>Track Employees, Attendance, Leave workflows, and Shift planning.</p>
+            <div class="hero-showcase reveal delay-1 active">
+                <img src="crm-image-1.png" alt="SmartHUB 360 Multi-device Dashboard">
+                
+                <!-- Floating Deployment Tags matching image top right -->
+                <div class="deploy-tag top-right">
+                    <h4>💻 Use in Local PC</h4>
+                    <p>Install on your own computer or local network.</p>
                 </div>
-                <div class="card">
-                    <h3>Payroll</h3>
-                    <p>Automate Salary processing, Payslips, PF, and ESI compliance.</p>
-                </div>
-                <div class="card">
-                    <h3>CRM</h3>
-                    <p>Manage Leads, Customer pipelines, and automated Followups.</p>
-                </div>
-                <div class="card">
-                    <h3>Sales</h3>
-                    <p>Generate Quotations, customized Invoices, and built-in POS.</p>
-                </div>
-                <div class="card">
-                    <h3>Purchase</h3>
-                    <p>Handle Suppliers, Purchase Orders, and GRN operations.</p>
-                </div>
-                <div class="card">
-                    <h3>Inventory</h3>
-                    <p>Monitor Stock levels, Multi-Warehouse setups, and Barcodes.</p>
-                </div>
-                <div class="card">
-                    <h3>Finance</h3>
-                    <p>Reconcile Income, track Expenses, and generate rich Reports.</p>
-                </div>
-                <div class="card">
-                    <h3>Assets</h3>
-                    <p>Manage AMC, equipment lifecycles, and scheduled Maintenance.</p>
+                <div class="deploy-tag bottom-left">
+                    <h4>🌐 Host Online</h4>
+                    <p>Host on our secure cloud or preferred server. Access anywhere, anytime.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Industries Section -->
-    <section style="background-color: white;" id="industries">
+    <!-- Trio Special Features (Matches the 3 center boxes of image) -->
+    <div class="container" id="features">
+        <div class="special-trio-grid reveal active">
+            <!-- Mobile App -->
+            <div class="trio-card delay-1">
+                <h3>📱 MOBILE APP INCLUDED</h3>
+                <p>Run your business on the go with SmartHUB 360 Mobile App.</p>
+                <ul>
+                    <li>Full Access to Modules</li>
+                    <li>Real-time Notifications</li>
+                    <li>Fast & Secure</li>
+                </ul>
+            </div>
+            <!-- Live Tracking -->
+            <div class="trio-card delay-2">
+                <div class="live-tag"><span class="pulse-dot" style="background: white;"></span> LIVE</div>
+                <h3>📍 LIVE DELIVERY TRACKING</h3>
+                <p>Track deliveries in real-time in Restaurant & Service Modules.</p>
+                <ul>
+                    <li>Live Location on Map</li>
+                    <li>Order / Job Status Updates</li>
+                    <li>Proof of Delivery</li>
+                </ul>
+            </div>
+            <!-- Public Website -->
+            <div class="trio-card delay-3">
+                <h3>🌐 ENABLE PUBLIC WEBSITE</h3>
+                <p>Activate your public website and go live in minutes.</p>
+                <ul>
+                    <li>E-Commerce Mode</li>
+                    <li>Clinic Token Booking & Hotel Booking</li>
+                    <li>Online Payments</li>
+                </ul>
+                <div style="font-size: 10px; color: var(--text-muted); margin-top: 12px; font-style: italic;">* Available only when hosted online.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Industries Grid (Exact match to image) -->
+    <section id="industries" style="background: white; padding-top: 40px;">
         <div class="container">
-            <h2>Industries We Serve</h2>
-            <p class="subtitle">SmartHUB is built to adapt dynamically to diverse business verticals.</p>
-            <div class="grid-cards">
-                <div class="card">
+            <div class="reveal active">
+                <h2 style="text-transform: uppercase; font-size: 24px; color: var(--primary-blue); background: var(--primary-dark); color: white; display: inline-block; padding: 4px 16px; border-radius: 4px; margin-bottom: 30px;">Perfect For</h2>
+            </div>
+
+            <div class="industry-grid">
+                <div class="industry-card reveal delay-1 active" onclick="openIndustryModal('retail')">
                     <div class="icon-box">🏪</div>
-                    <h3>Retail</h3>
-                    <p>Robust POS, rapid billing, real-time inventory, and customer retention.</p>
+                    <h3>Retail & Wholesale</h3>
+                    <div class="click-hint">View All Features</div>
                 </div>
-                <div class="card">
+                <div class="industry-card reveal delay-2 active" onclick="openIndustryModal('distribution')">
+                    <div class="icon-box">🛒</div>
+                    <h3>Distribution & Trading</h3>
+                    <div class="click-hint">View All Features</div>
+                </div>
+                <div class="industry-card reveal delay-3 active" onclick="openIndustryModal('manufacturing')">
                     <div class="icon-box">🏭</div>
-                    <h3>Manufacturing</h3>
-                    <p>Advanced production planning, routing, and raw material tracking.</p>
+                    <h3>Manufacturing & Production</h3>
+                    <div class="click-hint">View All Features</div>
                 </div>
-                <div class="card">
-                    <div class="icon-box">🚚</div>
-                    <h3>Distribution</h3>
-                    <p>Streamlined order fulfillment, logistics routing, and warehousing.</p>
+                <div class="industry-card reveal delay-4 active" onclick="openIndustryModal('service')">
+                    <div class="icon-box">🔧</div>
+                    <h3>Service & AMC</h3>
+                    <div class="click-hint">View All Features</div>
                 </div>
-                <div class="card">
+                <div class="industry-card reveal delay-1 active" onclick="openIndustryModal('restaurant')">
+                    <div class="icon-box">🍽️</div>
+                    <h3>Restaurant & Food Business</h3>
+                    <div class="click-hint">View All Features</div>
+                </div>
+                <div class="industry-card reveal delay-2 active" onclick="openIndustryModal('healthcare')">
                     <div class="icon-box">🏥</div>
-                    <h3>Healthcare</h3>
-                    <p>Shift rosters for staff, patient appointments, and seamless billing.</p>
+                    <h3>Healthcare & Clinics</h3>
+                    <div class="click-hint">View All Features</div>
                 </div>
-                <div class="card">
+                <div class="industry-card reveal delay-3 active" onclick="openIndustryModal('education')">
                     <div class="icon-box">🎓</div>
-                    <h3>Education</h3>
-                    <p>Campus administration, fee collection, and faculty payroll.</p>
+                    <h3>Education Institutes</h3>
+                    <div class="click-hint">View All Features</div>
                 </div>
-                <div class="card">
-                    <div class="icon-box">🏗️</div>
-                    <h3>Construction</h3>
-                    <p>Project milestones, contracted labour management, and purchases.</p>
+                <div class="industry-card reveal delay-4 active" onclick="openIndustryModal('others')">
+                    <div class="icon-box">💬</div>
+                    <h3>And many more...</h3>
+                    <div class="click-hint">View All Features</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Why Sentama (How it works) -->
-    <section id="smarthub">
-        <div class="container split-section">
-            <div>
-                <img src="crm-image-3.png" alt="SmartHUB Software Interface" class="feature-image">
+    <!-- ALL 18 Modules Restored (Exact match to image text) -->
+    <section id="modules">
+        <div class="container">
+            <div class="reveal active">
+                <h2 style="font-size: 24px; text-transform: uppercase; margin-bottom: 40px; color: var(--primary-blue);">Powerful Modules To Run Your Business</h2>
             </div>
-            <div>
-                <h2 style="text-align: left;">Why Choose Sentama?</h2>
-                <p style="color: var(--text-muted); font-size: 18px; margin-bottom: 20px;">Deploying an ERP shouldn't take months. SmartHUB gets you up and running in days.</p>
-                <div class="timeline">
-                    <div class="step">
-                        <div class="step-num">1</div>
-                        <div class="step-content">
-                            <h3>Rapid Setup</h3>
-                            <p>Configure your company profile, onboard users, and define your financial year instantly.</p>
+
+            <div class="modules-grid">
+                <div class="module-card reveal active"><div class="mod-icon">👥</div><h3>CRM</h3><p>Manage leads, customers & relationships</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">🛒</div><h3>Sales</h3><p>Quotations, orders, invoicing & billing</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">🛍️</div><h3>Purchase</h3><p>Purchase orders, expenses & vendor management</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">📦</div><h3>Inventory</h3><p>Stock tracking, warehouses & reorder alerts</p></div>
+                
+                <div class="module-card reveal active"><div class="mod-icon">🍽️</div><h3>KOT</h3><p>Kitchen order tickets for faster restaurant billing</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">💳</div><h3>POS</h3><p>Fast billing, discounts & offers, multiple payment modes</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">🏨</div><h3>Hotel Booking</h3><p>Room booking, check-in/check-out, billing & housekeeping management</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">🧺</div><h3>Laundry</h3><p>Order tracking, pickup & delivery, billing & customer history</p></div>
+
+                <div class="module-card reveal active"><div class="mod-icon">🏥</div><h3>Hospital & Clinics</h3><p>Token booking, patient history, prescriptions, reports & records</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">🎓</div><h3>Education</h3><p>Class management, attendance, fees management, exams & reports</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">🏋️</div><h3>Fitness (Gym)</h3><p>Memberships, attendance, trainer management, billing & reports</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">₹</div><h3>Accounting</h3><p>Income, expenses, bank, GST & reconciliations</p></div>
+                
+                <div class="module-card reveal active"><div class="mod-icon">👔</div><h3>HR & Payroll</h3><p>Employees, attendance, payroll, leave & performance</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">📊</div><h3>Reports & BI</h3><p>Powerful reports, dashboards & performance</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">🔧</div><h3>Service & AMC</h3><p>Service requests, job cards, technicians & tracking</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">📁</div><h3>Projects</h3><p>Tasks, timelines, team collaboration & tracking</p></div>
+                
+                <div class="module-card reveal active"><div class="mod-icon">📱</div><h3>Mobile Access</h3><p>Access your business anytime with mobile app</p></div>
+                <div class="module-card reveal active"><div class="mod-icon">⚙️</div><h3>Settings & Security</h3><p>User roles, permissions, backup & data security</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Why Businesses Love SmartHUB 360 -->
+    <section style="background: white; padding-bottom: 20px;">
+        <div class="container">
+            <div class="reveal active">
+                <h2 style="font-size: 24px; text-transform: uppercase; color: var(--primary-blue);">Why Businesses Love Smart HUB 360</h2>
+            </div>
+
+            <div class="benefits-grid">
+                <div class="benefit-item reveal delay-1 active"><div class="b-icon">🕒</div><h4>Save Time & Effort</h4><p>Automate tasks and reduce manual work</p></div>
+                <div class="benefit-item reveal delay-2 active"><div class="b-icon">⚙️</div><h4>Improve Efficiency</h4><p>Streamline operations and increase productivity</p></div>
+                <div class="benefit-item reveal delay-3 active"><div class="b-icon">😊</div><h4>Delight Customers</h4><p>Faster service and better experience.</p></div>
+                <div class="benefit-item reveal delay-4 active"><div class="b-icon">📈</div><h4>Increase Profits</h4><p>Better control, lower costs, higher sales</p></div>
+                <div class="benefit-item reveal delay-1 active"><div class="b-icon">🚀</div><h4>Scale Your Business</h4><p>From small start to big success</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Bottom Exact Match CTA Banner -->
+    <section id="contact" style="padding-top: 0; background: white;">
+        <div class="container">
+            <div class="cta-banner reveal active">
+                <div class="cta-top">
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div style="font-size: 50px;">🛡️</div>
+                        <div>
+                            <h2 style="color: white; text-align: left; margin: 0; font-size: 28px;">SMART BUSINESS.<br><span style="color: var(--accent-green);">BETTER TOMORROW.</span></h2>
+                            <p style="margin: 5px 0 0 0; font-size: 16px;">All the tools you need.<br>One platform to succeed.</p>
                         </div>
                     </div>
-                    <div class="step">
-                        <div class="step-num">2</div>
-                        <div class="step-content">
-                            <h3>Easy Migration</h3>
-                            <p>Bulk import your existing customers, product catalogs, and employee data securely.</p>
-                        </div>
-                    </div>
-                    <div class="step">
-                        <div class="step-num">3</div>
-                        <div class="step-content">
-                            <h3>Go Live & Scale</h3>
-                            <p>Run your complete business from a unified dashboard and watch your productivity soar.</p>
+                    
+                    <div style="text-align: center;">
+                        <h3 style="color: var(--accent-green); margin-bottom: 16px; font-size: 18px;">LOCAL, ONLINE OR ANYWHERE</h3>
+                        <div class="deploy-icons">
+                            <div class="deploy-item"><span>💻</span> LOCAL PC OR NETWORK</div>
+                            <div style="color: var(--text-muted); font-weight: bold;">OR</div>
+                            <div class="deploy-item"><span>☁️</span> HOST ONLINE (CLOUD)</div>
+                            <div class="deploy-item"><span>🌐</span> ACCESS ANYWHERE</div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section style="background-color: white;">
-        <div class="container">
-            <h2>Customer Success</h2>
-            <p class="subtitle">Hear from businesses that transformed their operations with SmartHUB.</p>
-            <div class="grid-cards" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
-                <div class="testimonial-card">
-                    <p class="quote">"Consolidating our software replaced dozens of messy spreadsheets. We've recovered countless hours every single week."</p>
-                    <div class="author">SME Owner</div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="quote">"Having Payroll, CRM, and Sales talking to each other in one place has eliminated all our data entry errors."</p>
-                    <div class="author">Operations Manager</div>
-                </div>
-                <div class="testimonial-card">
-                    <p class="quote">"The automated reporting tools provide real-time clarity. We finally have the insights to make faster, better business decisions."</p>
-                    <div class="author">Finance Director</div>
+                
+                <div class="cta-bottom" style="background: rgba(0,0,0,0.2);">
+                    <div style="display: flex; align-items: center; gap: 16px; font-size: 15px;">
+                        📧 sentamatech@gmail.com &nbsp;&nbsp;|&nbsp;&nbsp; 🌐 www.sentama.in
+                    </div>
+                    <div style="text-align: right;">
+                        <h3 style="margin: 0; color: white;">Start Your Journey Today!</h3>
+                        <p style="margin: 4px 0 16px 0; font-size: 14px;">Try SmartHUB 360 and transform the way you run your business.</p>
+                        <a href="mailto:sentamatech@gmail.com" class="btn accent">Contact Us</a>
+                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Contact & Call to Action -->
-    <section id="contact">
-        <div class="container">
-            <div class="cta-box">
-                <h2>Ready to Grow with SmartHUB 2.0?</h2>
-                <p>Join hundreds of modern SMEs. Book a personalized demo today and discover how Sentama can simplify and accelerate your business operations.</p>
-                <!-- This button acts as a trigger to email, or you can point it to a form -->
-                <a href="mailto:sentamatech@gmail.com" class="btn accent" style="padding: 18px 40px; font-size: 18px;">Launching Shortly</a>
-            </div>
-
-            <!-- New Small Contact Section -->
-            <h2>Get In Touch</h2>
-            <p class="subtitle" style="margin-bottom: 20px;">Have questions? Reach out to our team directly.</p>
-            
-            <div class="contact-grid">
-                <div class="contact-card">
-                    <div class="icon-box">📞</div>
-                    <h3>Call Us Today</h3>
-                    <p>+91 00000 00000</p>
+    <!-- Rich Denser Modal Popup (UNLIMITED Features Support) -->
+    <div class="modal-overlay" id="industryModal">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeModal()">✕</button>
+            <div class="modal-header" id="modalHeader">
+                <div class="modal-title-box">
+                    <span class="badge" style="background: var(--accent-green); color: white; border: none; padding: 4px 12px; font-size: 11px;" id="modalBadge">FULL FEATURE SET</span>
+                    <h2 style="color: white; text-align: left; margin: 5px 0 0 0; font-size: 32px;" id="modalTitle">Industry Title</h2>
                 </div>
-                <div class="contact-card">
-                    <div class="icon-box">✉️</div>
-                    <h3>Email Support</h3>
-                    <p>sentamatech@gmail.com</p>
+            </div>
+            <div class="modal-body">
+                <p id="modalDesc" style="color: var(--text-muted); font-size: 15px; margin-bottom: 10px;"></p>
+                <div class="modal-feature-grid" id="modalFeatures">
+                    <!-- Unlimited Feature Cards injected here dynamically -->
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            © 2026 Sentama Technologies. All rights reserved.
+    <footer style="background: var(--bg-light); border-top: 1px solid var(--border-light);">
+        <div class="container" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div>© 2026 Sentama Technologies. All rights reserved.</div>
+            <div>Note: Domain charges are extra for hosting & public website.</div>
         </div>
     </footer>
 
-    <!-- Custom Smooth Scroll Script -->
+    <!-- Scripts -->
     <script>
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
+        // Expanded Data supporting 8-10 Rich Features per Industry
+        const industryData = {
+            retail: {
+                title: "Retail & Wholesale",
+                bg: "https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&w=800&q=80",
+                desc: "Eliminate long checkout queues and automate your entire retail floor with deep integrations.",
+                features: [
+                    { icon: "🏷️", title: "Barcode Integration", desc: "Scan products rapidly for instant billing." },
+                    { icon: "📦", title: "Live Stock Sync", desc: "Inventory deducts the millisecond a sale is made." },
+                    { icon: "🎁", title: "Loyalty Programs", desc: "Automate discounts & points for returning customers." },
+                    { icon: "🧾", title: "Multi-Outlet Sync", desc: "Manage pricing across various store branches." },
+                    { icon: "📉", title: "Low Stock Alerts", desc: "Get notified before fast-moving items run out." },
+                    { icon: "💸", title: "Split Payments", desc: "Accept cash, UPI, and cards on a single invoice." },
+                    { icon: "🔄", title: "Returns & Refunds", desc: "Process product returns easily with auto-stock addback." },
+                    { icon: "📱", title: "Mobile Inventory App", desc: "Do stock audits directly from your smartphone." }
+                ]
+            },
+            distribution: {
+                title: "Distribution & Trading",
+                bg: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80",
+                desc: "Streamline B2B logistics, wholesale orders, routing, and complex vendor payouts.",
+                features: [
+                    { icon: "🚚", title: "Order Routing", desc: "Plan delivery routes and dispatch vehicles." },
+                    { icon: "🤝", title: "Vendor Portals", desc: "Manage GRN, purchase orders, and ledgers." },
+                    { icon: "🏢", title: "Multi-Warehouse", desc: "Transfer stock seamlessly between godowns." },
+                    { icon: "📈", title: "Sales Targets", desc: "Track field agents, margins, and bulk discounts." },
+                    { icon: "📦", title: "Batch Tracking", desc: "Monitor expiry dates and batch lot numbers." },
+                    { icon: "📄", title: "Bulk Invoicing", desc: "Generate E-way bills and mass invoices instantly." },
+                    { icon: "💳", title: "Credit Limits", desc: "Set auto-blocks for clients exceeding credit allowance." },
+                    { icon: "📊", title: "Margin Analysis", desc: "Real-time reporting on wholesale vs retail profit margins." }
+                ]
+            },
+            manufacturing: {
+                title: "Manufacturing & Production",
+                bg: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80",
+                desc: "Complete visibility over your assembly line, raw materials, BOM, and total output.",
+                features: [
+                    { icon: "📋", title: "Bill of Materials (BOM)", desc: "Define recipes to auto-deduct raw materials." },
+                    { icon: "⚙️", title: "Production Stages", desc: "Track items through assembly, QA, and packaging." },
+                    { icon: "⚠️", title: "Reorder Alerts", desc: "Never run out of crucial factory components." },
+                    { icon: "👷", title: "Job Work & Labour", desc: "Calculate wages based on output and contracted work." },
+                    { icon: "🔍", title: "Quality Control", desc: "Log defects and track waste percentages." },
+                    { icon: "🏭", title: "Machine Maintenance", desc: "Schedule downtime for equipment servicing." },
+                    { icon: "🔄", title: "Scrap Management", desc: "Account for production waste and scrap resale." },
+                    { icon: "📊", title: "Costing Reports", desc: "Accurate per-unit manufacturing cost breakdown." },
+                    { icon: "🚚", title: "Direct Dispatch", desc: "Move finished goods directly from assembly to delivery." }
+                ]
+            },
+            service: {
+                title: "Service & AMC",
+                bg: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=800&q=80",
+                desc: "Manage support tickets, field technicians, and annual maintenance contracts with ease.",
+                features: [
+                    { icon: "🛠️", title: "Digital Job Cards", desc: "Assign repair tasks with full equipment history." },
+                    { icon: "📅", title: "AMC Tracking", desc: "Automated reminders for contract renewals." },
+                    { icon: "📍", title: "Live Tracking", desc: "See field service agent locations on a map." },
+                    { icon: "📱", title: "Mobile App Access", desc: "Technicians update status and get client signatures." },
+                    { icon: "💬", title: "Client Updates", desc: "Auto-SMS updates for repair status changes." },
+                    { icon: "🧾", title: "Spare Parts Billing", desc: "Directly invoice parts used during service." },
+                    { icon: "⏱️", title: "SLA Timers", desc: "Track resolution times against client agreements." },
+                    { icon: "⭐", title: "Feedback Collection", desc: "Automated feedback links sent post-service." }
+                ]
+            },
+            restaurant: {
+                title: "Restaurant & Food Business",
+                bg: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
+                desc: "Speed up table service with instant digital Kitchen Order Tickets and integrated POS billing.",
+                features: [
+                    { icon: "🔥", title: "Instant Wireless KOT", desc: "Send orders directly to Kitchen Display Screens." },
+                    { icon: "🪑", title: "Table Management", desc: "Live floor view, reservations, and table merging." },
+                    { icon: "📱", title: "Waiter App", desc: "Captains can take orders directly from tableside." },
+                    { icon: "🍔", title: "Recipe Costing", desc: "Analyze ingredient consumption and plate margins." },
+                    { icon: "🛵", title: "Delivery Tracking", desc: "Manage Swiggy/Zomato and in-house riders." },
+                    { icon: "💳", title: "Split Payments", desc: "Settle bills using UPI, Cash, or Cards instantly." },
+                    { icon: "📊", title: "Day-End Reports", desc: "Automated Z-reports sent to owner's email daily." },
+                    { icon: "🌐", title: "QR Ordering", desc: "Let customers scan and order directly from their table." }
+                ]
+            },
+            healthcare: {
+                title: "Healthcare & Clinics",
+                bg: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80",
+                desc: "Organize patient queues, manage doctor schedules, and track medical histories effortlessly.",
+                features: [
+                    { icon: "🎫", title: "Token Displays", desc: "Digital queue management for waiting rooms." },
+                    { icon: "🩺", title: "EHR Records", desc: "Secure digital patient history and diagnoses." },
+                    { icon: "💊", title: "Pharmacy Billing", desc: "Integrated drug inventory with expiry tracking." },
+                    { icon: "🗓️", title: "Appointments", desc: "Online booking portals for specific doctors." },
+                    { icon: "🔬", title: "Lab Integration", desc: "Attach test results directly to patient profiles." },
+                    { icon: "💰", title: "Insurance Claims", desc: "Generate invoices formatted for TPA processing." },
+                    { icon: "📱", title: "Tele-Consult", desc: "Integrated video link sharing for remote patients." }
+                ]
+            },
+            education: {
+                title: "Education Institutes",
+                bg: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80",
+                desc: "Unified portal for students, faculty, and administrative operations across the campus.",
+                features: [
+                    { icon: "👨‍🏫", title: "Class Rosters", desc: "Manage divisions, subjects, and daily attendance." },
+                    { icon: "💰", title: "Fee Collection", desc: "Generate term invoices, track dues, and receipts." },
+                    { icon: "📝", title: "Exam Reports", desc: "Digitize grading and generate student report cards." },
+                    { icon: "🚌", title: "Transport Logs", desc: "Manage bus routes and student allocation." },
+                    { icon: "📚", title: "Library System", desc: "Track book issues, returns, and late fines." },
+                    { icon: "📱", title: "Parent Portal", desc: "App access for parents to view grades & notices." },
+                    { icon: "🎓", title: "Alumni Directory", desc: "Maintain connections with graduated batches." },
+                    { icon: "🏢", title: "Hostel Mgmt", desc: "Room allocation, mess fees, and visitor logs." }
+                ]
+            },
+            others: {
+                title: "And many more...",
+                bg: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+                desc: "SmartHUB 360 is built on a modular framework that scales and adapts to any business model.",
+                features: [
+                    { icon: "🧩", title: "Module Toggles", desc: "Turn off what you don't need, activate as you grow." },
+                    { icon: "🌐", title: "Open Integrations", desc: "Connect with third-party APIs for extended utility." },
+                    { icon: "🛡️", title: "Custom Roles", desc: "Design specific access permissions for job titles." },
+                    { icon: "📊", title: "Custom Reports", desc: "Build views with the drag-and-drop report builder." },
+                    { icon: "☁️", title: "Backups", desc: "Automated daily reminder for back up." },
+                    { icon: "🎨", title: "White Labeling", desc: "Add your own logo and brand colors to invoices." }
+                ]
+            }
+        };
+
+        function openIndustryModal(key) {
+            const data = industryData[key];
+            if (!data) return;
+
+            // Populate Text and Images
+            document.getElementById('modalTitle').innerText = data.title;
+            document.getElementById('modalDesc').innerText = data.desc;
+            document.getElementById('modalHeader').style.backgroundImage = `url('${data.bg}')`;
+
+            // Build Fluid Feature Cards (Unlimited capacity)
+            const grid = document.getElementById('modalFeatures');
+            grid.innerHTML = '';
+            
+            data.features.forEach((f, index) => {
+                const item = document.createElement('div');
+                item.className = 'modal-feature-item';
                 
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
+                // Add staggered animation delay dynamically
+                item.style.transitionDelay = `${(index * 0.05) + 0.1}s`;
                 
-                const targetElement = document.querySelector(targetId);
-                if (!targetElement) return;
-
-                // Adjust for fixed navbar height (approx 85px)
-                const headerOffset = 85; 
-                const elementPosition = targetElement.getBoundingClientRect().top;
-                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                // Animation Settings
-                const duration = 1200; // 1.2 seconds for slow motion effect
-                const startPosition = window.pageYOffset;
-                const distance = offsetPosition - startPosition;
-                let startTime = null;
-
-                // Easing function (Ease In Out Quart) for buttery smooth feeling
-                function easeInOutQuart(t) {
-                    return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
-                }
-
-                function animation(currentTime) {
-                    if (startTime === null) startTime = currentTime;
-                    const timeElapsed = currentTime - startTime;
-                    const progress = Math.min(timeElapsed / duration, 1);
-                    
-                    const ease = easeInOutQuart(progress);
-                    window.scrollTo(0, startPosition + (distance * ease));
-
-                    if (timeElapsed < duration) {
-                        requestAnimationFrame(animation);
-                    } else {
-                        // Update URL without jumping
-                        window.history.pushState(null, null, targetId);
-                    }
-                }
-
-                requestAnimationFrame(animation);
+                item.innerHTML = `
+                    <div class="modal-feature-icon">${f.icon}</div>
+                    <div class="modal-feature-text">
+                        <h4>${f.title}</h4>
+                        <p>${f.desc}</p>
+                    </div>
+                `;
+                grid.appendChild(item);
             });
+
+            // Show Modal & Lock Scroll
+            document.getElementById('industryModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Trigger staggered animation classes after slight delay
+            setTimeout(() => {
+                const items = document.querySelectorAll('.modal-feature-item');
+                items.forEach(el => el.classList.add('animate-in'));
+            }, 10);
+        }
+
+        function closeModal() {
+            document.getElementById('industryModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Remove animation classes for next open
+            setTimeout(() => {
+                const items = document.querySelectorAll('.modal-feature-item');
+                items.forEach(el => el.classList.remove('animate-in'));
+            }, 400);
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('industryModal').addEventListener('click', function(e) {
+            if (e.target === this) { closeModal(); }
         });
     </script>
 </body>
