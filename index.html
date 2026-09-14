@@ -1,630 +1,750 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sentama | SmartHUB 360 - One Platform. Infinite Possibilities.</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        /* --- CSS Variables --- */
-        :root {
-            --primary-dark: #0B1727;
-            --primary-blue: #163a7d;
-            --primary-blue-hover: #102a5c;
-            --accent-green: #67c80f;
-            --accent-green-hover: #55a60c;
-            --bg-light: #F8FAFC;
-            --surface: #FFFFFF;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-light: rgba(0, 0, 0, 0.08);
-            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 25px 50px -12px rgba(22, 58, 125, 0.15);
-            --radius-sm: 12px;
-            --radius-md: 16px;
-            --radius-lg: 24px;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sentama Technologies | Enterprise Software & Digital Platforms</title>
+  
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- React 18 & ReactDOM -->
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-        /* --- Reset & Base --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg-light); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
-        .container { width: 100%; max-width: 1300px; margin: 0 auto; padding: 0 24px; }
-        section { padding: 90px 0; }
-        h1, h2, h3, h4 { color: var(--primary-dark); line-height: 1.2; }
-        h2 { font-size: 36px; font-weight: 700; margin-bottom: 12px; text-align: center; }
-        .subtitle { text-align: center; color: var(--text-muted); font-size: 16px; max-width: 800px; margin: 0 auto 50px; }
-        a { text-decoration: none; transition: all 0.3s ease; }
-        img { max-width: 100%; height: auto; display: block; }
+  <style>
+    :root {
+      --bg-base: #FFFFFF;
+      --bg-surface: #F8FAFC;
+      --bg-subtle: #F1F5F9;
+      --text-heading: #090E17;
+      --text-primary: #0F172A;
+      --text-secondary: #334155;
+      --text-muted: #64748B;
+      --brand-blue: #163a7d;
+      --brand-blue-hover: #0f2856;
+      --brand-green: #67c80f;
+      --brand-green-hover: #54a50b;
+      --border-light: #E2E8F0;
+    }
+    
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
 
-        /* --- Animations --- */
-        .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-        .delay-1 { transition-delay: 0.1s; } .delay-2 { transition-delay: 0.2s; }
-        .delay-3 { transition-delay: 0.3s; } .delay-4 { transition-delay: 0.4s; }
+    .bg-grid-fine {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(226, 232, 240, 0.6) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(226, 232, 240, 0.6) 1px, transparent 1px);
+    }
 
-        @keyframes floatSlow { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
-        @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(103, 200, 15, 0.6); } 70% { box-shadow: 0 0 0 10px rgba(103, 200, 15, 0); } 100% { box-shadow: 0 0 0 0 rgba(103, 200, 15, 0); } }
+    .card-corporate {
+      background: #FFFFFF;
+      border: 1px solid var(--border-light);
+      box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .card-corporate:hover {
+      border-color: #94A3B8;
+      box-shadow: 0 12px 24px -6px rgba(15, 23, 42, 0.08), 0 4px 8px -4px rgba(15, 23, 42, 0.04);
+      transform: translateY(-3px);
+    }
 
-        /* --- Buttons --- */
-        .btn { display: inline-flex; align-items: center; justify-content: center; background: var(--primary-blue); color: white; padding: 14px 32px; border-radius: 50px; font-weight: 600; font-size: 15px; border: 2px solid var(--primary-blue); cursor: pointer; box-shadow: var(--shadow-sm); transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .btn:hover { background: var(--primary-blue-hover); border-color: var(--primary-blue-hover); transform: translateY(-3px); box-shadow: var(--shadow-md); }
-        .btn.accent { background: var(--accent-green); border-color: var(--accent-green); color: white; }
-        .btn.accent:hover { background: var(--accent-green-hover); border-color: var(--accent-green-hover); }
-        .btn.outline { background: transparent; color: var(--primary-blue); }
-        .btn.outline:hover { background: var(--primary-blue); color: white; }
-
-        /* --- Navbar --- */
-        nav { position: fixed; top: 0; width: 100%; padding: 15px 0; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-light); z-index: 1000; }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; }
-        .logo-img { max-height: 45px; width: auto; }
-        .nav-links { display: flex; gap: 32px; align-items: center; }
-        .nav-links a { color: var(--text-main); font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; position: relative; }
-        .nav-links a::after { content: ''; position: absolute; bottom: -6px; left: 0; width: 0%; height: 2px; background: var(--accent-green); transition: width 0.3s ease; }
-        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
-
-        /* --- Hero Section --- */
-        .hero { padding: 160px 0 80px; background: radial-gradient(circle at 90% 10%, rgba(103, 200, 15, 0.08) 0%, transparent 40%), radial-gradient(circle at 10% 90%, rgba(22, 58, 125, 0.05) 0%, transparent 40%), var(--bg-light); position: relative; }
-        .hero-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
-        .badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(103, 200, 15, 0.1); color: var(--accent-green-hover); padding: 6px 16px; border-radius: 50px; font-size: 12px; font-weight: 700; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px; }
-        .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent-green); animation: pulseGlow 2s infinite; }
-        .hero h1 { font-size: 54px; letter-spacing: -1px; margin-bottom: 12px; }
-        .hero h1 span { color: var(--accent-green); }
-        .hero .tagline { font-size: 20px; color: var(--primary-blue); font-weight: 700; margin-bottom: 16px; }
-        .hero p { font-size: 15px; color: var(--text-muted); margin-bottom: 32px; max-width: 95%; line-height: 1.7; }
-        .hero-buttons { display: flex; gap: 16px; margin-bottom: 40px; }
-        
-        .highlights-grid { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 30px; }
-        .highlight-item { background: white; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 16px 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: var(--shadow-sm); flex: 1; min-width: 100px; transition: transform 0.3s ease; }
-        .highlight-item:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--accent-green); }
-        .highlight-icon { font-size: 24px; margin-bottom: 8px; }
-        .highlight-item h4 { font-size: 12px; color: var(--primary-dark); font-weight: 600; text-align: center; margin: 0; }
-
-        .hero-showcase { position: relative; animation: floatSlow 6s ease-in-out infinite; }
-        .hero-showcase img { width: 100%; filter: drop-shadow(0 20px 40px rgba(22, 58, 125, 0.15)); }
-
-        /* Floating Deployment Tags on Hero Image */
-        .deploy-tag { position: absolute; background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 16px; border-radius: 12px; box-shadow: var(--shadow-lg); border: 1px solid var(--border-light); max-width: 220px; z-index: 2; transition: transform 0.3s ease; }
-        .deploy-tag:hover { transform: scale(1.05); }
-        .deploy-tag.top-right { top: -20px; right: -30px; }
-        .deploy-tag.bottom-left { bottom: 10px; left: -30px; }
-        .deploy-tag h4 { font-size: 14px; display: flex; align-items: center; gap: 8px; margin-bottom: 6px; color: var(--primary-blue); }
-        .deploy-tag p { font-size: 11px; color: var(--text-muted); margin: 0; line-height: 1.4; }
-
-        /* --- Special Trio Features Section --- */
-        .special-trio-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: -30px; position: relative; z-index: 10; padding-bottom: 40px;}
-        .trio-card { background: white; border-radius: var(--radius-md); padding: 28px; border: 1px solid var(--border-light); box-shadow: var(--shadow-md); transition: transform 0.4s ease; position: relative; overflow: hidden; }
-        .trio-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); border-color: var(--primary-blue); }
-        .trio-card h3 { font-size: 17px; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; color: var(--primary-blue); }
-        .trio-card p { font-size: 13px; color: var(--text-main); margin-bottom: 16px; font-weight: 500; }
-        .trio-card ul { list-style: none; padding: 0; }
-        .trio-card ul li { font-size: 13px; color: var(--text-muted); margin-bottom: 8px; display: flex; align-items: flex-start; gap: 8px; }
-        .trio-card ul li::before { content: '✓'; color: var(--accent-green); font-weight: bold; font-size: 14px; }
-        .live-tag { position: absolute; top: 20px; right: 20px; background: var(--accent-green); color: white; font-size: 10px; font-weight: bold; padding: 4px 10px; border-radius: 50px; display: flex; align-items: center; gap: 4px; animation: pulseGlow 2s infinite; }
-
-        /* --- Interactive Industries Grid --- */
-        .industry-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .industry-card { background: white; border-radius: var(--radius-md); padding: 30px 20px; text-align: center; border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); cursor: pointer; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .industry-card:hover { transform: translateY(-8px) scale(1.02); box-shadow: var(--shadow-lg); border-color: var(--accent-green); }
-        .industry-card .icon-box { font-size: 36px; margin: 0 auto 16px; display: inline-block; transition: transform 0.3s ease; }
-        .industry-card:hover .icon-box { transform: scale(1.2); }
-        .industry-card h3 { font-size: 16px; margin-bottom: 8px; }
-        .industry-card .click-hint { display: inline-block; font-size: 11px; color: white; background: var(--primary-blue); padding: 6px 16px; border-radius: 50px; font-weight: 600; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; }
-        .industry-card:hover .click-hint { opacity: 1; transform: translateY(0); background: var(--accent-green); }
-
-        /* --- 18 Modules Grid (Exactly as in image) --- */
-        .modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
-        .module-card { background: white; padding: 24px 20px; border-radius: var(--radius-md); border: 1px solid var(--border-light); box-shadow: var(--shadow-sm); transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; text-align: center; }
-        .module-card .mod-icon { width: 50px; height: 50px; background: rgba(22, 58, 125, 0.05); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 24px; margin-bottom: 16px; color: var(--primary-blue); transition: all 0.3s ease; }
-        .module-card h3 { font-size: 15px; margin-bottom: 8px; transition: color 0.3s ease; }
-        .module-card p { font-size: 11px; color: var(--text-muted); line-height: 1.5; transition: color 0.3s ease; margin: 0; }
-        
-        .module-card:hover { background: var(--primary-blue); transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--primary-blue); }
-        .module-card:hover .mod-icon { background: rgba(255, 255, 255, 0.15); color: #ffffff; transform: scale(1.15); }
-        .module-card:hover h3, .module-card:hover p { color: white; }
-        .module-card:hover p { opacity: 0.85; }
-
-        /* --- Why Businesses Love Section --- */
-        .benefits-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-top: 40px; }
-        .benefit-item { text-align: center; background: white; padding: 24px 16px; border-radius: var(--radius-md); border: 1px solid var(--border-light); transition: all 0.3s ease; }
-        .benefit-item:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); border-color: var(--accent-green); }
-        .benefit-item .b-icon { font-size: 32px; margin-bottom: 12px; display: block; }
-        .benefit-item h4 { font-size: 14px; margin-bottom: 6px; color: var(--primary-blue); }
-        .benefit-item p { font-size: 11px; color: var(--text-muted); }
-
-        /* --- Bottom CTA / Deployment Banner --- */
-        .cta-banner { background: var(--primary-dark); border-radius: var(--radius-lg); padding: 0; color: white; margin-top: 60px; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg); }
-        .cta-top { background: rgba(255,255,255,0.05); padding: 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); flex-wrap: wrap; gap: 20px; }
-        .cta-bottom { padding: 24px 40px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px; text-align: center; }
-        .cta-bottom h3 { color: var(--accent-green); margin-bottom: 4px; font-size: 18px;}
-        .deploy-icons { display: flex; gap: 40px; align-items: center; justify-content: center; flex: 1; }
-        .deploy-item { display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 500; }
-        .deploy-item span { font-size: 24px; }
-        
-        /* --- Unlimited Rich Modal Popup --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(11, 23, 39, 0.85); backdrop-filter: blur(8px); z-index: 2000; display: flex; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-content { background: var(--bg-light); width: 95%; max-width: 1000px; border-radius: var(--radius-lg); overflow: hidden; box-shadow: 0 40px 80px rgba(0,0,0,0.5); transform: scale(0.95) translateY(20px); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); max-height: 90vh; display: flex; flex-direction: column; }
-        .modal-overlay.active .modal-content { transform: scale(1) translateY(0); }
-        
-        .modal-header { position: relative; height: 220px; background-size: cover; background-position: center; padding: 40px; display: flex; align-items: flex-end; flex-shrink: 0; }
-        .modal-header::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(11,23,39,0.95) 0%, rgba(11,23,39,0.2) 100%); }
-        .modal-title-box { position: relative; z-index: 2; }
-        .modal-close { position: absolute; top: 20px; right: 20px; background: rgba(255,255,255,0.2); backdrop-filter: blur(4px); color: white; border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; font-weight: bold; font-size: 18px; z-index: 3; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; }
-        .modal-close:hover { background: white; color: var(--primary-dark); transform: rotate(90deg); }
-        
-        .modal-body { padding: 40px; overflow-y: auto; background: white; }
-        
-        /* Auto-fitting grid for UNLIMITED features */
-        .modal-feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
-        .modal-feature-item { background: var(--bg-light); border-radius: 12px; padding: 16px; display: flex; align-items: flex-start; gap: 14px; border: 1px solid var(--border-light); transition: all 0.3s ease; opacity: 0; transform: translateX(-10px); }
-        
-        /* Staggered animation classes applied via JS */
-        .modal-feature-item.animate-in { opacity: 1; transform: translateX(0); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-
-        .modal-feature-item:hover { background: white; border-color: var(--accent-green); box-shadow: var(--shadow-sm); transform: translateY(-3px) scale(1.02); }
-        .modal-feature-icon { font-size: 20px; width: 44px; height: 44px; background: white; border-radius: 10px; display: flex; align-items: center; justify-content: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); flex-shrink: 0; color: var(--primary-blue); }
-        .modal-feature-item:hover .modal-feature-icon { transform: scale(1.15) rotate(10deg); color: var(--accent-green); }
-        .modal-feature-text h4 { font-size: 14px; color: var(--primary-dark); margin-bottom: 4px; }
-        .modal-feature-text p { font-size: 12px; color: var(--text-muted); line-height: 1.4; margin: 0; }
-
-        /* --- Footer --- */
-        footer { background: var(--bg-light); padding: 30px 0; text-align: center; color: var(--text-muted); font-size: 13px; }
-
-        @media (max-width: 992px) {
-            .hero-grid, .special-trio-grid { grid-template-columns: 1fr; }
-            .nav-links { display: none; }
-            .deploy-tag { display: none; }
-            .benefits-grid { grid-template-columns: repeat(2, 1fr); }
-            .deploy-icons { flex-direction: column; gap: 10px; }
-        }
-        @media (max-width: 768px) {
-            .benefits-grid { grid-template-columns: 1fr; }
-            .cta-top, .cta-bottom { flex-direction: column; text-align: center; }
-        }
-    </style>
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #F1F5F9; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+  </style>
 </head>
 <body>
+  <div id="root"></div>
 
-    <!-- Navigation -->
-    <nav>
-        <div class="container nav-container">
-            <a href="#home">
-                <img src="sentama-logo.png" alt="Sentama 360 Logo" class="logo-img">
-            </a>
-            <div class="nav-links">
-                <a href="#home" class="active">Home</a>
-                <a href="#features">Features</a>
-                <a href="#industries">Industries</a>
-                <a href="#modules">Modules</a>
-                <a href="#contact">Contact</a>
-            </div>
-            <a class="btn accent" href="#contact">Book Free Demo</a>
+  <script type="text/babel" data-type="module">
+    import React, { useState, useEffect } from 'https://esm.sh/react@18.2.0';
+    import ReactDOM from 'https://esm.sh/react-dom@18.2.0/client';
+    import { 
+      Menu, X, Smartphone, ShoppingCart, ShoppingBag, 
+      Package, Utensils, CreditCard, Building2, Wind, Activity, 
+      GraduationCap, Dumbbell, IndianRupee, Briefcase, BarChart3, 
+      Wrench, FolderKanban, Settings, CheckCircle2, MapPin, 
+      Globe, Server, ShieldCheck, ArrowRight, Monitor,
+      Layout, Code2, Database, MessageSquare, ChevronRight,
+      Cpu, Cloud, Layers, Users, Zap, Target, GitMerge,
+      Terminal, Compass, HardDrive, Shield, Check, Sparkles
+    } from 'https://esm.sh/lucide-react@0.344.0';
+
+    const modulesData = [
+      { id: 'kot', icon: Utensils, title: "Kitchen Order Tickets (KOT)", short: "Instant order routing & kitchen displays", hook: "Are you facing bottlenecks and lost tickets during peak dining rush?", desc: "SmartHUB 360's low-latency wireless KOT routes table orders to multi-station kitchen displays in under 200 milliseconds. Eliminate miscommunication, manage order priorities, and delight diners with faster turnover.", bgImage: "https://images.unsplash.com/photo-1556155092-490a1ba16284?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'crm', icon: Users, title: "CRM & Lifecycle Management", short: "Lead pipelines, profiles & loyalty tiers", hook: "Struggling with disconnected customer touchpoints and missed follow-ups?", desc: "Centralize your complete client lifecycle. Gain 360-degree purchase visibility, automate multi-channel reminders, monitor credit limits, and drive retention with customized VIP loyalty tiers.", bgImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'inventory', icon: Package, title: "Warehouse & Inventory", short: "Multi-godown stock & automated alerts", hook: "Experiencing stock shrinkages or sudden stock-outs on fast-selling items?", desc: "Enterprise-grade stock synchronization across multiple warehouses. Real-time batch/expiry intelligence, automated barcode labeling, minimum safety reorder thresholds, and dynamic inventory valuation.", bgImage: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'pos', icon: CreditCard, title: "Point of Sale (POS)", short: "Sub-second checkout & split payments", hook: "Are slow checkout counters creating friction for impatient shoppers?", desc: "Engineered for high-volume cash counters. Supports high-speed barcode scanning, split billing (Cash, UPI, Cards, Store Credit), offline transactional queues, and thermal receipt printing.", bgImage: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'hotel', icon: Building2, title: "Hotel & Property PMS", short: "Visual room grids & housekeeping status", hook: "Is managing room allocation, tariffs, and turn-around times causing chaos?", desc: "Intuitive interactive floor and room grid. Manage online reservations, walk-in check-ins, advance tariff security deposits, ID card records, and live housekeeping statuses to accelerate room turnover.", bgImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'hospital', icon: Activity, title: "Healthcare & Clinic EMR", short: "Live token queues & integrated pharmacy", hook: "Are patients burdened with long waiting queues and fragmented records?", desc: "End-to-end clinical workflow. Generates Electronic Medical Records (EMR), powers live digital token boards in waiting lounges, and routes doctor digital prescriptions straight to internal dispensary POS.", bgImage: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'sales', icon: ShoppingCart, title: "Sales & Invoicing", short: "Quotations, dispatch & GST invoicing", hook: "Losing time converting estimates into approved tax invoices?", desc: "Accelerate your revenue cycle. Convert proforma estimates into signed delivery notes and GST-compliant invoices with automatic tax splits, discount approvals, and balance ledgers.", bgImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'purchase', icon: ShoppingBag, title: "Procurement & Vendors", short: "Purchase orders & GRN validation", hook: "Finding it difficult to track supplier payment dues and goods deliveries?", desc: "Gain complete transparency over input costs. Manage purchase requisitions, match vendor bills against Goods Receipt Notes (GRN), track landed costs, and maintain balanced supplier ledgers.", bgImage: "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'laundry', icon: Wind, title: "Laundry & Dry Cleaning", short: "Garment tagging & delivery dispatch", hook: "Struggling with misplaced garments or delivery schedule errors?", desc: "Track every piece with durable barcode tagging. Record fabric treatments, monitor wash/ironing stages, and notify customers automatically via SMS/WhatsApp upon dispatch.", bgImage: "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'education', icon: GraduationCap, title: "Education & Campus", short: "Student rosters, terms & fee collection", hook: "Tired of dealing with manual fee collection spreadsheets and notices?", desc: "Comprehensive academic administration. Track student attendance, automate recurring term fee billing with online receipts, catalog library books, and compile automated report cards.", bgImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'fitness', icon: Dumbbell, title: "Fitness & Gym PMS", short: "Biometric access & recurring memberships", hook: "Losing revenue to expired memberships and uncontrolled access?", desc: "Connects with biometric turnstiles for automated access control. Oversee personal trainer schedules, track body metric progression, and automate recurring membership subscription renewals.", bgImage: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'accounting', icon: IndianRupee, title: "Financial Accounting", short: "Double-entry, GST filing & P&L balance", hook: "Spending sleepless nights preparing books for audits and tax filings?", desc: "Robust double-entry accounting engine. Real-time Day Book, automatic bank statement reconciliation, automated GST return registers, and dynamic P&L and Balance Sheet compilation.", bgImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'hr', icon: Briefcase, title: "HR & Payroll Engine", short: "Biometric attendance, leaves & salary", hook: "Wasting hours calculating shift overtime and deductions manually?", desc: "Synchronize biometric attendance devices. Configure complex rotational shift rosters, calculate PF/ESI and tax deductions, manage employee leaves, and distribute encrypted salary slips.", bgImage: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'reports', icon: BarChart3, title: "Business Intelligence", short: "Executive dashboards & KPI metrics", hook: "Operating your enterprise without real-time gross margin insights?", desc: "Extract actionable insights from raw operational data. Pre-built executive dashboards, trend forecasting, category profit margins, and automated daily performance emails for owners.", bgImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'service', icon: Wrench, title: "Field Service & AMC", short: "Digital job cards, SLA & technician apps", hook: "Missing annual maintenance renewals and letting service SLAs slip?", desc: "Dispatch field technicians with digital job cards. Track spare parts consumed in repairs, monitor SLA countdown timers, and automate Annual Maintenance Contract (AMC) renewals with clients.", bgImage: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'projects', icon: FolderKanban, title: "Projects & Milestones", short: "Kanban timelines, tasks & timesheets", hook: "Are enterprise project deliverables slipping past committed deadlines?", desc: "Organize cross-functional team initiatives. Plan milestones with interactive Kanban boards, log billable project hours, maintain document repositories, and ensure client deliveries on budget.", bgImage: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'mobile', icon: Smartphone, title: "Executive Mobile App", short: "Real-time command center anywhere", hook: "Need to approve critical purchase orders while traveling away from desk?", desc: "Native command center for iOS and Android. Review live daily sales, authorize large purchase orders, verify bank balances, and receive critical operational alerts on the go.", bgImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80" },
+      { id: 'settings', icon: Settings, title: "Governance & Security", short: "Role permissions, audits & daily backup", hook: "Concerned about data integrity, unauthorized deletions, or leaks?", desc: "Hardened security posture. Granular role-based access controls (RBAC), immutable system audit trails for every transaction edit, and automated multi-destination encrypted database backups.", bgImage: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80" }
+    ];
+
+    const Navbar = ({ currentView, navigate }) => (
+      <nav className="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 py-3.5 transition-all">
+        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+          <div className="cursor-pointer flex items-center gap-3 hover:opacity-90 transition-opacity" onClick={() => navigate('home')}>
+            <img src="https://sentama.in/sentama-logo.png" alt="Sentama Technologies" className="h-9 w-auto" />
+          </div>
+          
+          <div className="hidden md:flex items-center space-x-8">
+            {[
+              { id: 'home', label: 'Company Overview' },
+              { id: 'services', label: 'Enterprise Services' },
+              { id: 'smarthub', label: 'SmartHUB 360' }
+            ].map((link) => (
+              <button
+                key={link.id}
+                onClick={() => navigate(link.id)}
+                className={`font-semibold text-[13px] tracking-wider uppercase transition-colors relative py-1 ${
+                  currentView === link.id ? 'text-[#163a7d]' : 'text-slate-600 hover:text-[#163a7d]'
+                }`}
+              >
+                {link.label}
+                {currentView === link.id && (
+                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full"></span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-3">
+            <button 
+              onClick={() => {
+                const el = document.getElementById('contact-section');
+                if (el) el.scrollIntoView({ behavior: 'smooth' });
+              }}
+              className="bg-[#163a7d] text-white px-5 py-2.5 rounded-lg font-semibold text-[13px] hover:bg-[#0f2856] transition-all shadow-sm flex items-center gap-2"
+            >
+              <span>Connect With Us</span>
+              <ArrowRight size={15} />
+            </button>
+          </div>
         </div>
-    </nav>
+      </nav>
+    );
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
-        <div class="container hero-grid">
-            <div class="reveal active">
-                <div class="badge"><span class="pulse-dot"></span> One Platform. Infinite Possibilities.</div>
-                <h1>SmartHUB <span>360</span></h1>
-                <div class="tagline">Manage. Automate. Grow. Everyday.</div>
-                <p>SmartHUB 360 is an all-in-one business management platform for SMEs.<br>Run your business better, serve your customers faster and grow without limits.</p>
-                <div class="hero-buttons">
-                    <a class="btn" href="#contact">Book Free Demo</a>
-                    <a class="btn outline" href="#modules">Explore Modules</a>
-                </div>
+    const HomeView = ({ navigate }) => (
+      <div className="pt-24 pb-16">
+        <section className="relative border-b border-slate-200 bg-white overflow-hidden">
+          <div className="absolute inset-0 bg-grid-fine opacity-60 pointer-events-none"></div>
+          <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-50 rounded-full blur-3xl -z-10 opacity-70"></div>
+          <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-green-50 rounded-full blur-3xl -z-10 opacity-60"></div>
+          
+          <div className="max-w-7xl mx-auto px-6 pt-16 pb-20 relative z-10">
+            <div className="max-w-3xl">
+              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold text-[#163a7d] uppercase tracking-wider mb-6">
+                <span className="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span>
+                Enterprise Software & Engineering Division
+              </div>
+              
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#090E17] tracking-tight leading-[1.12] mb-6">
+                Engineering Mission-Critical Software & Digital Platforms.
+              </h1>
+              
+              <p className="text-lg sm:text-xl text-slate-700 font-normal leading-relaxed mb-10 max-w-2xl">
+                Sentama Technologies architects resilient cloud infrastructure, bespoke enterprise applications, and turnkey vertical management platforms designed for operational sovereignty and high-velocity scale.
+              </p>
+
+              <div className="flex flex-wrap items-center gap-4">
+                <button 
+                  onClick={() => navigate('smarthub')}
+                  className="bg-[#163a7d] text-white px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-[#0f2856] transition-all shadow-md shadow-[#163a7d]/15 flex items-center gap-2.5 group"
+                >
+                  <span>Explore SmartHUB 360</span>
+                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform text-[#67c80f]" />
+                </button>
                 
-                <div class="highlights-grid">
-                    <div class="highlight-item"><div class="highlight-icon">⚙️</div><h4>All-in-One<br>Platform</h4></div>
-                    <div class="highlight-item"><div class="highlight-icon">👆</div><h4>Easy to Use<br>& Affordable</h4></div>
-                    <div class="highlight-item"><div class="highlight-icon">🛡️</div><h4>Secure &<br>Reliable</h4></div>
-                    <div class="highlight-item"><div class="highlight-icon">📈</div><h4>Better Insights<br>Better Growth</h4></div>
-                </div>
-            </div>
-            <div class="hero-showcase reveal delay-1 active">
-                <img src="crm-image-1.png" alt="SmartHUB 360 Multi-device Dashboard">
-                
-                <!-- Floating Deployment Tags matching image top right -->
-                <div class="deploy-tag top-right">
-                    <h4>💻 Use in Local PC</h4>
-                    <p>Install on your own computer or local network.</p>
-                </div>
-                <div class="deploy-tag bottom-left">
-                    <h4>🌐 Host Online</h4>
-                    <p>Host on our secure cloud or preferred server. Access anywhere, anytime.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Trio Special Features (Matches the 3 center boxes of image) -->
-    <div class="container" id="features">
-        <div class="special-trio-grid reveal active">
-            <!-- Mobile App -->
-            <div class="trio-card delay-1">
-                <h3>📱 MOBILE APP INCLUDED</h3>
-                <p>Run your business on the go with SmartHUB 360 Mobile App.</p>
-                <ul>
-                    <li>Full Access to Modules</li>
-                    <li>Real-time Notifications</li>
-                    <li>Fast & Secure</li>
-                </ul>
-            </div>
-            <!-- Live Tracking -->
-            <div class="trio-card delay-2">
-                <div class="live-tag"><span class="pulse-dot" style="background: white;"></span> LIVE</div>
-                <h3>📍 LIVE DELIVERY TRACKING</h3>
-                <p>Track deliveries in real-time in Restaurant & Service Modules.</p>
-                <ul>
-                    <li>Live Location on Map</li>
-                    <li>Order / Job Status Updates</li>
-                    <li>Proof of Delivery</li>
-                </ul>
-            </div>
-            <!-- Public Website -->
-            <div class="trio-card delay-3">
-                <h3>🌐 ENABLE PUBLIC WEBSITE</h3>
-                <p>Activate your public website and go live in minutes.</p>
-                <ul>
-                    <li>E-Commerce Mode</li>
-                    <li>Clinic Token Booking & Hotel Booking</li>
-                    <li>Online Payments</li>
-                </ul>
-                <div style="font-size: 10px; color: var(--text-muted); margin-top: 12px; font-style: italic;">* Available only when hosted online.</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Interactive Industries Grid (Exact match to image) -->
-    <section id="industries" style="background: white; padding-top: 40px;">
-        <div class="container">
-            <div class="reveal active">
-                <h2 style="text-transform: uppercase; font-size: 24px; color: var(--primary-blue); background: var(--primary-dark); color: white; display: inline-block; padding: 4px 16px; border-radius: 4px; margin-bottom: 30px;">Perfect For</h2>
+                <button 
+                  onClick={() => navigate('services')}
+                  className="bg-white text-slate-800 border border-slate-300 px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-50 hover:border-slate-400 transition-all flex items-center gap-2"
+                >
+                  <span>Our Engineering Capabilities</span>
+                  <ChevronRight size={16} className="text-slate-500" />
+                </button>
+              </div>
             </div>
 
-            <div class="industry-grid">
-                <div class="industry-card reveal delay-1 active" onclick="openIndustryModal('retail')">
-                    <div class="icon-box">🏪</div>
-                    <h3>Retail & Wholesale</h3>
-                    <div class="click-hint">View All Features</div>
-                </div>
-                <div class="industry-card reveal delay-2 active" onclick="openIndustryModal('distribution')">
-                    <div class="icon-box">🛒</div>
-                    <h3>Distribution & Trading</h3>
-                    <div class="click-hint">View All Features</div>
-                </div>
-                <div class="industry-card reveal delay-3 active" onclick="openIndustryModal('manufacturing')">
-                    <div class="icon-box">🏭</div>
-                    <h3>Manufacturing & Production</h3>
-                    <div class="click-hint">View All Features</div>
-                </div>
-                <div class="industry-card reveal delay-4 active" onclick="openIndustryModal('service')">
-                    <div class="icon-box">🔧</div>
-                    <h3>Service & AMC</h3>
-                    <div class="click-hint">View All Features</div>
-                </div>
-                <div class="industry-card reveal delay-1 active" onclick="openIndustryModal('restaurant')">
-                    <div class="icon-box">🍽️</div>
-                    <h3>Restaurant & Food Business</h3>
-                    <div class="click-hint">View All Features</div>
-                </div>
-                <div class="industry-card reveal delay-2 active" onclick="openIndustryModal('healthcare')">
-                    <div class="icon-box">🏥</div>
-                    <h3>Healthcare & Clinics</h3>
-                    <div class="click-hint">View All Features</div>
-                </div>
-                <div class="industry-card reveal delay-3 active" onclick="openIndustryModal('education')">
-                    <div class="icon-box">🎓</div>
-                    <h3>Education Institutes</h3>
-                    <div class="click-hint">View All Features</div>
-                </div>
-                <div class="industry-card reveal delay-4 active" onclick="openIndustryModal('others')">
-                    <div class="icon-box">💬</div>
-                    <h3>And many more...</h3>
-                    <div class="click-hint">View All Features</div>
-                </div>
+            <!-- Metric Telemetry Ribbon -->
+            <div className="mt-16 pt-10 border-t border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-6">
+              <div className="space-y-1">
+                <div className="text-3xl font-black text-[#163a7d] tracking-tight">18+</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Integrated Modules</div>
+                <p className="text-xs text-slate-600">Unified under a single synchronous database schema.</p>
+              </div>
+              <div className="space-y-1">
+                <div className="text-3xl font-black text-[#163a7d] tracking-tight">100%</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Offline Resilience</div>
+                <p className="text-xs text-slate-600">Zero cloud latency; continues billing when network drops.</p>
+              </div>
+              <div className="space-y-1">
+                <div className="text-3xl font-black text-[#163a7d] tracking-tight">&lt; 200ms</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">POS Execution Speed</div>
+                <p className="text-xs text-slate-600">Engineered for high-volume checkout counters.</p>
+              </div>
+              <div className="space-y-1">
+                <div className="text-3xl font-black text-[#67c80f] tracking-tight">ISO / MSME</div>
+                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Government Registered</div>
+                <p className="text-xs text-slate-600">Recognized enterprise entity under Ministry of MSME.</p>
+              </div>
             </div>
-        </div>
-    </section>
+          </div>
+        </section>
 
-    <!-- ALL 18 Modules Restored (Exact match to image text) -->
-    <section id="modules">
-        <div class="container">
-            <div class="reveal active">
-                <h2 style="font-size: 24px; text-transform: uppercase; margin-bottom: 40px; color: var(--primary-blue);">Powerful Modules To Run Your Business</h2>
+        <section className="py-20 bg-[#F8FAFC] border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+              <div>
+                <div className="text-xs font-black tracking-widest text-[#163a7d] uppercase mb-3">Enterprise Practice Areas</div>
+                <h2 className="text-3xl sm:text-4xl font-black text-[#090E17] tracking-tight">
+                  Architectural Competencies Across The Lifecycle.
+                </h2>
+              </div>
+              <p className="text-sm text-slate-600 max-w-md">
+                We eliminate technical debt by deploying clean, decoupled microservices, hardened edge runtimes, and accessible user experiences.
+              </p>
             </div>
 
-            <div class="modules-grid">
-                <div class="module-card reveal active"><div class="mod-icon">👥</div><h3>CRM</h3><p>Manage leads, customers & relationships</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">🛒</div><h3>Sales</h3><p>Quotations, orders, invoicing & billing</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">🛍️</div><h3>Purchase</h3><p>Purchase orders, expenses & vendor management</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">📦</div><h3>Inventory</h3><p>Stock tracking, warehouses & reorder alerts</p></div>
-                
-                <div class="module-card reveal active"><div class="mod-icon">🍽️</div><h3>KOT</h3><p>Kitchen order tickets for faster restaurant billing</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">💳</div><h3>POS</h3><p>Fast billing, discounts & offers, multiple payment modes</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">🏨</div><h3>Hotel Booking</h3><p>Room booking, check-in/check-out, billing & housekeeping management</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">🧺</div><h3>Laundry</h3><p>Order tracking, pickup & delivery, billing & customer history</p></div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="card-corporate p-8 rounded-2xl flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#163a7d] flex items-center justify-center mb-6 border border-blue-100 font-bold">
+                    <Code2 size={24} />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#090E17] mb-2">Bespoke Web & Cloud Apps</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                    Engineered from ground up with modern frameworks. Multi-tenant SaaS architectures, complex internal ERPs, and client portals.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">React</span>
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">.NET Core</span>
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">PostgreSQL</span>
+                </div>
+              </div>
 
-                <div class="module-card reveal active"><div class="mod-icon">🏥</div><h3>Hospital & Clinics</h3><p>Token booking, patient history, prescriptions, reports & records</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">🎓</div><h3>Education</h3><p>Class management, attendance, fees management, exams & reports</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">🏋️</div><h3>Fitness (Gym)</h3><p>Memberships, attendance, trainer management, billing & reports</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">₹</div><h3>Accounting</h3><p>Income, expenses, bank, GST & reconciliations</p></div>
-                
-                <div class="module-card reveal active"><div class="mod-icon">👔</div><h3>HR & Payroll</h3><p>Employees, attendance, payroll, leave & performance</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">📊</div><h3>Reports & BI</h3><p>Powerful reports, dashboards & performance</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">🔧</div><h3>Service & AMC</h3><p>Service requests, job cards, technicians & tracking</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">📁</div><h3>Projects</h3><p>Tasks, timelines, team collaboration & tracking</p></div>
-                
-                <div class="module-card reveal active"><div class="mod-icon">📱</div><h3>Mobile Access</h3><p>Access your business anytime with mobile app</p></div>
-                <div class="module-card reveal active"><div class="mod-icon">⚙️</div><h3>Settings & Security</h3><p>User roles, permissions, backup & data security</p></div>
+              <div className="card-corporate p-8 rounded-2xl flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-6 border border-emerald-100 font-bold">
+                    <Cpu size={24} />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#090E17] mb-2">Edge & Desktop Systems</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                    Offline-first POS and retail client architectures. Native printer drivers, biometric turnstile integration, and localized databases.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">WPF / Blazor</span>
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">SQLite</span>
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">ESC/POS</span>
+                </div>
+              </div>
+
+              <div className="card-corporate p-8 rounded-2xl flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-6 border border-purple-100 font-bold">
+                    <Layout size={24} />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#090E17] mb-2">Enterprise UI/UX Design</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                    Design engineering for data-dense environments. We turn complex workflows into fast, friction-free interfaces staff master in minutes.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Design Systems</span>
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">WCAG 2.1</span>
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Figma</span>
+                </div>
+              </div>
+
+              <div className="card-corporate p-8 rounded-2xl flex flex-col justify-between">
+                <div>
+                  <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mb-6 border border-amber-100 font-bold">
+                    <ShieldCheck size={24} />
+                  </div>
+                  <h3 className="text-lg font-bold text-[#090E17] mb-2">DevOps & Cloud Security</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
+                    Hardened infrastructure orchestration. Continuous integration, automated disaster recovery, Cloudflare CDN, and zero-trust policies.
+                  </p>
+                </div>
+                <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Cloudflare</span>
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Docker</span>
+                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Linux</span>
+                </div>
+              </div>
             </div>
-        </div>
-    </section>
+          </div>
+        </section>
 
-    <!-- Why Businesses Love SmartHUB 360 -->
-    <section style="background: white; padding-bottom: 20px;">
-        <div class="container">
-            <div class="reveal active">
-                <h2 style="font-size: 24px; text-transform: uppercase; color: var(--primary-blue);">Why Businesses Love Smart HUB 360</h2>
-            </div>
+        <section className="py-24 bg-white border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="bg-[#0B1424] rounded-3xl p-8 sm:p-14 text-white relative overflow-hidden shadow-xl">
+              <div className="grid lg:grid-cols-12 gap-12 items-center relative z-10">
+                <div className="lg:col-span-7">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/10 text-[#67c80f] text-xs font-bold tracking-widest uppercase mb-6">
+                    FLAGSHIP ENTERPRISE PRODUCT
+                  </div>
+                  
+                  <h2 className="text-4xl sm:text-5xl font-black tracking-tight mb-6 leading-tight">
+                    One Unified Engine.<br />
+                    <span className="text-[#67c80f]">Every Department Connected.</span>
+                  </h2>
+                  
+                  <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 max-w-xl">
+                    SmartHUB 360 is an all-in-one business management platform built for modern SMEs and growing enterprises. Consolidate your POS, Kitchen Orders, Inventory, Accounting, and HR into one cohesive system.
+                  </p>
 
-            <div class="benefits-grid">
-                <div class="benefit-item reveal delay-1 active"><div class="b-icon">🕒</div><h4>Save Time & Effort</h4><p>Automate tasks and reduce manual work</p></div>
-                <div class="benefit-item reveal delay-2 active"><div class="b-icon">⚙️</div><h4>Improve Efficiency</h4><p>Streamline operations and increase productivity</p></div>
-                <div class="benefit-item reveal delay-3 active"><div class="b-icon">😊</div><h4>Delight Customers</h4><p>Faster service and better experience.</p></div>
-                <div class="benefit-item reveal delay-4 active"><div class="b-icon">📈</div><h4>Increase Profits</h4><p>Better control, lower costs, higher sales</p></div>
-                <div class="benefit-item reveal delay-1 active"><div class="b-icon">🚀</div><h4>Scale Your Business</h4><p>From small start to big success</p></div>
-            </div>
-        </div>
-    </section>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl">
+                      <div className="text-sm font-bold text-white mb-1">Local PC / LAN</div>
+                      <div className="text-xs text-slate-400">Zero Internet Dependency</div>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl">
+                      <div className="text-sm font-bold text-white mb-1">Cloud Hosted</div>
+                      <div className="text-xs text-slate-400">Anywhere Multi-Store Sync</div>
+                    </div>
+                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl">
+                      <div className="text-sm font-bold text-white mb-1">Mobile Companion</div>
+                      <div className="text-xs text-slate-400">Real-Time Owner Telemetry</div>
+                    </div>
+                  </div>
 
-    <!-- Bottom Exact Match CTA Banner -->
-    <section id="contact" style="padding-top: 0; background: white;">
-        <div class="container">
-            <div class="cta-banner reveal active">
-                <div class="cta-top">
-                    <div style="display: flex; align-items: center; gap: 20px;">
-                        <div style="font-size: 50px;">🛡️</div>
-                        <div>
-                            <h2 style="color: white; text-align: left; margin: 0; font-size: 28px;">SMART BUSINESS.<br><span style="color: var(--accent-green);">BETTER TOMORROW.</span></h2>
-                            <p style="margin: 5px 0 0 0; font-size: 16px;">All the tools you need.<br>One platform to succeed.</p>
-                        </div>
+                  <div className="flex flex-wrap gap-4">
+                    <button 
+                      onClick={() => navigate('smarthub')}
+                      className="bg-[#67c80f] hover:bg-[#54a50b] text-white px-8 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2.5 shadow-lg shadow-[#67c80f]/20"
+                    >
+                      <span>Launch 18-Module Interactive Explorer</span>
+                      <ArrowRight size={18} />
+                    </button>
+                  </div>
+                </div>
+
+                <div className="lg:col-span-5">
+                  <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-2xl">
+                    <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10 text-xs font-mono text-slate-400">
+                      <span className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                        SYSTEM_STATUS: NOMINAL
+                      </span>
+                      <span>VER: 3.4.2-PROD</span>
                     </div>
                     
-                    <div style="text-align: center;">
-                        <h3 style="color: var(--accent-green); margin-bottom: 16px; font-size: 18px;">LOCAL, ONLINE OR ANYWHERE</h3>
-                        <div class="deploy-icons">
-                            <div class="deploy-item"><span>💻</span> LOCAL PC OR NETWORK</div>
-                            <div style="color: var(--text-muted); font-weight: bold;">OR</div>
-                            <div class="deploy-item"><span>☁️</span> HOST ONLINE (CLOUD)</div>
-                            <div class="deploy-item"><span>🌐</span> ACCESS ANYWHERE</div>
+                    <div className="space-y-3">
+                      {[
+                        { name: "POS & Billing Engine", load: "Sub-second", tag: "Online" },
+                        { name: "KOT Routing Queue", load: "0.18 ms latency", tag: "Active" },
+                        { name: "Double-Entry Ledger", load: "Balanced", tag: "Verified" },
+                        { name: "Warehouse Federation", load: "Sync OK", tag: "Connected" },
+                        { name: "Biometric Attendance", load: "Device Linked", tag: "Standby" }
+                      ].map((item, i) => (
+                        <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-white/5 text-sm">
+                          <span className="font-semibold text-slate-200">{item.name}</span>
+                          <div className="flex items-center gap-3">
+                            <span className="text-xs font-mono text-slate-400">{item.load}</span>
+                            <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">
+                              {item.tag}
+                            </span>
+                          </div>
                         </div>
+                      ))}
                     </div>
-                </div>
-                
-                <div class="cta-bottom" style="background: rgba(0,0,0,0.2);">
-                    <div style="display: flex; align-items: center; gap: 16px; font-size: 15px;">
-                        📧 sentamatech@gmail.com &nbsp;&nbsp;|&nbsp;&nbsp; 🌐 www.sentama.in
+
+                    <div className="mt-6 pt-4 border-t border-white/10 text-center">
+                      <span className="text-xs text-slate-400">Architected by Sentama Technologies Core Team</span>
                     </div>
-                    <div style="text-align: right;">
-                        <h3 style="margin: 0; color: white;">Start Your Journey Today!</h3>
-                        <p style="margin: 4px 0 16px 0; font-size: 14px;">Try SmartHUB 360 and transform the way you run your business.</p>
-                        <a href="mailto:sentamatech@gmail.com" class="btn accent">Contact Us</a>
-                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
-    </section>
+          </div>
+        </section>
 
-    <!-- Rich Denser Modal Popup (UNLIMITED Features Support) -->
-    <div class="modal-overlay" id="industryModal">
-        <div class="modal-content">
-            <button class="modal-close" onclick="closeModal()">✕</button>
-            <div class="modal-header" id="modalHeader">
-                <div class="modal-title-box">
-                    <span class="badge" style="background: var(--accent-green); color: white; border: none; padding: 4px 12px; font-size: 11px;" id="modalBadge">FULL FEATURE SET</span>
-                    <h2 style="color: white; text-align: left; margin: 5px 0 0 0; font-size: 32px;" id="modalTitle">Industry Title</h2>
+        <section className="py-20 bg-[#F8FAFC] border-b border-slate-200">
+          <div className="max-w-7xl mx-auto px-6">
+            <div className="text-center max-w-2xl mx-auto mb-16">
+              <div className="text-xs font-black tracking-widest text-[#163a7d] uppercase mb-2">Execution Protocol</div>
+              <h2 className="text-3xl font-black text-[#090E17] tracking-tight mb-4">
+                Disciplined Engineering Delivery.
+              </h2>
+              <p className="text-sm text-slate-600">
+                We eliminate guesswork with a phased engineering methodology used by leading technology institutions.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-4 gap-6">
+              {[
+                { step: "01", title: "Architectural Discovery", desc: "We analyze your operational bottlenecks, transaction volumes, hardware interfaces, and compliance requirements." },
+                { step: "02", title: "Decoupled Engineering", desc: "Codebases are written cleanly with separation of concerns. Business logic is independent of UI layers for future scalability." },
+                { step: "03", title: "Stress & Security Audit", desc: "Simulated load testing, high-frequency concurrency validation, local network failover checks, and RBAC security sweeps." },
+                { step: "04", title: "Deployment & SLA Guard", desc: "Zero-friction installation scripts, automated database seeds, technician training, and SLA support coverage." }
+              ].map((phase, idx) => (
+                <div key={idx} className="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm relative">
+                  <div className="text-4xl font-black text-slate-200 mb-4 font-mono">{phase.step}</div>
+                  <h3 className="text-base font-bold text-[#090E17] mb-2">{phase.title}</h3>
+                  <p className="text-xs text-slate-600 leading-relaxed">{phase.desc}</p>
                 </div>
+              ))}
             </div>
-            <div class="modal-body">
-                <p id="modalDesc" style="color: var(--text-muted); font-size: 15px; margin-bottom: 10px;"></p>
-                <div class="modal-feature-grid" id="modalFeatures">
-                    <!-- Unlimited Feature Cards injected here dynamically -->
+          </div>
+        </section>
+      </div>
+    );
+
+    const ServicesView = () => (
+      <div className="pt-28 pb-16 bg-[#F8FAFC]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-3xl mb-16">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#163a7d] border border-blue-200 text-xs font-bold uppercase tracking-wider mb-4">
+              Agency Engineering Capabilities
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-black text-[#090E17] tracking-tight mb-4">
+              Custom Enterprise IT Solutions.
+            </h1>
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+              Beyond our turnkey products, Sentama Technologies operates as a dedicated technology partner for enterprises requiring tailored software architecture, modern web applications, and mission-critical cloud deployments.
+            </p>
+          </div>
+
+          <div className="space-y-8">
+            <div className="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm flex flex-col lg:flex-row gap-8 items-start">
+              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-[#163a7d] flex items-center justify-center flex-shrink-0 border border-blue-100">
+                <Code2 size={32} />
+              </div>
+              <div className="flex-grow">
+                <h2 className="text-2xl font-bold text-[#090E17] mb-3">Enterprise Web Application Development</h2>
+                <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 max-w-3xl">
+                  We design and construct high-performance, secure web applications specifically engineered to support high-concurrency enterprise workflows.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Scalable React & Next.js architectures
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Robust REST & GraphQL API layers
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Role-Based Access Control (RBAC) & SAML
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Optimized database queries & caching
+                  </div>
                 </div>
+              </div>
             </div>
+
+            <div className="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm flex flex-col lg:flex-row gap-8 items-start">
+              <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-[#67c80f] flex items-center justify-center flex-shrink-0 border border-emerald-100">
+                <Server size={32} />
+              </div>
+              <div className="flex-grow">
+                <h2 className="text-2xl font-bold text-[#090E17] mb-3">Cloud Infrastructure & High Availability</h2>
+                <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 max-w-3xl">
+                  Eliminate costly outages and ensure seamless operations with automated, containerized deployments.
+                </p>
+                <div className="grid sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Docker containerization & orchestration
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Automated CI/CD build & test pipelines
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Multi-region replication & hot backups
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <CheckCircle2 size={16} className="text-[#67c80f]" /> DDoS protection via Cloudflare
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-    </div>
+      </div>
+    );
 
-    <footer style="background: var(--bg-light); border-top: 1px solid var(--border-light);">
-        <div class="container" style="display: flex; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-            <div>© 2026 Sentama Technologies. All rights reserved.</div>
-            <div>Note: Domain charges are extra for hosting & public website.</div>
-        </div>
-    </footer>
-
-    <!-- Scripts -->
-    <script>
-        // Expanded Data supporting 8-10 Rich Features per Industry
-        const industryData = {
-            retail: {
-                title: "Retail & Wholesale",
-                bg: "https://images.unsplash.com/photo-1555421689-491a97ff2040?auto=format&fit=crop&w=800&q=80",
-                desc: "Eliminate long checkout queues and automate your entire retail floor with deep integrations.",
-                features: [
-                    { icon: "🏷️", title: "Barcode Integration", desc: "Scan products rapidly for instant billing." },
-                    { icon: "📦", title: "Live Stock Sync", desc: "Inventory deducts the millisecond a sale is made." },
-                    { icon: "🎁", title: "Loyalty Programs", desc: "Automate discounts & points for returning customers." },
-                    { icon: "🧾", title: "Multi-Outlet Sync", desc: "Manage pricing across various store branches." },
-                    { icon: "📉", title: "Low Stock Alerts", desc: "Get notified before fast-moving items run out." },
-                    { icon: "💸", title: "Split Payments", desc: "Accept cash, UPI, and cards on a single invoice." },
-                    { icon: "🔄", title: "Returns & Refunds", desc: "Process product returns easily with auto-stock addback." },
-                    { icon: "📱", title: "Mobile Inventory App", desc: "Do stock audits directly from your smartphone." }
-                ]
-            },
-            distribution: {
-                title: "Distribution & Trading",
-                bg: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=800&q=80",
-                desc: "Streamline B2B logistics, wholesale orders, routing, and complex vendor payouts.",
-                features: [
-                    { icon: "🚚", title: "Order Routing", desc: "Plan delivery routes and dispatch vehicles." },
-                    { icon: "🤝", title: "Vendor Portals", desc: "Manage GRN, purchase orders, and ledgers." },
-                    { icon: "🏢", title: "Multi-Warehouse", desc: "Transfer stock seamlessly between godowns." },
-                    { icon: "📈", title: "Sales Targets", desc: "Track field agents, margins, and bulk discounts." },
-                    { icon: "📦", title: "Batch Tracking", desc: "Monitor expiry dates and batch lot numbers." },
-                    { icon: "📄", title: "Bulk Invoicing", desc: "Generate E-way bills and mass invoices instantly." },
-                    { icon: "💳", title: "Credit Limits", desc: "Set auto-blocks for clients exceeding credit allowance." },
-                    { icon: "📊", title: "Margin Analysis", desc: "Real-time reporting on wholesale vs retail profit margins." }
-                ]
-            },
-            manufacturing: {
-                title: "Manufacturing & Production",
-                bg: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=800&q=80",
-                desc: "Complete visibility over your assembly line, raw materials, BOM, and total output.",
-                features: [
-                    { icon: "📋", title: "Bill of Materials (BOM)", desc: "Define recipes to auto-deduct raw materials." },
-                    { icon: "⚙️", title: "Production Stages", desc: "Track items through assembly, QA, and packaging." },
-                    { icon: "⚠️", title: "Reorder Alerts", desc: "Never run out of crucial factory components." },
-                    { icon: "👷", title: "Job Work & Labour", desc: "Calculate wages based on output and contracted work." },
-                    { icon: "🔍", title: "Quality Control", desc: "Log defects and track waste percentages." },
-                    { icon: "🏭", title: "Machine Maintenance", desc: "Schedule downtime for equipment servicing." },
-                    { icon: "🔄", title: "Scrap Management", desc: "Account for production waste and scrap resale." },
-                    { icon: "📊", title: "Costing Reports", desc: "Accurate per-unit manufacturing cost breakdown." },
-                    { icon: "🚚", title: "Direct Dispatch", desc: "Move finished goods directly from assembly to delivery." }
-                ]
-            },
-            service: {
-                title: "Service & AMC",
-                bg: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=800&q=80",
-                desc: "Manage support tickets, field technicians, and annual maintenance contracts with ease.",
-                features: [
-                    { icon: "🛠️", title: "Digital Job Cards", desc: "Assign repair tasks with full equipment history." },
-                    { icon: "📅", title: "AMC Tracking", desc: "Automated reminders for contract renewals." },
-                    { icon: "📍", title: "Live Tracking", desc: "See field service agent locations on a map." },
-                    { icon: "📱", title: "Mobile App Access", desc: "Technicians update status and get client signatures." },
-                    { icon: "💬", title: "Client Updates", desc: "Auto-SMS updates for repair status changes." },
-                    { icon: "🧾", title: "Spare Parts Billing", desc: "Directly invoice parts used during service." },
-                    { icon: "⏱️", title: "SLA Timers", desc: "Track resolution times against client agreements." },
-                    { icon: "⭐", title: "Feedback Collection", desc: "Automated feedback links sent post-service." }
-                ]
-            },
-            restaurant: {
-                title: "Restaurant & Food Business",
-                bg: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=800&q=80",
-                desc: "Speed up table service with instant digital Kitchen Order Tickets and integrated POS billing.",
-                features: [
-                    { icon: "🔥", title: "Instant Wireless KOT", desc: "Send orders directly to Kitchen Display Screens." },
-                    { icon: "🪑", title: "Table Management", desc: "Live floor view, reservations, and table merging." },
-                    { icon: "📱", title: "Waiter App", desc: "Captains can take orders directly from tableside." },
-                    { icon: "🍔", title: "Recipe Costing", desc: "Analyze ingredient consumption and plate margins." },
-                    { icon: "🛵", title: "Delivery Tracking", desc: "Manage Swiggy/Zomato and in-house riders." },
-                    { icon: "💳", title: "Split Payments", desc: "Settle bills using UPI, Cash, or Cards instantly." },
-                    { icon: "📊", title: "Day-End Reports", desc: "Automated Z-reports sent to owner's email daily." },
-                    { icon: "🌐", title: "QR Ordering", desc: "Let customers scan and order directly from their table." }
-                ]
-            },
-            healthcare: {
-                title: "Healthcare & Clinics",
-                bg: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=800&q=80",
-                desc: "Organize patient queues, manage doctor schedules, and track medical histories effortlessly.",
-                features: [
-                    { icon: "🎫", title: "Token Displays", desc: "Digital queue management for waiting rooms." },
-                    { icon: "🩺", title: "EHR Records", desc: "Secure digital patient history and diagnoses." },
-                    { icon: "💊", title: "Pharmacy Billing", desc: "Integrated drug inventory with expiry tracking." },
-                    { icon: "🗓️", title: "Appointments", desc: "Online booking portals for specific doctors." },
-                    { icon: "🔬", title: "Lab Integration", desc: "Attach test results directly to patient profiles." },
-                    { icon: "💰", title: "Insurance Claims", desc: "Generate invoices formatted for TPA processing." },
-                    { icon: "📱", title: "Tele-Consult", desc: "Integrated video link sharing for remote patients." }
-                ]
-            },
-            education: {
-                title: "Education Institutes",
-                bg: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80",
-                desc: "Unified portal for students, faculty, and administrative operations across the campus.",
-                features: [
-                    { icon: "👨‍🏫", title: "Class Rosters", desc: "Manage divisions, subjects, and daily attendance." },
-                    { icon: "💰", title: "Fee Collection", desc: "Generate term invoices, track dues, and receipts." },
-                    { icon: "📝", title: "Exam Reports", desc: "Digitize grading and generate student report cards." },
-                    { icon: "🚌", title: "Transport Logs", desc: "Manage bus routes and student allocation." },
-                    { icon: "📚", title: "Library System", desc: "Track book issues, returns, and late fines." },
-                    { icon: "📱", title: "Parent Portal", desc: "App access for parents to view grades & notices." },
-                    { icon: "🎓", title: "Alumni Directory", desc: "Maintain connections with graduated batches." },
-                    { icon: "🏢", title: "Hostel Mgmt", desc: "Room allocation, mess fees, and visitor logs." }
-                ]
-            },
-            others: {
-                title: "And many more...",
-                bg: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
-                desc: "SmartHUB 360 is built on a modular framework that scales and adapts to any business model.",
-                features: [
-                    { icon: "🧩", title: "Module Toggles", desc: "Turn off what you don't need, activate as you grow." },
-                    { icon: "🌐", title: "Open Integrations", desc: "Connect with third-party APIs for extended utility." },
-                    { icon: "🛡️", title: "Custom Roles", desc: "Design specific access permissions for job titles." },
-                    { icon: "📊", title: "Custom Reports", desc: "Build views with the drag-and-drop report builder." },
-                    { icon: "☁️", title: "Backups", desc: "Automated daily reminder for back up." },
-                    { icon: "🎨", title: "White Labeling", desc: "Add your own logo and brand colors to invoices." }
-                ]
-            }
-        };
-
-        function openIndustryModal(key) {
-            const data = industryData[key];
-            if (!data) return;
-
-            // Populate Text and Images
-            document.getElementById('modalTitle').innerText = data.title;
-            document.getElementById('modalDesc').innerText = data.desc;
-            document.getElementById('modalHeader').style.backgroundImage = `url('${data.bg}')`;
-
-            // Build Fluid Feature Cards (Unlimited capacity)
-            const grid = document.getElementById('modalFeatures');
-            grid.innerHTML = '';
+    const SmartHubView = ({ setSelectedModule }) => (
+      <div className="pt-28 pb-16 bg-[#F8FAFC]">
+        <div className="max-w-[1300px] mx-auto px-6">
+          <div className="text-center max-w-4xl mx-auto mb-20">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-[#54a50b] border border-emerald-200 text-xs font-black tracking-widest uppercase mb-6">
+              <span className="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span>
+              COMPREHENSIVE ERP ECOSYSTEM
+            </div>
             
-            data.features.forEach((f, index) => {
-                const item = document.createElement('div');
-                item.className = 'modal-feature-item';
-                
-                // Add staggered animation delay dynamically
-                item.style.transitionDelay = `${(index * 0.05) + 0.1}s`;
-                
-                item.innerHTML = `
-                    <div class="modal-feature-icon">${f.icon}</div>
-                    <div class="modal-feature-text">
-                        <h4>${f.title}</h4>
-                        <p>${f.desc}</p>
-                    </div>
-                `;
-                grid.appendChild(item);
-            });
-
-            // Show Modal & Lock Scroll
-            document.getElementById('industryModal').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-[#090E17] mb-6">
+              <span className="text-[#163a7d]">SmartHUB</span> <span className="text-[#67c80f]">360</span>
+            </h1>
             
-            // Trigger staggered animation classes after slight delay
-            setTimeout(() => {
-                const items = document.querySelectorAll('.modal-feature-item');
-                items.forEach(el => el.classList.add('animate-in'));
-            }, 10);
+            <p className="text-2xl text-[#090E17] font-extrabold mb-4 tracking-tight">
+              Manage. Automate. Grow. Everyday.
+            </p>
+            
+            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+              SmartHUB 360 is an all-in-one business management platform designed for SMEs. Run operations smoother, serve customers faster, and eliminate software fragmentation.
+            </p>
+          </div>
+
+          <!-- Trio Special Pillars -->
+          <div className="grid md:grid-cols-3 gap-6 mb-24">
+            <div className="card-corporate rounded-2xl p-8 border-t-4 border-t-indigo-600">
+              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 border border-indigo-100">
+                <Smartphone size={24} />
+              </div>
+              <h3 className="text-[#090E17] font-bold text-base uppercase tracking-wider mb-2">MOBILE APP INCLUDED</h3>
+              <p className="text-slate-600 text-sm mb-6">Run your business on the go with our companion mobile application.</p>
+              <ul className="space-y-2.5 text-xs font-semibold text-slate-700">
+                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Full Mobile Access to Modules</li>
+                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Instant Push Notifications</li>
+                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Biometric Login Security</li>
+              </ul>
+            </div>
+
+            <div className="card-corporate rounded-2xl p-8 border-t-4 border-t-pink-500 relative">
+              <div className="absolute top-6 right-6 bg-[#67c80f] text-white text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
+                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
+              </div>
+              <div className="w-12 h-12 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center mb-6 border border-pink-100">
+                <MapPin size={24} />
+              </div>
+              <h3 className="text-[#090E17] font-bold text-base uppercase tracking-wider mb-2">LIVE DELIVERY TRACKING</h3>
+              <p className="text-slate-600 text-sm mb-6">Track deliveries and riders in real-time in Restaurant & Service modules.</p>
+              <ul className="space-y-2.5 text-xs font-semibold text-slate-700">
+                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Live Map Geolocation</li>
+                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Order & Dispatch Statuses</li>
+                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Digital Proof of Delivery</li>
+              </ul>
+            </div>
+
+            <div className="card-corporate rounded-2xl p-8 border-t-4 border-t-[#163a7d]">
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#163a7d] flex items-center justify-center mb-6 border border-blue-100">
+                <Globe size={24} />
+              </div>
+              <h3 className="text-[#090E17] font-bold text-base uppercase tracking-wider mb-2">ENABLE PUBLIC WEBSITE</h3>
+              <p className="text-slate-600 text-sm mb-6">Instantly toggle an online customer-facing portal and catalog in minutes.</p>
+              <ul className="space-y-2.5 text-xs font-semibold text-slate-700">
+                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Integrated E-Commerce Store</li>
+                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Token Booking & Appointments</li>
+                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Seamless Payment Gateway</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- 18 Modules Explorer Section -->
+          <div className="text-center mb-12">
+            <h2 className="text-2xl sm:text-3xl font-black text-[#090E17] tracking-tight mb-2 uppercase">
+              18 Turnkey Business Modules
+            </h2>
+            <p className="text-sm text-slate-600">
+              Click any module to inspect how SmartHUB 360 solves industry-specific operational challenges.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-20">
+            {modulesData.map((mod) => (
+              <div 
+                key={mod.id}
+                onClick={() => setSelectedModule(mod)}
+                className="card-corporate p-5 rounded-2xl flex flex-col items-center text-center cursor-pointer hover:border-[#163a7d] group"
+              >
+                <div className="w-14 h-14 rounded-xl bg-slate-100 text-[#163a7d] border border-slate-200 flex items-center justify-center mb-4 transition-all group-hover:bg-[#163a7d] group-hover:text-white group-hover:scale-105">
+                  <mod.icon size={24} />
+                </div>
+                <h3 className="font-bold text-[#090E17] text-xs sm:text-sm mb-1.5 leading-snug group-hover:text-[#163a7d]">{mod.title}</h3>
+                <p className="text-[11px] text-slate-500 leading-tight line-clamp-2">{mod.short}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+
+    const ModuleModal = ({ module, onClose }) => {
+      if (!module) return null;
+      return (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
+          <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm cursor-pointer" onClick={onClose} />
+          
+          <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] z-10 border border-slate-200">
+            <div className="relative h-48 sm:h-56 flex-shrink-0 bg-slate-900 overflow-hidden">
+              <img 
+                src={module.bgImage} 
+                alt={module.title} 
+                className="absolute inset-0 w-full h-full object-cover opacity-35" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+              
+              <button 
+                onClick={onClose} 
+                className="absolute top-5 right-5 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 p-2 rounded-full transition-all z-20"
+              >
+                <X size={20} />
+              </button>
+
+              <div className="absolute bottom-6 left-6 right-6 z-10 flex items-end gap-5">
+                <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-[#163a7d] shadow-lg flex-shrink-0">
+                  <module.icon size={32} />
+                </div>
+                <div>
+                  <div className="inline-flex items-center px-2.5 py-0.5 rounded bg-[#67c80f] text-white text-[10px] font-black tracking-widest uppercase mb-1.5">
+                    MODULE CAPABILITY
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
+                    {module.title}
+                  </h2>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-8 sm:p-10 overflow-y-auto custom-scrollbar flex-grow bg-white">
+              <div className="bg-blue-50/70 border-l-4 border-[#163a7d] p-5 rounded-r-xl mb-8">
+                <p className="text-base sm:text-lg font-semibold text-[#163a7d] italic leading-relaxed">
+                  "{module.hook}"
+                </p>
+              </div>
+              
+              <div className="flex gap-4 items-start">
+                <div className="w-8 h-8 rounded-full bg-emerald-50 text-[#67c80f] flex items-center justify-center flex-shrink-0 mt-0.5 border border-emerald-200 font-bold">
+                  <Check size={18} />
+                </div>
+                <div>
+                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The SmartHUB 360 Architecture</h4>
+                  <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
+                    {module.desc}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      );
+    };
+
+    const ContactBanner = () => (
+      <div id="contact-section" className="max-w-[1300px] mx-auto px-4 md:px-6 py-12 relative z-10">
+        <div className="bg-[#0B1421] rounded-3xl border border-white/10 text-white shadow-2xl relative overflow-hidden">
+          <div className="p-8 md:p-12 border-b border-white/10 flex flex-col lg:flex-row justify-between items-center gap-8">
+            <div className="flex items-center gap-6">
+              <div className="text-blue-400 bg-blue-500/10 p-4 rounded-2xl flex-shrink-0 border border-blue-500/20">
+                <ShieldCheck size={44} />
+              </div>
+              <div>
+                <h2 className="text-2xl md:text-3xl font-black mb-1 tracking-tight leading-tight">
+                  SMART BUSINESS.<br />
+                  <span className="text-[#67c80f]">BETTER TOMORROW.</span>
+                </h2>
+                <p className="text-slate-400 text-xs md:text-sm">All the tools you need. One platform to succeed.</p>
+              </div>
+            </div>
+            
+            <div className="text-center lg:text-right">
+              <h3 className="text-[#67c80f] font-bold tracking-wider uppercase text-xs mb-4">LOCAL, ONLINE OR ANYWHERE</h3>
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-xs font-semibold text-slate-300">
+                <div className="flex items-center gap-2"><Monitor size={18} className="text-blue-400"/> LOCAL PC OR NETWORK</div>
+                <div className="text-slate-600 font-black hidden sm:block">OR</div>
+                <div className="flex items-center gap-2"><Cloud size={18} className="text-blue-400"/> HOST ONLINE (CLOUD)</div>
+                <div className="flex items-center gap-2"><Smartphone size={18} className="text-blue-400"/> ACCESS ANYWHERE</div>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-black/40 p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div className="flex flex-col sm:flex-row items-center gap-4 text-xs text-slate-400 font-medium tracking-wide">
+              <a href="mailto:sentamatech@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
+                <MessageSquare size={16}/> sentamatech@gmail.com
+              </a>
+              <span className="hidden sm:block text-slate-700">|</span>
+              <span className="flex items-center gap-2"><Globe size={16}/> www.sentama.in</span>
+            </div>
+            
+            <div className="text-center md:text-right flex flex-col sm:flex-row items-center gap-4">
+              <div>
+                <h3 className="text-base font-bold text-white">Start Your Journey Today</h3>
+                <p className="text-slate-400 text-xs">Transform the way you run your business with Sentama Technologies.</p>
+              </div>
+              <a 
+                href="mailto:sentamatech@gmail.com" 
+                className="inline-flex items-center justify-center bg-[#67c80f] hover:bg-[#54a50b] text-white font-bold rounded-xl px-7 py-3 text-xs transition-all shadow-md shadow-[#67c80f]/20 hover:-translate-y-0.5 whitespace-nowrap"
+              >
+                Contact Engineering Team
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+
+    function App() {
+      const [currentView, setCurrentView] = useState('home');
+      const [selectedModule, setSelectedModule] = useState(null);
+
+      useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }, [currentView]);
+
+      useEffect(() => {
+        if (selectedModule) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = 'unset';
         }
+        return () => { document.body.style.overflow = 'unset'; };
+      }, [selectedModule]);
 
-        function closeModal() {
-            document.getElementById('industryModal').classList.remove('active');
-            document.body.style.overflow = 'auto';
-            
-            // Remove animation classes for next open
-            setTimeout(() => {
-                const items = document.querySelectorAll('.modal-feature-item');
-                items.forEach(el => el.classList.remove('animate-in'));
-            }, 400);
-        }
+      return (
+        <div className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+          <Navbar currentView={currentView} navigate={setCurrentView} />
+          
+          <main className="flex-grow">
+            {currentView === 'home' && <HomeView navigate={setCurrentView} />}
+            {currentView === 'services' && <ServicesView />}
+            {currentView === 'smarthub' && <SmartHubView setSelectedModule={setSelectedModule} />}
+          </main>
 
-        // Close modal when clicking outside
-        document.getElementById('industryModal').addEventListener('click', function(e) {
-            if (e.target === this) { closeModal(); }
-        });
-    </script>
+          <ContactBanner />
+          
+          <footer className="border-t border-slate-200 py-8 text-center text-xs text-slate-500 bg-white">
+            <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+              <div className="font-medium">&copy; 2026 Sentama Technologies. All rights reserved. Recognized under Ministry of MSME.</div>
+              <div className="flex items-center gap-6 font-medium">
+                <span className="text-slate-400">Kasargod &bull; Nileshwar &bull; Kerala</span>
+                <a href="mailto:sentamatech@gmail.com" className="hover:text-slate-900 transition-colors">Contact Support</a>
+              </div>
+            </div>
+          </footer>
+
+          <ModuleModal module={selectedModule} onClose={() => setSelectedModule(null)} />
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
 </body>
 </html>
