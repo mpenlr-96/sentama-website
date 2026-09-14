@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sentama Technologies | Enterprise Software & Digital Platforms</title>
   
-  <!-- Inter Font -->
+  <!-- Inter Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -13,18 +13,13 @@
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   
-  <!-- React 18 & ReactDOM -->
-  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
   <style>
     :root {
       --bg-base: #FFFFFF;
       --bg-surface: #F8FAFC;
-      --bg-subtle: #F1F5F9;
       --text-heading: #090E17;
       --text-primary: #0F172A;
       --text-secondary: #334155;
-      --text-muted: #64748B;
       --brand-blue: #163a7d;
       --brand-blue-hover: #0f2856;
       --brand-green: #67c80f;
@@ -64,421 +59,444 @@
     .custom-scrollbar::-webkit-scrollbar-track { background: #F1F5F9; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #CBD5E1; border-radius: 9999px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94A3B8; }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 0 0 rgba(103, 200, 15, 0.6); }
+      70% { box-shadow: 0 0 0 8px rgba(103, 200, 15, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(103, 200, 15, 0); }
+    }
+    .pulse-live {
+      animation: pulseGlow 2s infinite;
+    }
   </style>
 </head>
-<body>
-  <div id="root"></div>
+<body class="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
 
-  <script type="text/babel" data-type="module">
-    import React, { useState, useEffect } from 'https://esm.sh/react@18.2.0';
-    import ReactDOM from 'https://esm.sh/react-dom@18.2.0/client';
-    import { 
-      Menu, X, Smartphone, ShoppingCart, ShoppingBag, 
-      Package, Utensils, CreditCard, Building2, Wind, Activity, 
-      GraduationCap, Dumbbell, IndianRupee, Briefcase, BarChart3, 
-      Wrench, FolderKanban, Settings, CheckCircle2, MapPin, 
-      Globe, Server, ShieldCheck, ArrowRight, Monitor,
-      Layout, Code2, Database, MessageSquare, ChevronRight,
-      Cpu, Cloud, Layers, Users, Zap, Target, GitMerge,
-      Terminal, Compass, HardDrive, Shield, Check, Sparkles
-    } from 'https://esm.sh/lucide-react@0.344.0';
+  <nav class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 py-3.5 transition-all">
+    <div class="max-w-7xl mx-auto px-6 flex justify-between items-center">
+      <div class="cursor-pointer flex items-center gap-3 hover:opacity-90 transition-opacity" onclick="switchView('home')">
+        <img 
+          src="https://sentama.in/sentama-logo.png" 
+          alt="Sentama Technologies" 
+          class="h-9 w-auto"
+          onerror="this.style.display='none'; document.getElementById('logo-fallback').style.display='block';"
+        />
+        <span id="logo-fallback" class="hidden text-xl font-black tracking-tight text-[#163a7d]">
+          SENTAMA <span class="text-[#67c80f]">TECHNOLOGIES</span>
+        </span>
+      </div>
+      
+      <div class="hidden md:flex items-center space-x-8">
+        <button id="nav-home" onclick="switchView('home')" class="nav-btn font-semibold text-[13px] tracking-wider uppercase transition-colors relative py-1 text-[#163a7d]">
+          Company Overview
+          <span class="nav-indicator absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full"></span>
+        </button>
+        <button id="nav-services" onclick="switchView('services')" class="nav-btn font-semibold text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]">
+          Enterprise Services
+          <span class="nav-indicator hidden absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full"></span>
+        </button>
+        <button id="nav-smarthub" onclick="switchView('smarthub')" class="nav-btn font-semibold text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]">
+          SmartHUB 360
+          <span class="nav-indicator hidden absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full"></span>
+        </button>
+      </div>
 
-    const modulesData = [
-      { id: 'kot', icon: Utensils, title: "Kitchen Order Tickets (KOT)", short: "Instant order routing & kitchen displays", hook: "Are you facing bottlenecks and lost tickets during peak dining rush?", desc: "SmartHUB 360's low-latency wireless KOT routes table orders to multi-station kitchen displays in under 200 milliseconds. Eliminate miscommunication, manage order priorities, and delight diners with faster turnover.", bgImage: "https://images.unsplash.com/photo-1556155092-490a1ba16284?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'crm', icon: Users, title: "CRM & Lifecycle Management", short: "Lead pipelines, profiles & loyalty tiers", hook: "Struggling with disconnected customer touchpoints and missed follow-ups?", desc: "Centralize your complete client lifecycle. Gain 360-degree purchase visibility, automate multi-channel reminders, monitor credit limits, and drive retention with customized VIP loyalty tiers.", bgImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'inventory', icon: Package, title: "Warehouse & Inventory", short: "Multi-godown stock & automated alerts", hook: "Experiencing stock shrinkages or sudden stock-outs on fast-selling items?", desc: "Enterprise-grade stock synchronization across multiple warehouses. Real-time batch/expiry intelligence, automated barcode labeling, minimum safety reorder thresholds, and dynamic inventory valuation.", bgImage: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'pos', icon: CreditCard, title: "Point of Sale (POS)", short: "Sub-second checkout & split payments", hook: "Are slow checkout counters creating friction for impatient shoppers?", desc: "Engineered for high-volume cash counters. Supports high-speed barcode scanning, split billing (Cash, UPI, Cards, Store Credit), offline transactional queues, and thermal receipt printing.", bgImage: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'hotel', icon: Building2, title: "Hotel & Property PMS", short: "Visual room grids & housekeeping status", hook: "Is managing room allocation, tariffs, and turn-around times causing chaos?", desc: "Intuitive interactive floor and room grid. Manage online reservations, walk-in check-ins, advance tariff security deposits, ID card records, and live housekeeping statuses to accelerate room turnover.", bgImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'hospital', icon: Activity, title: "Healthcare & Clinic EMR", short: "Live token queues & integrated pharmacy", hook: "Are patients burdened with long waiting queues and fragmented records?", desc: "End-to-end clinical workflow. Generates Electronic Medical Records (EMR), powers live digital token boards in waiting lounges, and routes doctor digital prescriptions straight to internal dispensary POS.", bgImage: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'sales', icon: ShoppingCart, title: "Sales & Invoicing", short: "Quotations, dispatch & GST invoicing", hook: "Losing time converting estimates into approved tax invoices?", desc: "Accelerate your revenue cycle. Convert proforma estimates into signed delivery notes and GST-compliant invoices with automatic tax splits, discount approvals, and balance ledgers.", bgImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'purchase', icon: ShoppingBag, title: "Procurement & Vendors", short: "Purchase orders & GRN validation", hook: "Finding it difficult to track supplier payment dues and goods deliveries?", desc: "Gain complete transparency over input costs. Manage purchase requisitions, match vendor bills against Goods Receipt Notes (GRN), track landed costs, and maintain balanced supplier ledgers.", bgImage: "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'laundry', icon: Wind, title: "Laundry & Dry Cleaning", short: "Garment tagging & delivery dispatch", hook: "Struggling with misplaced garments or delivery schedule errors?", desc: "Track every piece with durable barcode tagging. Record fabric treatments, monitor wash/ironing stages, and notify customers automatically via SMS/WhatsApp upon dispatch.", bgImage: "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'education', icon: GraduationCap, title: "Education & Campus", short: "Student rosters, terms & fee collection", hook: "Tired of dealing with manual fee collection spreadsheets and notices?", desc: "Comprehensive academic administration. Track student attendance, automate recurring term fee billing with online receipts, catalog library books, and compile automated report cards.", bgImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'fitness', icon: Dumbbell, title: "Fitness & Gym PMS", short: "Biometric access & recurring memberships", hook: "Losing revenue to expired memberships and uncontrolled access?", desc: "Connects with biometric turnstiles for automated access control. Oversee personal trainer schedules, track body metric progression, and automate recurring membership subscription renewals.", bgImage: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'accounting', icon: IndianRupee, title: "Financial Accounting", short: "Double-entry, GST filing & P&L balance", hook: "Spending sleepless nights preparing books for audits and tax filings?", desc: "Robust double-entry accounting engine. Real-time Day Book, automatic bank statement reconciliation, automated GST return registers, and dynamic P&L and Balance Sheet compilation.", bgImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'hr', icon: Briefcase, title: "HR & Payroll Engine", short: "Biometric attendance, leaves & salary", hook: "Wasting hours calculating shift overtime and deductions manually?", desc: "Synchronize biometric attendance devices. Configure complex rotational shift rosters, calculate PF/ESI and tax deductions, manage employee leaves, and distribute encrypted salary slips.", bgImage: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'reports', icon: BarChart3, title: "Business Intelligence", short: "Executive dashboards & KPI metrics", hook: "Operating your enterprise without real-time gross margin insights?", desc: "Extract actionable insights from raw operational data. Pre-built executive dashboards, trend forecasting, category profit margins, and automated daily performance emails for owners.", bgImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'service', icon: Wrench, title: "Field Service & AMC", short: "Digital job cards, SLA & technician apps", hook: "Missing annual maintenance renewals and letting service SLAs slip?", desc: "Dispatch field technicians with digital job cards. Track spare parts consumed in repairs, monitor SLA countdown timers, and automate Annual Maintenance Contract (AMC) renewals with clients.", bgImage: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'projects', icon: FolderKanban, title: "Projects & Milestones", short: "Kanban timelines, tasks & timesheets", hook: "Are enterprise project deliverables slipping past committed deadlines?", desc: "Organize cross-functional team initiatives. Plan milestones with interactive Kanban boards, log billable project hours, maintain document repositories, and ensure client deliveries on budget.", bgImage: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'mobile', icon: Smartphone, title: "Executive Mobile App", short: "Real-time command center anywhere", hook: "Need to approve critical purchase orders while traveling away from desk?", desc: "Native command center for iOS and Android. Review live daily sales, authorize large purchase orders, verify bank balances, and receive critical operational alerts on the go.", bgImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80" },
-      { id: 'settings', icon: Settings, title: "Governance & Security", short: "Role permissions, audits & daily backup", hook: "Concerned about data integrity, unauthorized deletions, or leaks?", desc: "Hardened security posture. Granular role-based access controls (RBAC), immutable system audit trails for every transaction edit, and automated multi-destination encrypted database backups.", bgImage: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80" }
-    ];
+      <div class="flex items-center gap-3">
+        <button 
+          onclick="scrollToContact()"
+          class="bg-[#163a7d] text-white px-5 py-2.5 rounded-lg font-semibold text-[13px] hover:bg-[#0f2856] transition-all shadow-sm flex items-center gap-2"
+        >
+          <span>Connect With Us</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </button>
+      </div>
+    </div>
+  </nav>
 
-    const Navbar = ({ currentView, navigate }) => (
-      <nav className="fixed w-full z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 py-3.5 transition-all">
-        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
-          <div className="cursor-pointer flex items-center gap-3 hover:opacity-90 transition-opacity" onClick={() => navigate('home')}>
-            <img src="https://sentama.in/sentama-logo.png" alt="Sentama Technologies" className="h-9 w-auto" />
-          </div>
-          
-          <div className="hidden md:flex items-center space-x-8">
-            {[
-              { id: 'home', label: 'Company Overview' },
-              { id: 'services', label: 'Enterprise Services' },
-              { id: 'smarthub', label: 'SmartHUB 360' }
-            ].map((link) => (
-              <button
-                key={link.id}
-                onClick={() => navigate(link.id)}
-                className={`font-semibold text-[13px] tracking-wider uppercase transition-colors relative py-1 ${
-                  currentView === link.id ? 'text-[#163a7d]' : 'text-slate-600 hover:text-[#163a7d]'
-                }`}
+  <main class="flex-grow pt-20">
+    
+    <!-- ==================== VIEW 1: HOME ==================== -->
+    <div id="view-home" class="page-view">
+      
+      <!-- Hero Section -->
+      <section class="relative border-b border-slate-200 bg-white overflow-hidden">
+        <div class="absolute inset-0 bg-grid-fine opacity-60 pointer-events-none"></div>
+        <div class="absolute top-0 right-1/4 w-96 h-96 bg-blue-50 rounded-full blur-3xl -z-10 opacity-70"></div>
+        <div class="absolute bottom-0 left-1/4 w-80 h-80 bg-green-50 rounded-full blur-3xl -z-10 opacity-60"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 pt-16 pb-20 relative z-10">
+          <div class="max-w-3xl">
+            <div class="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold text-[#163a7d] uppercase tracking-wider mb-6">
+              <span class="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span>
+              Enterprise Software & Engineering Division
+            </div>
+            
+            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black text-[#090E17] tracking-tight leading-[1.12] mb-6">
+              Engineering Mission-Critical Software & Digital Platforms.
+            </h1>
+            
+            <p class="text-lg sm:text-xl text-slate-700 font-normal leading-relaxed mb-10 max-w-2xl">
+              Sentama Technologies architects resilient cloud infrastructure, bespoke enterprise applications, and turnkey vertical management platforms designed for operational sovereignty and high-velocity scale.
+            </p>
+
+            <div class="flex flex-wrap items-center gap-4">
+              <button 
+                onclick="switchView('smarthub')"
+                class="bg-[#163a7d] text-white px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-[#0f2856] transition-all shadow-md shadow-[#163a7d]/15 flex items-center gap-2.5 group"
               >
-                {link.label}
-                {currentView === link.id && (
-                  <span className="absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full"></span>
-                )}
+                <span>Explore SmartHUB 360</span>
+                <svg class="w-4 h-4 text-[#67c80f] group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
               </button>
-            ))}
+              
+              <button 
+                onclick="switchView('services')"
+                class="bg-white text-slate-800 border border-slate-300 px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-50 hover:border-slate-400 transition-all flex items-center gap-2"
+              >
+                <span>Our Engineering Capabilities</span>
+                <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center gap-3">
-            <button 
-              onClick={() => {
-                const el = document.getElementById('contact-section');
-                if (el) el.scrollIntoView({ behavior: 'smooth' });
-              }}
-              className="bg-[#163a7d] text-white px-5 py-2.5 rounded-lg font-semibold text-[13px] hover:bg-[#0f2856] transition-all shadow-sm flex items-center gap-2"
-            >
-              <span>Connect With Us</span>
-              <ArrowRight size={15} />
-            </button>
+          <div class="mt-16 pt-10 border-t border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-6">
+            <div class="space-y-1">
+              <div class="text-3xl font-black text-[#163a7d] tracking-tight">18+</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Integrated Modules</div>
+              <p class="text-xs text-slate-600">Unified under a single synchronous database schema.</p>
+            </div>
+            <div class="space-y-1">
+              <div class="text-3xl font-black text-[#163a7d] tracking-tight">100%</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Offline Resilience</div>
+              <p class="text-xs text-slate-600">Zero cloud latency; continues billing when network drops.</p>
+            </div>
+            <div class="space-y-1">
+              <div class="text-3xl font-black text-[#163a7d] tracking-tight">&lt; 200ms</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-slate-500">POS Execution Speed</div>
+              <p class="text-xs text-slate-600">Engineered for high-volume checkout counters.</p>
+            </div>
+            <div class="space-y-1">
+              <div class="text-3xl font-black text-[#67c80f] tracking-tight">ISO / MSME</div>
+              <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Government Registered</div>
+              <p class="text-xs text-slate-600">Recognized enterprise entity under Ministry of MSME.</p>
+            </div>
           </div>
         </div>
-      </nav>
-    );
+      </section>
 
-    const HomeView = ({ navigate }) => (
-      <div className="pt-24 pb-16">
-        <section className="relative border-b border-slate-200 bg-white overflow-hidden">
-          <div className="absolute inset-0 bg-grid-fine opacity-60 pointer-events-none"></div>
-          <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-50 rounded-full blur-3xl -z-10 opacity-70"></div>
-          <div className="absolute bottom-0 left-1/4 w-80 h-80 bg-green-50 rounded-full blur-3xl -z-10 opacity-60"></div>
-          
-          <div className="max-w-7xl mx-auto px-6 pt-16 pb-20 relative z-10">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold text-[#163a7d] uppercase tracking-wider mb-6">
-                <span className="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span>
-                Enterprise Software & Engineering Division
-              </div>
-              
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-black text-[#090E17] tracking-tight leading-[1.12] mb-6">
-                Engineering Mission-Critical Software & Digital Platforms.
-              </h1>
-              
-              <p className="text-lg sm:text-xl text-slate-700 font-normal leading-relaxed mb-10 max-w-2xl">
-                Sentama Technologies architects resilient cloud infrastructure, bespoke enterprise applications, and turnkey vertical management platforms designed for operational sovereignty and high-velocity scale.
-              </p>
-
-              <div className="flex flex-wrap items-center gap-4">
-                <button 
-                  onClick={() => navigate('smarthub')}
-                  className="bg-[#163a7d] text-white px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-[#0f2856] transition-all shadow-md shadow-[#163a7d]/15 flex items-center gap-2.5 group"
-                >
-                  <span>Explore SmartHUB 360</span>
-                  <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform text-[#67c80f]" />
-                </button>
-                
-                <button 
-                  onClick={() => navigate('services')}
-                  className="bg-white text-slate-800 border border-slate-300 px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-50 hover:border-slate-400 transition-all flex items-center gap-2"
-                >
-                  <span>Our Engineering Capabilities</span>
-                  <ChevronRight size={16} className="text-slate-500" />
-                </button>
-              </div>
-            </div>
-
-            <!-- Metric Telemetry Ribbon -->
-            <div className="mt-16 pt-10 border-t border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-6">
-              <div className="space-y-1">
-                <div className="text-3xl font-black text-[#163a7d] tracking-tight">18+</div>
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Integrated Modules</div>
-                <p className="text-xs text-slate-600">Unified under a single synchronous database schema.</p>
-              </div>
-              <div className="space-y-1">
-                <div className="text-3xl font-black text-[#163a7d] tracking-tight">100%</div>
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Offline Resilience</div>
-                <p className="text-xs text-slate-600">Zero cloud latency; continues billing when network drops.</p>
-              </div>
-              <div className="space-y-1">
-                <div className="text-3xl font-black text-[#163a7d] tracking-tight">&lt; 200ms</div>
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">POS Execution Speed</div>
-                <p className="text-xs text-slate-600">Engineered for high-volume checkout counters.</p>
-              </div>
-              <div className="space-y-1">
-                <div className="text-3xl font-black text-[#67c80f] tracking-tight">ISO / MSME</div>
-                <div className="text-xs font-bold uppercase tracking-wider text-slate-500">Government Registered</div>
-                <p className="text-xs text-slate-600">Recognized enterprise entity under Ministry of MSME.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 bg-[#F8FAFC] border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-              <div>
-                <div className="text-xs font-black tracking-widest text-[#163a7d] uppercase mb-3">Enterprise Practice Areas</div>
-                <h2 className="text-3xl sm:text-4xl font-black text-[#090E17] tracking-tight">
-                  Architectural Competencies Across The Lifecycle.
-                </h2>
-              </div>
-              <p className="text-sm text-slate-600 max-w-md">
-                We eliminate technical debt by deploying clean, decoupled microservices, hardened edge runtimes, and accessible user experiences.
-              </p>
-            </div>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-              <div className="card-corporate p-8 rounded-2xl flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#163a7d] flex items-center justify-center mb-6 border border-blue-100 font-bold">
-                    <Code2 size={24} />
-                  </div>
-                  <h3 className="text-lg font-bold text-[#090E17] mb-2">Bespoke Web & Cloud Apps</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                    Engineered from ground up with modern frameworks. Multi-tenant SaaS architectures, complex internal ERPs, and client portals.
-                  </p>
-                </div>
-                <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">React</span>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">.NET Core</span>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">PostgreSQL</span>
-                </div>
-              </div>
-
-              <div className="card-corporate p-8 rounded-2xl flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-6 border border-emerald-100 font-bold">
-                    <Cpu size={24} />
-                  </div>
-                  <h3 className="text-lg font-bold text-[#090E17] mb-2">Edge & Desktop Systems</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                    Offline-first POS and retail client architectures. Native printer drivers, biometric turnstile integration, and localized databases.
-                  </p>
-                </div>
-                <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">WPF / Blazor</span>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">SQLite</span>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">ESC/POS</span>
-                </div>
-              </div>
-
-              <div className="card-corporate p-8 rounded-2xl flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-6 border border-purple-100 font-bold">
-                    <Layout size={24} />
-                  </div>
-                  <h3 className="text-lg font-bold text-[#090E17] mb-2">Enterprise UI/UX Design</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                    Design engineering for data-dense environments. We turn complex workflows into fast, friction-free interfaces staff master in minutes.
-                  </p>
-                </div>
-                <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Design Systems</span>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">WCAG 2.1</span>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Figma</span>
-                </div>
-              </div>
-
-              <div className="card-corporate p-8 rounded-2xl flex flex-col justify-between">
-                <div>
-                  <div className="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mb-6 border border-amber-100 font-bold">
-                    <ShieldCheck size={24} />
-                  </div>
-                  <h3 className="text-lg font-bold text-[#090E17] mb-2">DevOps & Cloud Security</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed mb-6">
-                    Hardened infrastructure orchestration. Continuous integration, automated disaster recovery, Cloudflare CDN, and zero-trust policies.
-                  </p>
-                </div>
-                <div className="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Cloudflare</span>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Docker</span>
-                  <span className="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Linux</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-24 bg-white border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="bg-[#0B1424] rounded-3xl p-8 sm:p-14 text-white relative overflow-hidden shadow-xl">
-              <div className="grid lg:grid-cols-12 gap-12 items-center relative z-10">
-                <div className="lg:col-span-7">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/10 text-[#67c80f] text-xs font-bold tracking-widest uppercase mb-6">
-                    FLAGSHIP ENTERPRISE PRODUCT
-                  </div>
-                  
-                  <h2 className="text-4xl sm:text-5xl font-black tracking-tight mb-6 leading-tight">
-                    One Unified Engine.<br />
-                    <span className="text-[#67c80f]">Every Department Connected.</span>
-                  </h2>
-                  
-                  <p className="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 max-w-xl">
-                    SmartHUB 360 is an all-in-one business management platform built for modern SMEs and growing enterprises. Consolidate your POS, Kitchen Orders, Inventory, Accounting, and HR into one cohesive system.
-                  </p>
-
-                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
-                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl">
-                      <div className="text-sm font-bold text-white mb-1">Local PC / LAN</div>
-                      <div className="text-xs text-slate-400">Zero Internet Dependency</div>
-                    </div>
-                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl">
-                      <div className="text-sm font-bold text-white mb-1">Cloud Hosted</div>
-                      <div className="text-xs text-slate-400">Anywhere Multi-Store Sync</div>
-                    </div>
-                    <div className="bg-white/5 border border-white/10 p-3 rounded-xl">
-                      <div className="text-sm font-bold text-white mb-1">Mobile Companion</div>
-                      <div className="text-xs text-slate-400">Real-Time Owner Telemetry</div>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-wrap gap-4">
-                    <button 
-                      onClick={() => navigate('smarthub')}
-                      className="bg-[#67c80f] hover:bg-[#54a50b] text-white px-8 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2.5 shadow-lg shadow-[#67c80f]/20"
-                    >
-                      <span>Launch 18-Module Interactive Explorer</span>
-                      <ArrowRight size={18} />
-                    </button>
-                  </div>
-                </div>
-
-                <div className="lg:col-span-5">
-                  <div className="bg-slate-900/80 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-2xl">
-                    <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/10 text-xs font-mono text-slate-400">
-                      <span className="flex items-center gap-2">
-                        <span className="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
-                        SYSTEM_STATUS: NOMINAL
-                      </span>
-                      <span>VER: 3.4.2-PROD</span>
-                    </div>
-                    
-                    <div className="space-y-3">
-                      {[
-                        { name: "POS & Billing Engine", load: "Sub-second", tag: "Online" },
-                        { name: "KOT Routing Queue", load: "0.18 ms latency", tag: "Active" },
-                        { name: "Double-Entry Ledger", load: "Balanced", tag: "Verified" },
-                        { name: "Warehouse Federation", load: "Sync OK", tag: "Connected" },
-                        { name: "Biometric Attendance", load: "Device Linked", tag: "Standby" }
-                      ].map((item, i) => (
-                        <div key={i} className="flex items-center justify-between p-3 rounded-lg bg-white/5 text-sm">
-                          <span className="font-semibold text-slate-200">{item.name}</span>
-                          <div className="flex items-center gap-3">
-                            <span className="text-xs font-mono text-slate-400">{item.load}</span>
-                            <span className="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">
-                              {item.tag}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div className="mt-6 pt-4 border-t border-white/10 text-center">
-                      <span className="text-xs text-slate-400">Architected by Sentama Technologies Core Team</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="py-20 bg-[#F8FAFC] border-b border-slate-200">
-          <div className="max-w-7xl mx-auto px-6">
-            <div className="text-center max-w-2xl mx-auto mb-16">
-              <div className="text-xs font-black tracking-widest text-[#163a7d] uppercase mb-2">Execution Protocol</div>
-              <h2 className="text-3xl font-black text-[#090E17] tracking-tight mb-4">
-                Disciplined Engineering Delivery.
+      <section class="py-20 bg-[#F8FAFC] border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+              <div class="text-xs font-black tracking-widest text-[#163a7d] uppercase mb-3">Enterprise Practice Areas</div>
+              <h2 class="text-3xl sm:text-4xl font-black text-[#090E17] tracking-tight">
+                Architectural Competencies Across The Lifecycle.
               </h2>
-              <p className="text-sm text-slate-600">
-                We eliminate guesswork with a phased engineering methodology used by leading technology institutions.
-              </p>
+            </div>
+            <p class="text-sm text-slate-600 max-w-md">
+              We eliminate technical debt by deploying clean, decoupled microservices, hardened edge runtimes, and accessible user experiences.
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="card-corporate p-8 rounded-2xl flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#163a7d] flex items-center justify-center mb-6 border border-blue-100">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-[#090E17] mb-2">Bespoke Web & Cloud Apps</h3>
+                <p class="text-sm text-slate-600 leading-relaxed mb-6">
+                  Engineered from ground up with modern frameworks. Multi-tenant SaaS architectures, complex internal ERPs, and client portals.
+                </p>
+              </div>
+              <div class="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">React</span>
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">.NET Core</span>
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">PostgreSQL</span>
+              </div>
             </div>
 
-            <div className="grid md:grid-cols-4 gap-6">
-              {[
-                { step: "01", title: "Architectural Discovery", desc: "We analyze your operational bottlenecks, transaction volumes, hardware interfaces, and compliance requirements." },
-                { step: "02", title: "Decoupled Engineering", desc: "Codebases are written cleanly with separation of concerns. Business logic is independent of UI layers for future scalability." },
-                { step: "03", title: "Stress & Security Audit", desc: "Simulated load testing, high-frequency concurrency validation, local network failover checks, and RBAC security sweeps." },
-                { step: "04", title: "Deployment & SLA Guard", desc: "Zero-friction installation scripts, automated database seeds, technician training, and SLA support coverage." }
-              ].map((phase, idx) => (
-                <div key={idx} className="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm relative">
-                  <div className="text-4xl font-black text-slate-200 mb-4 font-mono">{phase.step}</div>
-                  <h3 className="text-base font-bold text-[#090E17] mb-2">{phase.title}</h3>
-                  <p className="text-xs text-slate-600 leading-relaxed">{phase.desc}</p>
+            <div class="card-corporate p-8 rounded-2xl flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center mb-6 border border-emerald-100">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"/></svg>
                 </div>
-              ))}
+                <h3 class="text-lg font-bold text-[#090E17] mb-2">Edge & Desktop Systems</h3>
+                <p class="text-sm text-slate-600 leading-relaxed mb-6">
+                  Offline-first POS and retail client architectures. Native printer drivers, biometric turnstile integration, and localized databases.
+                </p>
+              </div>
+              <div class="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">WPF / Blazor</span>
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">SQLite</span>
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">ESC/POS</span>
+              </div>
+            </div>
+
+            <div class="card-corporate p-8 rounded-2xl flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-6 border border-purple-100">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-[#090E17] mb-2">Enterprise UI/UX Design</h3>
+                <p class="text-sm text-slate-600 leading-relaxed mb-6">
+                  Design engineering for data-dense environments. We turn complex workflows into fast, friction-free interfaces staff master in minutes.
+                </p>
+              </div>
+              <div class="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Design Systems</span>
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">WCAG 2.1</span>
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Figma</span>
+              </div>
+            </div>
+
+            <div class="card-corporate p-8 rounded-2xl flex flex-col justify-between">
+              <div>
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mb-6 border border-amber-100">
+                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+                </div>
+                <h3 class="text-lg font-bold text-[#090E17] mb-2">DevOps & Cloud Security</h3>
+                <p class="text-sm text-slate-600 leading-relaxed mb-6">
+                  Hardened infrastructure orchestration. Continuous integration, automated disaster recovery, Cloudflare CDN, and zero-trust policies.
+                </p>
+              </div>
+              <div class="pt-4 border-t border-slate-100 flex flex-wrap gap-1.5">
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Cloudflare</span>
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Docker</span>
+                <span class="px-2.5 py-1 rounded bg-slate-100 text-[11px] font-semibold text-slate-600">Linux</span>
+              </div>
             </div>
           </div>
-        </section>
-      </div>
-    );
+        </div>
+      </section>
 
-    const ServicesView = () => (
-      <div className="pt-28 pb-16 bg-[#F8FAFC]">
-        <div className="max-w-7xl mx-auto px-6">
-          <div className="max-w-3xl mb-16">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#163a7d] border border-blue-200 text-xs font-bold uppercase tracking-wider mb-4">
+      <section class="py-24 bg-white border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="bg-[#0B1424] rounded-3xl p-8 sm:p-14 text-white relative overflow-hidden shadow-xl">
+            <div class="grid lg:grid-cols-12 gap-12 items-center relative z-10">
+              <div class="lg:col-span-7">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-white/10 text-[#67c80f] text-xs font-bold tracking-widest uppercase mb-6">
+                  FLAGSHIP ENTERPRISE PRODUCT
+                </div>
+                
+                <h2 class="text-4xl sm:text-5xl font-black tracking-tight mb-6 leading-tight">
+                  One Unified Engine.<br />
+                  <span class="text-[#67c80f]">Every Department Connected.</span>
+                </h2>
+                
+                <p class="text-slate-300 text-base sm:text-lg leading-relaxed mb-8 max-w-xl">
+                  SmartHUB 360 is an all-in-one business management platform built for modern SMEs and growing enterprises. Consolidate your POS, Kitchen Orders, Inventory, Accounting, and HR into one cohesive system.
+                </p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
+                  <div class="bg-white/5 border border-white/10 p-3 rounded-xl">
+                    <div class="text-sm font-bold text-white mb-1">Local PC / LAN</div>
+                    <div class="text-xs text-slate-400">Zero Internet Dependency</div>
+                  </div>
+                  <div class="bg-white/5 border border-white/10 p-3 rounded-xl">
+                    <div class="text-sm font-bold text-white mb-1">Cloud Hosted</div>
+                    <div class="text-xs text-slate-400">Anywhere Multi-Store Sync</div>
+                  </div>
+                  <div class="bg-white/5 border border-white/10 p-3 rounded-xl">
+                    <div class="text-sm font-bold text-white mb-1">Mobile Companion</div>
+                    <div class="text-xs text-slate-400">Real-Time Owner Telemetry</div>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-4">
+                  <button 
+                    onclick="switchView('smarthub')"
+                    class="bg-[#67c80f] hover:bg-[#54a50b] text-white px-8 py-3.5 rounded-xl font-bold text-sm transition-all flex items-center gap-2.5 shadow-lg shadow-[#67c80f]/20"
+                  >
+                    <span>Launch 18-Module Interactive Explorer</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="lg:col-span-5">
+                <div class="bg-slate-900/80 border border-white/10 rounded-2xl p-6 backdrop-blur-md shadow-2xl">
+                  <div class="flex items-center justify-between pb-4 mb-4 border-b border-white/10 text-xs font-mono text-slate-400">
+                    <span class="flex items-center gap-2">
+                      <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+                      SYSTEM_STATUS: NOMINAL
+                    </span>
+                    <span>VER: 3.4.2-PROD</span>
+                  </div>
+                  
+                  <div class="space-y-3">
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-white/5 text-sm">
+                      <span class="font-semibold text-slate-200">POS &amp; Billing Engine</span>
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono text-slate-400">Sub-second</span>
+                        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">Online</span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-white/5 text-sm">
+                      <span class="font-semibold text-slate-200">KOT Routing Queue</span>
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono text-slate-400">0.18 ms latency</span>
+                        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">Active</span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-white/5 text-sm">
+                      <span class="font-semibold text-slate-200">Double-Entry Ledger</span>
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono text-slate-400">Balanced</span>
+                        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">Verified</span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-white/5 text-sm">
+                      <span class="font-semibold text-slate-200">Warehouse Federation</span>
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono text-slate-400">Sync OK</span>
+                        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">Connected</span>
+                      </div>
+                    </div>
+                    <div class="flex items-center justify-between p-3 rounded-lg bg-white/5 text-sm">
+                      <span class="font-semibold text-slate-200">Biometric Attendance</span>
+                      <div class="flex items-center gap-3">
+                        <span class="text-xs font-mono text-slate-400">Device Linked</span>
+                        <span class="px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono text-[10px] font-bold">Standby</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mt-6 pt-4 border-t border-white/10 text-center">
+                    <span class="text-xs text-slate-400">Architected by Sentama Technologies Core Team</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="py-20 bg-[#F8FAFC] border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="text-center max-w-2xl mx-auto mb-16">
+            <div class="text-xs font-black tracking-widest text-[#163a7d] uppercase mb-2">Execution Protocol</div>
+            <h2 class="text-3xl font-black text-[#090E17] tracking-tight mb-4">
+              Disciplined Engineering Delivery.
+            </h2>
+            <p class="text-sm text-slate-600">
+              We eliminate guesswork with a phased engineering methodology used by leading technology institutions.
+            </p>
+          </div>
+
+          <div class="grid md:grid-cols-4 gap-6">
+            <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm relative">
+              <div class="text-4xl font-black text-slate-200 mb-4 font-mono">01</div>
+              <h3 class="text-base font-bold text-[#090E17] mb-2">Architectural Discovery</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">We analyze your operational bottlenecks, transaction volumes, hardware interfaces, and compliance requirements.</p>
+            </div>
+            <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm relative">
+              <div class="text-4xl font-black text-slate-200 mb-4 font-mono">02</div>
+              <h3 class="text-base font-bold text-[#090E17] mb-2">Decoupled Engineering</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">Codebases are written cleanly with separation of concerns. Business logic is independent of UI layers for future scalability.</p>
+            </div>
+            <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm relative">
+              <div class="text-4xl font-black text-slate-200 mb-4 font-mono">03</div>
+              <h3 class="text-base font-bold text-[#090E17] mb-2">Stress &amp; Security Audit</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">Simulated load testing, high-frequency concurrency validation, local network failover checks, and RBAC security sweeps.</p>
+            </div>
+            <div class="bg-white p-7 rounded-2xl border border-slate-200 shadow-sm relative">
+              <div class="text-4xl font-black text-slate-200 mb-4 font-mono">04</div>
+              <h3 class="text-base font-bold text-[#090E17] mb-2">Deployment &amp; SLA Guard</h3>
+              <p class="text-xs text-slate-600 leading-relaxed">Zero-friction installation scripts, automated database seeds, technician training, and SLA support coverage.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ==================== VIEW 2: SERVICES ==================== -->
+    <div id="view-services" class="page-view hidden">
+      <div class="py-12 bg-[#F8FAFC]">
+        <div class="max-w-7xl mx-auto px-6">
+          <div class="max-w-3xl mb-16">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-[#163a7d] border border-blue-200 text-xs font-bold uppercase tracking-wider mb-4">
               Agency Engineering Capabilities
             </div>
-            <h1 className="text-4xl sm:text-5xl font-black text-[#090E17] tracking-tight mb-4">
+            <h1 class="text-4xl sm:text-5xl font-black text-[#090E17] tracking-tight mb-4">
               Custom Enterprise IT Solutions.
             </h1>
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+            <p class="text-base sm:text-lg text-slate-600 leading-relaxed">
               Beyond our turnkey products, Sentama Technologies operates as a dedicated technology partner for enterprises requiring tailored software architecture, modern web applications, and mission-critical cloud deployments.
             </p>
           </div>
 
-          <div className="space-y-8">
-            <div className="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm flex flex-col lg:flex-row gap-8 items-start">
-              <div className="w-14 h-14 rounded-2xl bg-blue-50 text-[#163a7d] flex items-center justify-center flex-shrink-0 border border-blue-100">
-                <Code2 size={32} />
+          <div class="space-y-8">
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm flex flex-col lg:flex-row gap-8 items-start">
+              <div class="w-14 h-14 rounded-2xl bg-blue-50 text-[#163a7d] flex items-center justify-center flex-shrink-0 border border-blue-100">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
               </div>
-              <div className="flex-grow">
-                <h2 className="text-2xl font-bold text-[#090E17] mb-3">Enterprise Web Application Development</h2>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 max-w-3xl">
-                  We design and construct high-performance, secure web applications specifically engineered to support high-concurrency enterprise workflows.
+              <div class="flex-grow">
+                <h2 class="text-2xl font-bold text-[#090E17] mb-3">Enterprise Web Application Development</h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 max-w-3xl">
+                  We design and construct high-performance, secure web applications specifically engineered to support high-concurrency enterprise workflows. Whether modernizing a legacy intranet or building a secure B2B client platform, our engineering emphasizes maintainable code and performance.
                 </p>
-                <div className="grid sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Scalable React & Next.js architectures
+                <div class="grid sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Scalable React &amp; Next.js architectures
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Robust REST & GraphQL API layers
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Robust REST &amp; GraphQL API layers
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Role-Based Access Control (RBAC) & SAML
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Role-Based Access Control (RBAC) &amp; SAML
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Optimized database queries & caching
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Optimized database queries &amp; caching
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm flex flex-col lg:flex-row gap-8 items-start">
-              <div className="w-14 h-14 rounded-2xl bg-emerald-50 text-[#67c80f] flex items-center justify-center flex-shrink-0 border border-emerald-100">
-                <Server size={32} />
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm flex flex-col lg:flex-row gap-8 items-start">
+              <div class="w-14 h-14 rounded-2xl bg-emerald-50 text-[#67c80f] flex items-center justify-center flex-shrink-0 border border-emerald-100">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
               </div>
-              <div className="flex-grow">
-                <h2 className="text-2xl font-bold text-[#090E17] mb-3">Cloud Infrastructure & High Availability</h2>
-                <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 max-w-3xl">
-                  Eliminate costly outages and ensure seamless operations with automated, containerized deployments.
+              <div class="flex-grow">
+                <h2 class="text-2xl font-bold text-[#090E17] mb-3">Cloud Infrastructure &amp; High Availability</h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 max-w-3xl">
+                  Eliminate costly outages and ensure seamless operations with automated, containerized deployments. We configure resilient cloud networks across AWS, Cloudflare, and dedicated server environments with zero single points of failure.
                 </p>
-                <div className="grid sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Docker containerization & orchestration
+                <div class="grid sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Docker containerization &amp; orchestration
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Automated CI/CD build & test pipelines
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Automated CI/CD build &amp; test pipelines
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <CheckCircle2 size={16} className="text-[#67c80f]" /> Multi-region replication & hot backups
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Multi-region replication &amp; hot backups
                   </div>
-                  <div className="flex items-center gap-2 text-xs font-semibold text-slate-700">
-                    <CheckCircle2 size={16} className="text-[#67c80f]" /> DDoS protection via Cloudflare
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> DDoS protection via Cloudflare
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 sm:p-12 shadow-sm flex flex-col lg:flex-row gap-8 items-start">
+              <div class="w-14 h-14 rounded-2xl bg-purple-50 text-purple-700 flex items-center justify-center flex-shrink-0 border border-purple-100">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/></svg>
+              </div>
+              <div class="flex-grow">
+                <h2 class="text-2xl font-bold text-[#090E17] mb-3">Enterprise UI/UX &amp; Design Systems</h2>
+                <p class="text-slate-600 text-sm sm:text-base leading-relaxed mb-6 max-w-3xl">
+                  Enterprise software does not have to be painful to use. We build systematic component libraries, crisp typography hierarchies, and intuitive layouts that reduce training requirements for field and operational staff.
+                </p>
+                <div class="grid sm:grid-cols-2 gap-3 mb-6 max-w-2xl">
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Tailored Figma design tokens &amp; systems
+                  </div>
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> High-contrast data density optimized for monitors
+                  </div>
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-700">
+                    <svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Touch-responsive POS and kiosk layouts
                   </div>
                 </div>
               </div>
@@ -486,265 +504,320 @@
           </div>
         </div>
       </div>
-    );
+    </div>
 
-    const SmartHubView = ({ setSelectedModule }) => (
-      <div className="pt-28 pb-16 bg-[#F8FAFC]">
-        <div className="max-w-[1300px] mx-auto px-6">
-          <div className="text-center max-w-4xl mx-auto mb-20">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-[#54a50b] border border-emerald-200 text-xs font-black tracking-widest uppercase mb-6">
-              <span className="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span>
+    <!-- ==================== VIEW 3: SMARTHUB 360 ==================== -->
+    <div id="view-smarthub" class="page-view hidden">
+      <div class="py-12 bg-[#F8FAFC]">
+        <div class="max-w-[1300px] mx-auto px-6">
+          <div class="text-center max-w-4xl mx-auto mb-16">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-[#54a50b] border border-emerald-200 text-xs font-black tracking-widest uppercase mb-6">
+              <span class="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span>
               COMPREHENSIVE ERP ECOSYSTEM
             </div>
             
-            <h1 className="text-4xl sm:text-6xl font-black tracking-tight text-[#090E17] mb-6">
-              <span className="text-[#163a7d]">SmartHUB</span> <span className="text-[#67c80f]">360</span>
+            <h1 class="text-4xl sm:text-6xl font-black tracking-tight text-[#090E17] mb-6">
+              <span class="text-[#163a7d]">SmartHUB</span> <span class="text-[#67c80f]">360</span>
             </h1>
             
-            <p className="text-2xl text-[#090E17] font-extrabold mb-4 tracking-tight">
+            <p class="text-2xl text-[#090E17] font-extrabold mb-4 tracking-tight">
               Manage. Automate. Grow. Everyday.
             </p>
             
-            <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
-              SmartHUB 360 is an all-in-one business management platform designed for SMEs. Run operations smoother, serve customers faster, and eliminate software fragmentation.
+            <p class="text-base sm:text-lg text-slate-600 leading-relaxed max-w-2xl mx-auto">
+              SmartHUB 360 is an all-in-one business management platform designed for modern SMEs. Run operations smoother, serve customers faster, and eliminate software fragmentation.
             </p>
           </div>
 
           <!-- Trio Special Pillars -->
-          <div className="grid md:grid-cols-3 gap-6 mb-24">
-            <div className="card-corporate rounded-2xl p-8 border-t-4 border-t-indigo-600">
-              <div className="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 border border-indigo-100">
-                <Smartphone size={24} />
+          <div class="grid md:grid-cols-3 gap-6 mb-20">
+            <div class="card-corporate rounded-2xl p-8 border-t-4 border-t-indigo-600">
+              <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-6 border border-indigo-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
               </div>
-              <h3 className="text-[#090E17] font-bold text-base uppercase tracking-wider mb-2">MOBILE APP INCLUDED</h3>
-              <p className="text-slate-600 text-sm mb-6">Run your business on the go with our companion mobile application.</p>
-              <ul className="space-y-2.5 text-xs font-semibold text-slate-700">
-                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Full Mobile Access to Modules</li>
-                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Instant Push Notifications</li>
-                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Biometric Login Security</li>
+              <h3 class="text-[#090E17] font-bold text-base uppercase tracking-wider mb-2">MOBILE APP INCLUDED</h3>
+              <p class="text-slate-600 text-sm mb-6">Run your business on the go with our companion mobile application.</p>
+              <ul class="space-y-2.5 text-xs font-semibold text-slate-700">
+                <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Full Mobile Access to Modules</li>
+                <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Instant Push Notifications</li>
+                <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Biometric Login Security</li>
               </ul>
             </div>
 
-            <div className="card-corporate rounded-2xl p-8 border-t-4 border-t-pink-500 relative">
-              <div className="absolute top-6 right-6 bg-[#67c80f] text-white text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm">
-                <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span> LIVE
+            <div class="card-corporate rounded-2xl p-8 border-t-4 border-t-pink-500 relative">
+              <div class="absolute top-6 right-6 bg-[#67c80f] text-white text-[10px] font-black px-2.5 py-1 rounded-full flex items-center gap-1.5 shadow-sm pulse-live">
+                <span class="w-1.5 h-1.5 rounded-full bg-white"></span> LIVE
               </div>
-              <div className="w-12 h-12 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center mb-6 border border-pink-100">
-                <MapPin size={24} />
+              <div class="w-12 h-12 rounded-xl bg-pink-50 text-pink-600 flex items-center justify-center mb-6 border border-pink-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
               </div>
-              <h3 className="text-[#090E17] font-bold text-base uppercase tracking-wider mb-2">LIVE DELIVERY TRACKING</h3>
-              <p className="text-slate-600 text-sm mb-6">Track deliveries and riders in real-time in Restaurant & Service modules.</p>
-              <ul className="space-y-2.5 text-xs font-semibold text-slate-700">
-                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Live Map Geolocation</li>
-                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Order & Dispatch Statuses</li>
-                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Digital Proof of Delivery</li>
+              <h3 class="text-[#090E17] font-bold text-base uppercase tracking-wider mb-2">LIVE DELIVERY TRACKING</h3>
+              <p class="text-slate-600 text-sm mb-6">Track deliveries and riders in real-time in Restaurant &amp; Service modules.</p>
+              <ul class="space-y-2.5 text-xs font-semibold text-slate-700">
+                <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Live Map Geolocation</li>
+                <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Order &amp; Dispatch Statuses</li>
+                <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Digital Proof of Delivery</li>
               </ul>
             </div>
 
-            <div className="card-corporate rounded-2xl p-8 border-t-4 border-t-[#163a7d]">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 text-[#163a7d] flex items-center justify-center mb-6 border border-blue-100">
-                <Globe size={24} />
+            <div class="card-corporate rounded-2xl p-8 border-t-4 border-t-[#163a7d]">
+              <div class="w-12 h-12 rounded-xl bg-blue-50 text-[#163a7d] flex items-center justify-center mb-6 border border-blue-100">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
               </div>
-              <h3 className="text-[#090E17] font-bold text-base uppercase tracking-wider mb-2">ENABLE PUBLIC WEBSITE</h3>
-              <p className="text-slate-600 text-sm mb-6">Instantly toggle an online customer-facing portal and catalog in minutes.</p>
-              <ul className="space-y-2.5 text-xs font-semibold text-slate-700">
-                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Integrated E-Commerce Store</li>
-                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Token Booking & Appointments</li>
-                <li className="flex items-center gap-2.5"><CheckCircle2 size={16} className="text-[#67c80f]" /> Seamless Payment Gateway</li>
+              <h3 class="text-[#090E17] font-bold text-base uppercase tracking-wider mb-2">ENABLE PUBLIC WEBSITE</h3>
+              <p class="text-slate-600 text-sm mb-6">Instantly toggle an online customer-facing portal and catalog in minutes.</p>
+              <ul class="space-y-2.5 text-xs font-semibold text-slate-700">
+                <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Integrated E-Commerce Store</li>
+                <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Token Booking &amp; Appointments</li>
+                <li class="flex items-center gap-2.5"><svg class="w-4 h-4 text-[#67c80f]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Seamless Payment Gateway</li>
               </ul>
             </div>
           </div>
 
-          <!-- 18 Modules Explorer Section -->
-          <div className="text-center mb-12">
-            <h2 className="text-2xl sm:text-3xl font-black text-[#090E17] tracking-tight mb-2 uppercase">
+          <div class="text-center mb-10">
+            <h2 class="text-2xl sm:text-3xl font-black text-[#090E17] tracking-tight mb-2 uppercase">
               18 Turnkey Business Modules
             </h2>
-            <p className="text-sm text-slate-600">
+            <p class="text-sm text-slate-600">
               Click any module to inspect how SmartHUB 360 solves industry-specific operational challenges.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-20">
-            {modulesData.map((mod) => (
-              <div 
-                key={mod.id}
-                onClick={() => setSelectedModule(mod)}
-                className="card-corporate p-5 rounded-2xl flex flex-col items-center text-center cursor-pointer hover:border-[#163a7d] group"
-              >
-                <div className="w-14 h-14 rounded-xl bg-slate-100 text-[#163a7d] border border-slate-200 flex items-center justify-center mb-4 transition-all group-hover:bg-[#163a7d] group-hover:text-white group-hover:scale-105">
-                  <mod.icon size={24} />
-                </div>
-                <h3 className="font-bold text-[#090E17] text-xs sm:text-sm mb-1.5 leading-snug group-hover:text-[#163a7d]">{mod.title}</h3>
-                <p className="text-[11px] text-slate-500 leading-tight line-clamp-2">{mod.short}</p>
-              </div>
-            ))}
+          <div id="modules-container" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-20">
+            <!-- Dynamically populated via JS -->
           </div>
         </div>
       </div>
-    );
+    </div>
 
-    const ModuleModal = ({ module, onClose }) => {
-      if (!module) return null;
-      return (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-fadeIn">
-          <div className="absolute inset-0 bg-slate-900/80 backdrop-blur-sm cursor-pointer" onClick={onClose} />
-          
-          <div className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] z-10 border border-slate-200">
-            <div className="relative h-48 sm:h-56 flex-shrink-0 bg-slate-900 overflow-hidden">
-              <img 
-                src={module.bgImage} 
-                alt={module.title} 
-                className="absolute inset-0 w-full h-full object-cover opacity-35" 
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
-              
-              <button 
-                onClick={onClose} 
-                className="absolute top-5 right-5 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 p-2 rounded-full transition-all z-20"
-              >
-                <X size={20} />
-              </button>
+  </main>
 
-              <div className="absolute bottom-6 left-6 right-6 z-10 flex items-end gap-5">
-                <div className="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-[#163a7d] shadow-lg flex-shrink-0">
-                  <module.icon size={32} />
-                </div>
-                <div>
-                  <div className="inline-flex items-center px-2.5 py-0.5 rounded bg-[#67c80f] text-white text-[10px] font-black tracking-widest uppercase mb-1.5">
-                    MODULE CAPABILITY
-                  </div>
-                  <h2 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                    {module.title}
-                  </h2>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-8 sm:p-10 overflow-y-auto custom-scrollbar flex-grow bg-white">
-              <div className="bg-blue-50/70 border-l-4 border-[#163a7d] p-5 rounded-r-xl mb-8">
-                <p className="text-base sm:text-lg font-semibold text-[#163a7d] italic leading-relaxed">
-                  "{module.hook}"
-                </p>
-              </div>
-              
-              <div className="flex gap-4 items-start">
-                <div className="w-8 h-8 rounded-full bg-emerald-50 text-[#67c80f] flex items-center justify-center flex-shrink-0 mt-0.5 border border-emerald-200 font-bold">
-                  <Check size={18} />
-                </div>
-                <div>
-                  <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The SmartHUB 360 Architecture</h4>
-                  <p className="text-sm sm:text-base text-slate-700 leading-relaxed">
-                    {module.desc}
-                  </p>
-                </div>
-              </div>
-            </div>
+  <!-- ==================== GLOBAL CONTACT BANNER ==================== -->
+  <div id="contact-section" class="max-w-[1300px] mx-auto px-4 md:px-6 py-12 relative z-10">
+    <div class="bg-[#0B1421] rounded-3xl border border-white/10 text-white shadow-2xl relative overflow-hidden">
+      <div class="p-8 md:p-12 border-b border-white/10 flex flex-col lg:flex-row justify-between items-center gap-8">
+        <div class="flex items-center gap-6">
+          <div class="text-blue-400 bg-blue-500/10 p-4 rounded-2xl flex-shrink-0 border border-blue-500/20">
+            <svg class="w-11 h-11" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          </div>
+          <div>
+            <h2 class="text-2xl md:text-3xl font-black mb-1 tracking-tight leading-tight">
+              SMART BUSINESS.<br />
+              <span class="text-[#67c80f]">BETTER TOMORROW.</span>
+            </h2>
+            <p class="text-slate-400 text-xs md:text-sm">All the tools you need. One platform to succeed.</p>
           </div>
         </div>
-      );
-    };
-
-    const ContactBanner = () => (
-      <div id="contact-section" className="max-w-[1300px] mx-auto px-4 md:px-6 py-12 relative z-10">
-        <div className="bg-[#0B1421] rounded-3xl border border-white/10 text-white shadow-2xl relative overflow-hidden">
-          <div className="p-8 md:p-12 border-b border-white/10 flex flex-col lg:flex-row justify-between items-center gap-8">
-            <div className="flex items-center gap-6">
-              <div className="text-blue-400 bg-blue-500/10 p-4 rounded-2xl flex-shrink-0 border border-blue-500/20">
-                <ShieldCheck size={44} />
-              </div>
-              <div>
-                <h2 className="text-2xl md:text-3xl font-black mb-1 tracking-tight leading-tight">
-                  SMART BUSINESS.<br />
-                  <span className="text-[#67c80f]">BETTER TOMORROW.</span>
-                </h2>
-                <p className="text-slate-400 text-xs md:text-sm">All the tools you need. One platform to succeed.</p>
-              </div>
+        
+        <div class="text-center lg:text-right">
+          <h3 class="text-[#67c80f] font-bold tracking-wider uppercase text-xs mb-4">LOCAL, ONLINE OR ANYWHERE</h3>
+          <div class="flex flex-col sm:flex-row items-center justify-center gap-6 text-xs font-semibold text-slate-300">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> LOCAL PC OR NETWORK
             </div>
-            
-            <div className="text-center lg:text-right">
-              <h3 className="text-[#67c80f] font-bold tracking-wider uppercase text-xs mb-4">LOCAL, ONLINE OR ANYWHERE</h3>
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-xs font-semibold text-slate-300">
-                <div className="flex items-center gap-2"><Monitor size={18} className="text-blue-400"/> LOCAL PC OR NETWORK</div>
-                <div className="text-slate-600 font-black hidden sm:block">OR</div>
-                <div className="flex items-center gap-2"><Cloud size={18} className="text-blue-400"/> HOST ONLINE (CLOUD)</div>
-                <div className="flex items-center gap-2"><Smartphone size={18} className="text-blue-400"/> ACCESS ANYWHERE</div>
-              </div>
+            <div class="text-slate-600 font-black hidden sm:block">OR</div>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 00-9.78 2.096A4.001 4.001 0 003 15z"/></svg> HOST ONLINE (CLOUD)
             </div>
-          </div>
-
-          <div className="bg-black/40 p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="flex flex-col sm:flex-row items-center gap-4 text-xs text-slate-400 font-medium tracking-wide">
-              <a href="mailto:sentamatech@gmail.com" className="flex items-center gap-2 hover:text-white transition-colors">
-                <MessageSquare size={16}/> sentamatech@gmail.com
-              </a>
-              <span className="hidden sm:block text-slate-700">|</span>
-              <span className="flex items-center gap-2"><Globe size={16}/> www.sentama.in</span>
-            </div>
-            
-            <div className="text-center md:text-right flex flex-col sm:flex-row items-center gap-4">
-              <div>
-                <h3 className="text-base font-bold text-white">Start Your Journey Today</h3>
-                <p className="text-slate-400 text-xs">Transform the way you run your business with Sentama Technologies.</p>
-              </div>
-              <a 
-                href="mailto:sentamatech@gmail.com" 
-                className="inline-flex items-center justify-center bg-[#67c80f] hover:bg-[#54a50b] text-white font-bold rounded-xl px-7 py-3 text-xs transition-all shadow-md shadow-[#67c80f]/20 hover:-translate-y-0.5 whitespace-nowrap"
-              >
-                Contact Engineering Team
-              </a>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg> ACCESS ANYWHERE
             </div>
           </div>
         </div>
       </div>
-    );
 
-    function App() {
-      const [currentView, setCurrentView] = useState('home');
-      const [selectedModule, setSelectedModule] = useState(null);
-
-      useEffect(() => {
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }, [currentView]);
-
-      useEffect(() => {
-        if (selectedModule) {
-          document.body.style.overflow = 'hidden';
-        } else {
-          document.body.style.overflow = 'unset';
-        }
-        return () => { document.body.style.overflow = 'unset'; };
-      }, [selectedModule]);
-
-      return (
-        <div className="min-h-screen flex flex-col bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-900">
-          <Navbar currentView={currentView} navigate={setCurrentView} />
-          
-          <main className="flex-grow">
-            {currentView === 'home' && <HomeView navigate={setCurrentView} />}
-            {currentView === 'services' && <ServicesView />}
-            {currentView === 'smarthub' && <SmartHubView setSelectedModule={setSelectedModule} />}
-          </main>
-
-          <ContactBanner />
-          
-          <footer className="border-t border-slate-200 py-8 text-center text-xs text-slate-500 bg-white">
-            <div className="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-              <div className="font-medium">&copy; 2026 Sentama Technologies. All rights reserved. Recognized under Ministry of MSME.</div>
-              <div className="flex items-center gap-6 font-medium">
-                <span className="text-slate-400">Kasargod &bull; Nileshwar &bull; Kerala</span>
-                <a href="mailto:sentamatech@gmail.com" className="hover:text-slate-900 transition-colors">Contact Support</a>
-              </div>
-            </div>
-          </footer>
-
-          <ModuleModal module={selectedModule} onClose={() => setSelectedModule(null)} />
+      <div class="bg-black/40 p-6 md:p-8 flex flex-col md:flex-row justify-between items-center gap-6">
+        <div class="flex flex-col sm:flex-row items-center gap-4 text-xs text-slate-400 font-medium tracking-wide">
+          <a href="mailto:sentamatech@gmail.com" class="flex items-center gap-2 hover:text-white transition-colors">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg> sentamatech@gmail.com
+          </a>
+          <span class="hidden sm:block text-slate-700">|</span>
+          <span class="flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg> www.sentama.in
+          </span>
         </div>
-      );
+        
+        <div class="text-center md:text-right flex flex-col sm:flex-row items-center gap-4">
+          <div>
+            <h3 class="text-base font-bold text-white">Start Your Journey Today</h3>
+            <p class="text-slate-400 text-xs">Transform the way you run your business with Sentama Technologies.</p>
+          </div>
+          <a 
+            href="mailto:sentamatech@gmail.com" 
+            class="inline-flex items-center justify-center bg-[#67c80f] hover:bg-[#54a50b] text-white font-bold rounded-xl px-7 py-3 text-xs transition-all shadow-md shadow-[#67c80f]/20 hover:-translate-y-0.5 whitespace-nowrap"
+          >
+            Contact Engineering Team
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="border-t border-slate-200 py-8 text-center text-xs text-slate-500 bg-white">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+      <div class="font-medium">&copy; 2026 Sentama Technologies. All rights reserved. Recognized under Ministry of MSME.</div>
+      <div class="flex items-center gap-6 font-medium">
+        <span class="text-slate-400">Kasargod &bull; Nileshwar &bull; Kerala</span>
+        <a href="mailto:sentamatech@gmail.com" class="hover:text-slate-900 transition-colors">Contact Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <div id="module-modal" class="fixed inset-0 z-[100] hidden items-center justify-center p-4 sm:p-6">
+    <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm cursor-pointer" onclick="closeModal()"></div>
+    
+    <div class="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[85vh] z-10 border border-slate-200">
+      <div class="relative h-48 sm:h-56 flex-shrink-0 bg-slate-900 overflow-hidden">
+        <img id="modal-image" src="" alt="Module visual" class="absolute inset-0 w-full h-full object-cover opacity-35" />
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/60 to-transparent"></div>
+        
+        <button 
+          onclick="closeModal()" 
+          class="absolute top-5 right-5 text-white/80 hover:text-white bg-black/40 hover:bg-black/60 p-2 rounded-full transition-all z-20"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+
+        <div class="absolute bottom-6 left-6 right-6 z-10 flex items-end gap-5">
+          <div id="modal-icon-container" class="w-16 h-16 rounded-2xl bg-white flex items-center justify-center text-[#163a7d] shadow-lg flex-shrink-0">
+            <!-- Icon injected here -->
+          </div>
+          <div>
+            <div class="inline-flex items-center px-2.5 py-0.5 rounded bg-[#67c80f] text-white text-[10px] font-black tracking-widest uppercase mb-1.5">
+              MODULE CAPABILITY
+            </div>
+            <h2 id="modal-title" class="text-2xl sm:text-3xl font-black text-white tracking-tight">
+              <!-- Title injected here -->
+            </h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="p-8 sm:p-10 overflow-y-auto custom-scrollbar flex-grow bg-white">
+        <div class="bg-blue-50/70 border-l-4 border-[#163a7d] p-5 rounded-r-xl mb-8">
+          <p id="modal-hook" class="text-base sm:text-lg font-semibold text-[#163a7d] italic leading-relaxed">
+            <!-- Hook injected here -->
+          </p>
+        </div>
+        
+        <div class="flex gap-4 items-start">
+          <div class="w-8 h-8 rounded-full bg-emerald-50 text-[#67c80f] flex items-center justify-center flex-shrink-0 mt-0.5 border border-emerald-200 font-bold">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+          </div>
+          <div>
+            <h4 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">The SmartHUB 360 Architecture</h4>
+            <p id="modal-desc" class="text-sm sm:text-base text-slate-700 leading-relaxed">
+              <!-- Desc injected here -->
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const modulesData = [
+      { id: 'kot', title: "Kitchen Order Tickets (KOT)", short: "Instant order routing & kitchen displays", hook: "Are you facing bottlenecks and lost tickets during peak dining rush?", desc: "SmartHUB 360's low-latency wireless KOT routes table orders to multi-station kitchen displays in under 200 milliseconds. Eliminate miscommunication, manage order priorities, and delight diners with faster turnover.", bgImage: "https://images.unsplash.com/photo-1556155092-490a1ba16284?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>` },
+      { id: 'crm', title: "CRM & Lifecycle Management", short: "Lead pipelines, profiles & loyalty tiers", hook: "Struggling with disconnected customer touchpoints and missed follow-ups?", desc: "Centralize your complete client lifecycle. Gain 360-degree purchase visibility, automate multi-channel reminders, monitor credit limits, and drive retention with customized VIP loyalty tiers.", bgImage: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>` },
+      { id: 'inventory', title: "Warehouse & Inventory", short: "Multi-godown stock & automated alerts", hook: "Experiencing stock shrinkages or sudden stock-outs on fast-selling items?", desc: "Enterprise-grade stock synchronization across multiple warehouses. Real-time batch/expiry intelligence, automated barcode labeling, minimum safety reorder thresholds, and dynamic inventory valuation.", bgImage: "https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>` },
+      { id: 'pos', title: "Point of Sale (POS)", short: "Sub-second checkout & split payments", hook: "Are slow checkout counters creating friction for impatient shoppers?", desc: "Engineered for high-volume cash counters. Supports high-speed barcode scanning, split billing (Cash, UPI, Cards, Store Credit), offline transactional queues, and thermal receipt printing.", bgImage: "https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>` },
+      { id: 'hotel', title: "Hotel & Property PMS", short: "Visual room grids & housekeeping status", hook: "Is managing room allocation, tariffs, and turn-around times causing chaos?", desc: "Intuitive interactive floor and room grid. Manage online reservations, walk-in check-ins, advance tariff security deposits, ID card records, and live housekeeping statuses to accelerate room turnover.", bgImage: "https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>` },
+      { id: 'hospital', title: "Healthcare & Clinic EMR", short: "Live token queues & integrated pharmacy", hook: "Are patients burdened with long waiting queues and fragmented records?", desc: "End-to-end clinical workflow. Generates Electronic Medical Records (EMR), powers live digital token boards in waiting lounges, and routes doctor digital prescriptions straight to internal dispensary POS.", bgImage: "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>` },
+      { id: 'sales', title: "Sales & Invoicing", short: "Quotations, dispatch & GST invoicing", hook: "Losing time converting estimates into approved tax invoices?", desc: "Accelerate your revenue cycle. Convert proforma estimates into signed delivery notes and GST-compliant invoices with automatic tax splits, discount approvals, and balance ledgers.", bgImage: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>` },
+      { id: 'purchase', title: "Procurement & Vendors", short: "Purchase orders & GRN validation", hook: "Finding it difficult to track supplier payment dues and goods deliveries?", desc: "Gain complete transparency over input costs. Manage purchase requisitions, match vendor bills against Goods Receipt Notes (GRN), track landed costs, and maintain balanced supplier ledgers.", bgImage: "https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>` },
+      { id: 'laundry', title: "Laundry & Dry Cleaning", short: "Garment tagging & delivery dispatch", hook: "Struggling with misplaced garments or delivery schedule errors?", desc: "Track every piece with durable barcode tagging. Record fabric treatments, monitor wash/ironing stages, and notify customers automatically via SMS/WhatsApp upon dispatch.", bgImage: "https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>` },
+      { id: 'education', title: "Education & Campus", short: "Student rosters, terms & fee collection", hook: "Tired of dealing with manual fee collection spreadsheets and notices?", desc: "Comprehensive academic administration. Track student attendance, automate recurring term fee billing with online receipts, catalog library books, and compile automated report cards.", bgImage: "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l9-5-9-5-9 5 9 5z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z"/></svg>` },
+      { id: 'fitness', title: "Fitness & Gym PMS", short: "Biometric access & recurring memberships", hook: "Losing revenue to expired memberships and uncontrolled access?", desc: "Connects with biometric turnstiles for automated access control. Oversee personal trainer schedules, track body metric progression, and automate recurring membership subscription renewals.", bgImage: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3"/></svg>` },
+      { id: 'accounting', title: "Financial Accounting", short: "Double-entry, GST filing & P&L balance", hook: "Spending sleepless nights preparing books for audits and tax filings?", desc: "Robust double-entry accounting engine. Real-time Day Book, automatic bank statement reconciliation, automated GST return registers, and dynamic P&L and Balance Sheet compilation.", bgImage: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>` },
+      { id: 'hr', title: "HR & Payroll Engine", short: "Biometric attendance, leaves & salary", hook: "Wasting hours calculating shift overtime and deductions manually?", desc: "Synchronize biometric attendance devices. Configure complex rotational shift rosters, calculate PF/ESI and tax deductions, manage employee leaves, and distribute encrypted salary slips.", bgImage: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>` },
+      { id: 'reports', title: "Business Intelligence", short: "Executive dashboards & KPI metrics", hook: "Operating your enterprise without real-time gross margin insights?", desc: "Extract actionable insights from raw operational data. Pre-built executive dashboards, trend forecasting, category profit margins, and automated daily performance emails for owners.", bgImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>` },
+      { id: 'service', title: "Field Service & AMC", short: "Digital job cards, SLA & technician apps", hook: "Missing annual maintenance renewals and letting service SLAs slip?", desc: "Dispatch field technicians with digital job cards. Track spare parts consumed in repairs, monitor SLA countdown timers, and automate Annual Maintenance Contract (AMC) renewals with clients.", bgImage: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></svg>` },
+      { id: 'projects', title: "Projects & Milestones", short: "Kanban timelines, tasks & timesheets", hook: "Are enterprise project deliverables slipping past committed deadlines?", desc: "Organize cross-functional team initiatives. Plan milestones with interactive Kanban boards, log billable project hours, maintain document repositories, and ensure client deliveries on budget.", bgImage: "https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>` },
+      { id: 'mobile', title: "Executive Mobile App", short: "Real-time command center anywhere", hook: "Need to approve critical purchase orders while traveling away from desk?", desc: "Native command center for iOS and Android. Review live daily sales, authorize large purchase orders, verify bank balances, and receive critical operational alerts on the go.", bgImage: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>` },
+      { id: 'settings', title: "Governance & Security", short: "Role permissions, audits & daily backup", hook: "Concerned about data integrity, unauthorized deletions, or leaks?", desc: "Hardened security posture. Granular role-based access controls (RBAC), immutable system audit trails for every transaction edit, and automated multi-destination encrypted database backups.", bgImage: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80", icon: `<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>` }
+    ];
+
+    // Populate modules grid
+    function renderModules() {
+      const container = document.getElementById('modules-container');
+      if (!container) return;
+      container.innerHTML = modulesData.map(mod => `
+        <div 
+          onclick="openModal('${mod.id}')"
+          class="card-corporate p-5 rounded-2xl flex flex-col items-center text-center cursor-pointer hover:border-[#163a7d] group"
+        >
+          <div class="w-14 h-14 rounded-xl bg-slate-100 text-[#163a7d] border border-slate-200 flex items-center justify-center mb-4 transition-all group-hover:bg-[#163a7d] group-hover:text-white group-hover:scale-105">
+            ${mod.icon}
+          </div>
+          <h3 class="font-bold text-[#090E17] text-xs sm:text-sm mb-1.5 leading-snug group-hover:text-[#163a7d]">${mod.title}</h3>
+          <p class="text-[11px] text-slate-500 leading-tight line-clamp-2">${mod.short}</p>
+        </div>
+      `).join('');
     }
 
-    const root = ReactDOM.createRoot(document.getElementById('root'));
-    root.render(<App />);
+    // View Switching Logic
+    function switchView(viewName) {
+      document.querySelectorAll('.page-view').forEach(view => view.classList.add('hidden'));
+      const activeView = document.getElementById(`view-${viewName}`);
+      if (activeView) activeView.classList.remove('hidden');
+
+      // Update Nav buttons styling
+      const views = ['home', 'services', 'smarthub'];
+      views.forEach(v => {
+        const btn = document.getElementById(`nav-${v}`);
+        const indicator = btn?.querySelector('.nav-indicator');
+        if (v === viewName) {
+          btn?.classList.add('text-[#163a7d]');
+          btn?.classList.remove('text-slate-600');
+          indicator?.classList.remove('hidden');
+        } else {
+          btn?.classList.remove('text-[#163a7d]');
+          btn?.classList.add('text-slate-600');
+          indicator?.classList.add('hidden');
+        }
+      });
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Modal Operations
+    function openModal(moduleId) {
+      const mod = modulesData.find(m => m.id === moduleId);
+      if (!mod) return;
+
+      document.getElementById('modal-title').textContent = mod.title;
+      document.getElementById('modal-hook').textContent = `"${mod.hook}"`;
+      document.getElementById('modal-desc').textContent = mod.desc;
+      document.getElementById('modal-image').src = mod.bgImage;
+      document.getElementById('modal-icon-container').innerHTML = mod.icon;
+
+      const modal = document.getElementById('module-modal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('module-modal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+      document.body.style.overflow = 'unset';
+    }
+
+    function scrollToContact() {
+      const el = document.getElementById('contact-section');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Keyboard support for modal
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Initialize on load
+    window.onload = function() {
+      renderModules();
+    };
   </script>
 </body>
 </html>
