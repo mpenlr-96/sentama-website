@@ -539,31 +539,33 @@
                     <label class="block text-[11px] font-bold text-slate-700 uppercase tracking-wider mb-1.5">Partner Margin</label>
                     <select id="pt-partner-margin" onchange="recalculate()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800">
                       <option value="0.20">20% Share</option>
-                      <option value="0.25" selected>25% Share</option>
-                      <option value="0.30">30% Share</option>
+                      <option value="0.25">25% Share</option>
+                      <option value="0.30" selected>30% Share</option>
                     </select>
                   </div>
                 </div>
                 <div class="mb-6">
                   <div class="flex justify-between items-center text-xs font-bold mb-2">
                     <span class="text-slate-700">Active Client Implementations:</span>
-                    <span id="pt-clients-val" class="text-base text-[#163a7d] font-black">10 Stores</span>
+                    <span id="pt-clients-val" class="text-base text-[#163a7d] font-black">80 Stores</span>
                   </div>
-                  <input id="pt-slider" type="range" min="1" max="60" value="10" oninput="recalculate()" class="w-full accent-[#163a7d] cursor-pointer" />
-                  <div class="flex justify-between text-[10px] text-slate-400 font-mono mt-1">
-                    <span>1 Store</span><span>30 Stores</span><span>60 Stores</span>
+                  <input id="pt-slider" type="range" min="1" max="320" value="80" oninput="recalculate()" class="w-full accent-[#163a7d] cursor-pointer" />
+                  <div class="relative w-full h-4 text-[10px] text-slate-400 font-mono mt-1">
+                    <span class="absolute left-0">1 Store</span>
+                    <span class="absolute left-1/4 -translate-x-1/2">80 Stores</span>
+                    <span class="absolute left-1/2 -translate-x-1/2">160 Stores</span>
+                    <span class="absolute right-0">320 Stores</span>
                   </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4 p-5 rounded-2xl bg-[#F8FAFC] border border-slate-200 mb-4">
+                <div class="p-6 rounded-2xl bg-gradient-to-br from-blue-50/70 to-slate-50 border border-blue-100 mb-4 space-y-4">
                   <div>
-                    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Annual Recurring Revenue</div>
-                    <div id="pt-annual-num" class="text-2xl font-black text-[#163a7d]">₹ 15,000</div>
-                    <div id="pt-per-client" class="text-[10px] text-slate-500 mt-1">₹ 1,500 / client / yr</div>
+                    <div class="text-xs font-black text-[#163a7d] uppercase tracking-wider mb-1">Annual Recurring Revenue</div>
+                    <div id="pt-annual-num" class="text-3xl sm:text-4xl font-black text-[#163a7d] tracking-tight">₹ 1,44,000</div>
+                    <div id="pt-per-client" class="text-xs font-semibold text-slate-600 mt-1">₹ 1,800 / client / yr</div>
                   </div>
-                  <div>
-                    <div class="text-[10px] font-bold text-slate-500 uppercase tracking-wider mb-1">Monthly Run Rate Equivalent</div>
-                    <div id="pt-monthly-num" class="text-2xl font-black text-emerald-600">₹ 1,250 / mo</div>
-                    <div id="pt-amortized" class="text-[10px] text-slate-500 mt-1">Amortized cashflow (~₹125/mo)</div>
+                  <div class="pt-3 border-t border-slate-200/80 flex items-center justify-between text-xs">
+                    <span class="text-slate-500 font-medium">Amortized Run Rate Equivalent:</span>
+                    <span id="pt-monthly-num" class="font-bold text-slate-700 bg-white border border-slate-200 px-2.5 py-1 rounded-md">₹ 12,000 / mo</span>
                   </div>
                 </div>
                 <p class="text-[11px] text-slate-500 leading-relaxed border-t border-slate-100 pt-3">*Estimates calculate recurring earnings from yearly renewal subscriptions. Upfront counter setup, local network deployment, hardware sales, and staff training billings are retained 100% directly by the partner.</p>
@@ -847,6 +849,7 @@
       T0.forEach(m => dSel.innerHTML += `<option value="${m.title}">${m.title} (${m.categoryLabel})</option>`);
       renderFilters();
       renderModules();
+	  recalculate();
     });
 
     // Routing Logic
@@ -981,13 +984,11 @@
       const annPer = Math.round(rate * margin);
       const totAnn = annPer * count;
       const totMo = Math.round(totAnn / 12);
-      const moPer = Math.round(annPer / 12);
 
       document.getElementById('pt-clients-val').innerText = count + (count === 1 ? ' Store' : ' Stores');
       document.getElementById('pt-annual-num').innerText = '₹ ' + totAnn.toLocaleString('en-IN');
       document.getElementById('pt-per-client').innerText = '₹ ' + annPer.toLocaleString('en-IN') + ' / client / yr';
       document.getElementById('pt-monthly-num').innerText = '₹ ' + totMo.toLocaleString('en-IN') + ' / mo';
-      document.getElementById('pt-amortized').innerText = 'Amortized cashflow (~₹' + moPer + '/mo)';
     }
   </script>
 </body>
