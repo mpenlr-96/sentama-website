@@ -345,6 +345,7 @@ Best regards,`);return`mailto:sentamatech@gmail.com?subject=${_}&body=${ze}`};re
   <body class="bg-white text-slate-900 antialiased selection:bg-blue-100 selection:text-blue-900 min-h-screen">
     <div id="root"></div>
 	<!-- ================= SENTAMA PARTNER PROGRAM PATCH (SELF-CONTAINED) ================= -->
+<!-- ================= SENTAMA PARTNER PROGRAM PATCH (UPDATED CALCULATOR) ================= -->
 <style>
   #view-partner { width: 100%; font-family: inherit; color: #0f172a; }
   .pt-sec { padding: 4rem 1.5rem; border-bottom: 1px solid #e2e8f0; }
@@ -359,14 +360,14 @@ Best regards,`);return`mailto:sentamatech@gmail.com?subject=${_}&body=${ze}`};re
   .pt-card p { font-size: 0.8125rem; color: #64748b; line-height: 1.5; margin-bottom: 1rem; }
   .pt-card-tag { font-size: 0.75rem; font-weight: 700; border-top: 1px solid #f1f5f9; padding-top: 0.75rem; }
   
-  /* Layout split */
   .pt-split { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; align-items: start; }
   .pt-step-item { display: flex; gap: 1rem; padding: 1.25rem; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 0.75rem; margin-bottom: 1rem; }
   .pt-step-num { font-size: 1.5rem; font-weight: 900; color: #163a7d; font-family: monospace; }
   
-  /* Calculator */
   .pt-calc-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 1.5rem; padding: 1.75rem; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
   .pt-calc-results { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 1.25rem; margin-top: 1.5rem; margin-bottom: 1rem; }
+  .pt-field-label { display: block; font-size: 0.75rem; font-weight: 700; color: #334155; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.35rem; }
+  .pt-select { width: 100%; padding: 0.5rem 0.75rem; background: #f8fafc; border: 1px solid #cbd5e1; border-radius: 0.5rem; font-size: 0.8125rem; font-weight: 600; color: #0f172a; outline: none; }
 </style>
 
 <script>
@@ -374,7 +375,6 @@ Best regards,`);return`mailto:sentamatech@gmail.com?subject=${_}&body=${ze}`};re
   function getPartnerHTML() {
     return `
       <div id="view-partner">
-        <!-- Hero & Personas -->
         <section class="pt-sec" style="background:#F8FAFC;">
           <div class="pt-container">
             <div class="pt-badge"><span style="width:6px;height:6px;border-radius:50%;background:#10b981;"></span> Channel Partner Network</div>
@@ -425,7 +425,7 @@ Best regards,`);return`mailto:sentamatech@gmail.com?subject=${_}&body=${ze}`};re
         <section class="pt-sec" style="background:#ffffff;">
           <div class="pt-container">
             <div class="pt-split">
-              <!-- Left: 3 Steps -->
+              <!-- Left: Steps -->
               <div>
                 <div style="font-size:0.75rem;font-weight:900;letter-spacing:0.1em;color:#163a7d;text-transform:uppercase;margin-bottom:0.5rem;">Partner Journey</div>
                 <h2 style="font-size:1.75rem;font-weight:900;color:#090e17;margin-bottom:1rem;">How Our Channel Operates</h2>
@@ -462,17 +462,40 @@ Best regards,`);return`mailto:sentamatech@gmail.com?subject=${_}&body=${ze}`};re
                   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
                     <div>
                       <h4 style="font-weight:800;font-size:1.0625rem;color:#090e17;margin:0;">Channel Revenue Estimator</h4>
-                      <div style="font-size:0.75rem;color:#64748b;">Annual recurring margin estimation model</div>
+                      <div style="font-size:0.75rem;color:#64748b;">Dynamic tiered recurring margin calculation</div>
                     </div>
-                    <span style="font-size:0.6875rem;font-weight:800;background:#ecfdf5;color:#047857;padding:0.25rem 0.6rem;border-radius:0.375rem;">RECURRING</span>
+                    <span style="font-size:0.6875rem;font-weight:800;background:#ecfdf5;color:#047857;padding:0.25rem 0.6rem;border-radius:0.375rem;">LIVE TIERS</span>
                   </div>
 
-                  <div style="margin:1.5rem 0;">
-                    <div style="display:flex;justify-content:space-between;font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;">
-                      <span>Active Client Implementations:</span>
-                      <span id="pt-clients-val" style="color:#163a7d;font-size:1rem;font-weight:900;">15 Stores</span>
+                  <!-- Plan Selector -->
+                  <div style="display:grid;grid-template-columns:1.5fr 1fr;gap:0.75rem;margin-bottom:1.25rem;">
+                    <div>
+                      <label class="pt-field-label">Average Client Plan</label>
+                      <select id="pt-plan-rate" class="pt-select">
+                        <option value="3999">Starter Business — ₹3,999 / mo</option>
+                        <option value="4999" selected>Professional Suite — ₹4,999 / mo</option>
+                        <option value="5999">Advanced Multi-Dept — ₹5,999 / mo</option>
+                        <option value="9999">Enterprise Multi-Store — ₹9,999 / mo</option>
+                        <option value="12999">Custom 15+ Users Tier — ₹12,999 / mo</option>
+                      </select>
                     </div>
-                    <input id="pt-slider" type="range" min="1" max="60" value="15" style="width:100%;accent-color:#163a7d;cursor:pointer;">
+                    <div>
+                      <label class="pt-field-label">Partner Margin</label>
+                      <select id="pt-partner-margin" class="pt-select">
+                        <option value="0.20">20% Share</option>
+                        <option value="0.25" selected>25% Share</option>
+                        <option value="0.30">30% Share</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <!-- Slider -->
+                  <div style="margin:1.25rem 0;">
+                    <div style="display:flex;justify-content:space-between;font-size:0.8125rem;font-weight:700;margin-bottom:0.5rem;">
+                      <span>Active Client Accounts:</span>
+                      <span id="pt-clients-val" style="color:#163a7d;font-size:1rem;font-weight:900;">10 Accounts</span>
+                    </div>
+                    <input id="pt-slider" type="range" min="1" max="60" value="10" style="width:100%;accent-color:#163a7d;cursor:pointer;">
                     <div style="display:flex;justify-content:space-between;font-size:0.6875rem;color:#94a3b8;font-family:monospace;margin-top:0.25rem;">
                       <span>1 Account</span>
                       <span>30 Accounts</span>
@@ -480,21 +503,22 @@ Best regards,`);return`mailto:sentamatech@gmail.com?subject=${_}&body=${ze}`};re
                     </div>
                   </div>
 
+                  <!-- Output -->
                   <div class="pt-calc-results">
                     <div>
-                      <div style="font-size:0.6875rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem;">Projected Annual Earnings</div>
-                      <div id="pt-annual-num" style="font-size:1.5rem;font-weight:900;color:#163a7d;line-height:1.2;">₹ 1,80,000</div>
-                      <div style="font-size:0.6875rem;color:#94a3b8;margin-top:0.25rem;">On annual active renewals</div>
+                      <div style="font-size:0.6875rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem;">Monthly Run Rate</div>
+                      <div id="pt-monthly-num" style="font-size:1.375rem;font-weight:900;color:#10b981;line-height:1.2;">₹ 12,498 / mo</div>
+                      <div id="pt-per-client" style="font-size:0.6875rem;color:#94a3b8;margin-top:0.25rem;">₹ 1,250 / client / mo</div>
                     </div>
                     <div>
-                      <div style="font-size:0.6875rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem;">Monthly Run Rate Equivalent</div>
-                      <div id="pt-monthly-num" style="font-size:1.5rem;font-weight:900;color:#10b981;line-height:1.2;">₹ 15,000 / mo</div>
-                      <div style="font-size:0.6875rem;color:#94a3b8;margin-top:0.25rem;">Excl. hardware & setup billings</div>
+                      <div style="font-size:0.6875rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.25rem;">Annual Recurring Revenue</div>
+                      <div id="pt-annual-num" style="font-size:1.375rem;font-weight:900;color:#163a7d;line-height:1.2;">₹ 1,49,970</div>
+                      <div style="font-size:0.6875rem;color:#94a3b8;margin-top:0.25rem;">Excl. hardware & install charges</div>
                     </div>
                   </div>
 
                   <div style="font-size:0.6875rem;color:#94a3b8;line-height:1.4;border-top:1px solid #f1f5f9;padding-top:0.75rem;">
-                    *Estimates are for operational projections. Actual margins depend on enterprise modules deployed (POS, PMS, Clinic, or Accounting).
+                    *Projections are calculated based on active monthly subscriptions. Initial on-site installation, training, and hardware margins are billed directly by the partner.
                   </div>
                 </div>
               </div>
@@ -586,26 +610,43 @@ Best regards,`);return`mailto:sentamatech@gmail.com?subject=${_}&body=${ze}`};re
       pBtn.appendChild(indicator);
     }
 
-    // Bind Calculator
+    // Bind Dynamic Multi-tier Calculator
     const slider = document.getElementById('pt-slider');
+    const selectRate = document.getElementById('pt-plan-rate');
+    const selectMargin = document.getElementById('pt-partner-margin');
     const txtCount = document.getElementById('pt-clients-val');
     const txtAnn = document.getElementById('pt-annual-num');
     const txtMon = document.getElementById('pt-monthly-num');
-    if (slider && txtCount && txtAnn && txtMon) {
-      slider.oninput = function() {
-        const count = parseInt(this.value, 10);
-        txtCount.textContent = count + (count === 1 ? ' Store' : ' Stores');
-        const ann = count * 12000;
-        const mon = Math.round(ann / 12);
-        txtAnn.textContent = '₹ ' + ann.toLocaleString('en-IN');
-        txtMon.textContent = '₹ ' + mon.toLocaleString('en-IN') + ' / mo';
-      };
+    const txtPerClient = document.getElementById('pt-per-client');
+
+    function updateEarnings() {
+      if (!slider || !selectRate || !selectMargin) return;
+      const count = parseInt(slider.value, 10);
+      const planRate = parseFloat(selectRate.value);
+      const marginPct = parseFloat(selectMargin.value);
+
+      const marginPerClientMonth = Math.round(planRate * marginPct);
+      const totalMonthly = marginPerClientMonth * count;
+      const totalAnnual = totalMonthly * 12;
+
+      txtCount.textContent = count + (count === 1 ? ' Account' : ' Accounts');
+      txtMon.textContent = '₹ ' + totalMonthly.toLocaleString('en-IN') + ' / mo';
+      txtAnn.textContent = '₹ ' + totalAnnual.toLocaleString('en-IN');
+      if (txtPerClient) {
+        txtPerClient.textContent = '₹ ' + marginPerClientMonth.toLocaleString('en-IN') + ' / client / mo';
+      }
+    }
+
+    if (slider && selectRate && selectMargin) {
+      slider.oninput = updateEarnings;
+      selectRate.onchange = updateEarnings;
+      selectMargin.onchange = updateEarnings;
+      updateEarnings();
     }
 
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Restore defaults when other tabs clicked
   function bindOriginalTabs() {
     ['nav-link-home', 'nav-link-services', 'nav-link-smarthub', 'brand-logo-btn'].forEach(id => {
       const el = document.getElementById(id);
