@@ -1,1 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Company Brochure</title>
+  <!-- stPageFlip Library CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: #0f172a; /* Slate dark background */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      overflow-x: hidden;
+      padding: 1rem;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+    }
+    .flip-book {
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+    .page {
+      background-color: #ffffff;
+      overflow: hidden;
+    }
+    .page img {
+      width: 100%;
+      height: 100%;
+      object-fit: fill;
+      display: block;
+      user-select: none;
+      -webkit-user-drag: none;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .btn {
+      background: #334155;
+      color: #f8fafc;
+      border: 1px solid #475569;
+      padding: 0.6rem 1.2rem;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .btn:hover {
+      background: #475569;
+    }
+    .page-info {
+      color: #94a3b8;
+      font-size: 0.875rem;
+    }
+  </style>
+</head>
+<body>
 
+<div class="container">
+  <div class="flip-book" id="book">
+    <div class="page"><img src="page1.jpg" alt="Front Cover" /></div>
+    <div class="page"><img src="page2.jpg" alt="Page 2" /></div>
+    <div class="page"><img src="page3.jpg" alt="Page 3" /></div>
+    <div class="page"><img src="page4.jpg" alt="Page 4" /></div>
+    <div class="page"><img src="page5.jpg" alt="Page 5" /></div>
+    <div class="page"><img src="page6.jpg" alt="Back Cover" /></div>
+  </div>
+
+  <div class="controls">
+    <button class="btn" id="prevBtn">&larr; Previous</button>
+    <span class="page-info" id="pageNumber">Page 1 of 6</span>
+    <button class="btn" id="nextBtn">Next &rarr;</button>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const bookElement = document.getElementById('book');
+    const pageNumText = document.getElementById('pageNumber');
+
+    // Initialize PageFlip
+    // Set base dimensions matching the aspect ratio of your brochure pages (e.g., A4: 550x780)
+    const pageFlip = new St.PageFlip(bookElement, {
+      width: 550,
+      height: 780,
+      size: 'stretch',
+      minWidth: 320,
+      maxWidth: 900,
+      minHeight: 450,
+      maxHeight: 1250,
+      maxShadowOpacity: 0.5,
+      showCover: true,
+      mobileScrollSupport: false
+    });
+
+    pageFlip.loadFromHTML(document.querySelectorAll('.page'));
+
+    // Navigation buttons
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      pageFlip.flipPrev();
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      pageFlip.flipNext();
+    });
+
+    // Page index tracking
+    pageFlip.on('flip', (e) => {
+      const currentPage = e.data + 1;
+      const totalPages = pageFlip.getPageCount();
+      pageNumText.innerText = `Page ${currentPage} of ${totalPages}`;
+    });
+  });
+</script>
+
+</body>
+</html>
