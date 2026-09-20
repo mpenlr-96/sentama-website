@@ -10,7 +10,7 @@
   <meta property="og:url" content="https://www.sentama.in/brochure/" />
   <meta property="og:title" content="Sentama Technologies - Brochure" />
   <meta property="og:description" content="Flip through our interactive digital brochure." />
-  <meta property="og:image" content="https://www.sentama.in/brochure/page1.png" />
+  <meta property="og:image" content="https://www.sentama.in/brochure/page1.webp" />
 
   <!-- PageFlip Engine -->
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
@@ -137,11 +137,6 @@
       pointer-events: none;
     }
 
-    /* Blank inner end-leaf styling */
-    .page.blank-page {
-      background-color: #0f172a;
-    }
-
     /* Bottom Control Bar */
     footer {
       height: 60px;
@@ -217,13 +212,13 @@
     <div class="zoom-badge" id="zoomBadge">Zoomed In (Drag to Pan)</div>
     <div class="zoom-stage" id="zoomStage">
       <div class="flip-book" id="book">
-        <!-- All pages set to data-density="soft" for real magazine paper bend -->
-        <div class="page" data-density="soft"><img src="page1.png" alt="Cover" /></div>
-        <div class="page" data-density="soft"><img src="page2.png" alt="Page 2" /></div>
-        <div class="page" data-density="soft"><img src="page3.png" alt="Page 3" /></div>
-        <div class="page" data-density="soft"><img src="page4.png" alt="Page 4" /></div>
-        <div class="page" data-density="soft"><img src="page5.png" alt="Page 5" /></div>
-        <div class="page" data-density="soft"><img src="page6.png" alt="Back Cover" /></div>
+        <!-- Soft curling paper on every sheet using WebP -->
+        <div class="page" data-density="soft"><img src="page1.webp" alt="Cover" /></div>
+        <div class="page" data-density="soft"><img src="page2.webp" alt="Page 2" /></div>
+        <div class="page" data-density="soft"><img src="page3.webp" alt="Page 3" /></div>
+        <div class="page" data-density="soft"><img src="page4.webp" alt="Page 4" /></div>
+        <div class="page" data-density="soft"><img src="page5.webp" alt="Page 5" /></div>
+        <div class="page" data-density="soft"><img src="page6.webp" alt="Back Cover" /></div>
       </div>
     </div>
   </div>
@@ -236,7 +231,7 @@
   </footer>
 
   <script>
-    // --- 1. Synthesized Paper Turn Sound Effect ---
+    // --- 1. Paper Turn Sound Effect ---
     class FlipAudio {
       constructor() { this.ctx = null; }
       init() {
@@ -277,7 +272,7 @@
 
     const sound = new FlipAudio();
 
-    // --- 2. Screen Dimension Calculation ---
+    // --- 2. Dynamic Viewport Fit ---
     function getFitDimensions() {
       const isMobile = window.innerWidth < 768;
       const vWidth = window.innerWidth * (isMobile ? 0.92 : 0.86);
@@ -313,13 +308,12 @@
 
       const dims = getFitDimensions();
 
-      // Initialize PageFlip with soft natural curling on all pages
       const pageFlip = new St.PageFlip(bookEl, {
         width: dims.width,
         height: dims.height,
         size: "fixed",
-        showCover: false,           // Disables stiff board cover so page 1 curls naturally
-        usePortrait: dims.isMobile, // Single page on phone, two-page spread on desktop
+        showCover: false,
+        usePortrait: dims.isMobile,
         drawShadow: true,
         maxShadowOpacity: 0.7,
         flippingTime: 900,
@@ -329,7 +323,7 @@
 
       pageFlip.loadFromHTML(document.querySelectorAll(".page"));
 
-      // --- 3. Zoom, Pan & Auto-Reset Controller ---
+      // --- 3. Zoom, Pan & Auto-Reset ---
       let zoomLevel = 1.0;
       let panX = 0;
       let panY = 0;
@@ -362,7 +356,6 @@
         updateZoomTransform();
       }
 
-      // Reset zoom whenever navigating to ensure flipping controls work freely
       pageFlip.on("flip", (e) => {
         sound.play();
         resetZoom();
@@ -371,7 +364,6 @@
         pageInfo.innerText = `Page ${current} of ${total}`;
       });
 
-      // Navigation buttons (with auto-reset)
       document.getElementById("btnPrev").addEventListener("click", () => {
         resetZoom();
         pageFlip.flipPrev();
@@ -382,7 +374,6 @@
         pageFlip.flipNext();
       });
 
-      // Zoom Toolbar Buttons
       document.getElementById("btnZoomIn").addEventListener("click", () => {
         if (zoomLevel < 2.5) {
           zoomLevel += 0.3;
@@ -400,7 +391,6 @@
 
       btnReset.addEventListener("click", resetZoom);
 
-      // Pan handling (active ONLY when zoomed in)
       viewport.addEventListener("mousedown", (e) => {
         if (zoomLevel <= 1.0) return;
         isDragging = true;
@@ -421,7 +411,6 @@
         zoomStage.classList.remove("is-dragging");
       });
 
-      // Keyboard arrow shortcuts
       window.addEventListener("keydown", (e) => {
         if (e.key === "ArrowLeft") {
           resetZoom();
@@ -436,7 +425,6 @@
         }
       });
 
-      // Fullscreen
       document.getElementById("btnFullscreen").addEventListener("click", () => {
         if (!document.fullscreenElement) {
           document.documentElement.requestFullscreen().catch(() => {});
