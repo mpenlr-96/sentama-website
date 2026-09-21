@@ -108,11 +108,13 @@
     <!-- Dependencies & Styles -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <style>
       body { font-family: 'Inter', sans-serif; }
+      .font-mono-code { font-family: 'JetBrains Mono', monospace; }
       .bg-grid-fine { background-image: linear-gradient(90deg, #e2e8f099 1px, transparent 1px), linear-gradient(#e2e8f099 1px, transparent 1px); background-size: 32px 32px; }
       .card-corporate { background: #fff; border: 1px solid #e2e8f0; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); box-shadow: 0 1px 3px rgba(15,23,42,0.04); }
       .card-corporate:hover { border-color: #94a3b8; transform: translateY(-3px); box-shadow: 0 12px 24px -6px rgba(15,23,42,0.08); }
@@ -124,8 +126,28 @@
       .custom-scrollbar::-webkit-scrollbar { width: 6px; }
       .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
       .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+      
+      /* Thermal receipt styling */
+      .thermal-paper {
+        background-color: #fcfbf7;
+        box-shadow: 0 4px 20px -2px rgba(0,0,0,0.1), 0 0 1px rgba(0,0,0,0.2);
+        font-family: 'Courier New', Courier, monospace;
+      }
+      .thermal-jagged-bottom {
+        background: radial-gradient(circle, transparent, transparent 50%, #fcfbf7 50%, #fcfbf7 100% ) repeat-x;
+        background-size: 10px 10px;
+        height: 10px;
+        width: 100%;
+      }
+      
+      /* Print Specific Formats */
+      @media print {
+        header, footer, #contact-section, .util-nav-bar, .no-print { display: none !important; }
+        main { padding-top: 0 !important; }
+        .page-view { display: block !important; }
+      }
     </style>
-  </head>
+</head>
 <body class="bg-white text-slate-900 antialiased min-h-screen flex flex-col">
 
   <!-- ==================== HEADER & NAVBAR ==================== -->
@@ -154,11 +176,16 @@
           <span class="text-lg sm:text-xl font-black tracking-tight text-[#163a7d]">SENTAMA <span class="text-[#67c80f]">TECHNOLOGIES</span></span>
         </div>
       </div>
-      <div class="hidden md:flex items-center space-x-6 lg:space-x-8">
+      <div class="hidden md:flex items-center space-x-5 lg:space-x-7">
         <button onclick="nav('home')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-[#163a7d]" data-target="home">Company Overview <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full"></span></button>
         <button onclick="nav('services')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="services">Enterprise Services <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
         <button onclick="nav('smarthub')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="smarthub">SmartHUB 360 <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
         <button onclick="nav('partner')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="partner">Partner Network <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
+        <button onclick="nav('utilities')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d] flex items-center gap-1.5" data-target="utilities">
+          <span>Web & Commerce Utilities</span>
+          <span class="px-1.5 py-0.2 bg-emerald-100 text-[#54a50b] text-[9px] font-black rounded-sm uppercase tracking-tighter">Tools</span>
+          <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span>
+        </button>
       </div>
       <div class="hidden sm:flex items-center gap-2.5">
         <button onclick="openModal('demoModal')" class="border border-slate-300 text-slate-700 hover:bg-slate-50 px-3.5 py-2 rounded-lg font-semibold text-xs flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-[#67c80f]"></i> Book Demo</button>
@@ -185,6 +212,7 @@
             <div class="flex flex-wrap gap-4">
               <button onclick="nav('smarthub')" class="bg-[#163a7d] text-white px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-[#0f2856] shadow-md flex items-center gap-1">Explore SmartHUB 360 <i data-lucide="arrow-right" class="w-4 h-4 text-[#67c80f]"></i></button>
               <button onclick="nav('services')" class="bg-white text-slate-800 border border-slate-300 px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-50 flex items-center gap-1">Our Engineering Capabilities <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i></button>
+              <button onclick="nav('utilities')" class="bg-slate-100 text-slate-800 border border-slate-200 px-5 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-200 flex items-center gap-1.5"><i data-lucide="wrench" class="w-4 h-4 text-[#163a7d]"></i> Free Web Utilities</button>
               <button onclick="openModal('demoModal')" class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-5 py-3.5 rounded-xl font-bold text-sm hover:bg-emerald-100 flex items-center gap-1"><i data-lucide="sparkles" class="w-4 h-4 text-[#67c80f]"></i> Book Live Walkthrough</button>
             </div>
           </div>
@@ -453,7 +481,6 @@
           <div class="text-center max-w-4xl mx-auto mb-16">
             <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-50 text-[#54a50b] border border-emerald-200 text-xs font-black tracking-widest uppercase mb-6 shadow-xs"><span class="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span> COMPLETE BUSINESS MANAGEMENT SUITE</div>
             
-            <!-- Missing SmartHUB Logo Fixed Here -->
             <div class="flex justify-center mb-6">
               <img src="smarthub.png" alt="SmartHUB 360 Logo" class="h-32 sm:h-44 w-auto object-contain" />
             </div>
@@ -703,6 +730,841 @@
         </div>
       </section>
     </div>
+	<!-- ==================== VIEW 5: DEVELOPER & COMMERCE UTILITIES ==================== -->
+    <div id="view-utilities" class="page-view">
+      <section class="py-16 bg-[#F8FAFC] border-b border-slate-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6">
+          <div class="max-w-3xl mb-10">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-50 text-[#54a50b] border border-emerald-200 text-xs font-black tracking-widest uppercase mb-4">
+              <span class="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span> Client-Side Engineering Suite
+            </div>
+            <h1 class="text-4xl sm:text-5xl font-black text-[#090E17] tracking-tight mb-4">Free Web & Commerce Utilities.</h1>
+            <p class="text-base sm:text-lg text-slate-600 leading-relaxed">A suite of developer tools and business calculators engineered to run <strong>100% locally in your browser</strong>. Zero trackers, zero cookies, and zero server logging—exemplifying our offline-first sovereign engineering ethos.</p>
+          </div>
+
+          <!-- Utility Category Switcher (13 Complete Tools) -->
+          <div class="flex flex-wrap gap-2 sm:gap-3 mb-10 pb-4 border-b border-slate-200 util-nav-bar">
+            <!-- Viral Growth Tools -->
+            <button onclick="switchUtilTab('tab-wa-poster')" id="btn-tab-wa-poster" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-[#163a7d] text-white shadow-xs flex items-center gap-2">
+              <i data-lucide="message-square" class="w-4 h-4 text-[#25D366]"></i> WhatsApp Order Standee
+            </button>
+            <button onclick="switchUtilTab('tab-g-review')" id="btn-tab-g-review" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="star" class="w-4 h-4 text-amber-500"></i> Google Review Standee
+            </button>
+            <button onclick="switchUtilTab('tab-a4-barcode')" id="btn-tab-a4-barcode" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="grid" class="w-4 h-4 text-indigo-600"></i> A4 Sheet Barcode Printer
+            </button>
+            <button onclick="switchUtilTab('tab-quick-memo')" id="btn-tab-quick-memo" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="receipt" class="w-4 h-4 text-teal-600"></i> Instant GST Cash Memo
+            </button>
+            
+            <!-- Hardware & POS Tools -->
+            <button onclick="switchUtilTab('tab-roi')" id="btn-tab-roi" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="trending-down" class="w-4 h-4 text-rose-600"></i> Offline Outage Audit
+            </button>
+            <button onclick="switchUtilTab('tab-hex')" id="btn-tab-hex" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="binary" class="w-4 h-4 text-purple-600"></i> ESC/POS Byte Streamer
+            </button>
+            <button onclick="switchUtilTab('tab-barcode')" id="btn-tab-barcode" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="scan-barcode" class="w-4 h-4 text-emerald-600"></i> Code-128 Shelf Tag Studio
+            </button>
+            <button onclick="switchUtilTab('tab-thermal')" id="btn-tab-thermal" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="printer" class="w-4 h-4 text-slate-600"></i> Thermal Receipt Preview
+            </button>
+            
+            <!-- Financial & Web Tools -->
+            <button onclick="switchUtilTab('tab-upi')" id="btn-tab-upi" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="qr-code" class="w-4 h-4 text-[#163a7d]"></i> UPI QR Engine
+            </button>
+            <button onclick="switchUtilTab('tab-gst')" id="btn-tab-gst" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="calculator" class="w-4 h-4 text-blue-600"></i> GST Split
+            </button>
+            <button onclick="switchUtilTab('tab-pwa')" id="btn-tab-pwa" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-600"></i> PWA Checklist
+            </button>
+            <button onclick="switchUtilTab('tab-meta')" id="btn-tab-meta" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="share-2" class="w-4 h-4 text-indigo-600"></i> Meta Studio
+            </button>
+            <button onclick="switchUtilTab('tab-json')" id="btn-tab-json" class="util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2">
+              <i data-lucide="code" class="w-4 h-4 text-slate-700"></i> JSON Tool
+            </button>
+          </div>
+
+          <!-- ================= NEW VIRAL TOOL 1: WHATSAPP ORDER STANDEE STUDIO ================= -->
+          <div id="tab-wa-poster" class="util-pane active">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-wider mb-2">
+                    <i data-lucide="sparkles" class="w-3 h-3 text-[#25D366]"></i> Customer Ordering & Lead Flow
+                  </div>
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">WhatsApp "Scan to Order" Counter Standee Studio</h3>
+                  <p class="text-xs text-slate-500">Design custom tabletop and counter standees for restaurants, bakeries, grocery stores, and service desks. Generates direct pre-filled WhatsApp chat links.</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Business / Store Name</label>
+                  <input type="text" id="wa-biz-name" value="AL-BARAKA RESTAURANT & CAFE" oninput="genWaStandee()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold uppercase focus:outline-hidden focus:border-[#163a7d]" />
+                </div>
+                <div class="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">WhatsApp Phone (with Country Code)</label>
+                    <input type="text" id="wa-phone" value="919876543210" oninput="genWaStandee()" placeholder="e.g. 919876543210" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Table / Counter Location ID</label>
+                    <input type="text" id="wa-table-id" value="Table #04 (Ground Floor)" oninput="genWaStandee()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Default Customer Message Pre-Fill</label>
+                  <textarea id="wa-msg" rows="2" oninput="genWaStandee()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-medium text-slate-800">Hello! I would like to view the menu and place an order.</textarea>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Standee Aesthetic Theme</label>
+                  <div class="grid grid-cols-3 gap-2">
+                    <button onclick="setWaTheme('dark')" id="btn-wa-theme-dark" class="py-2 text-xs font-bold rounded-xl bg-[#0B1424] text-white">Midnight Executive</button>
+                    <button onclick="setWaTheme('emerald')" id="btn-wa-theme-emerald" class="py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200">Fresh Emerald</button>
+                    <button onclick="setWaTheme('minimal')" id="btn-wa-theme-minimal" class="py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200">Crisp White</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Live Counter Acrylic Standee Mockup -->
+              <div class="lg:col-span-6 flex flex-col items-center">
+                <div id="wa-standee-card" class="w-full max-w-[320px] rounded-3xl p-7 shadow-2xl transition-all border text-center flex flex-col justify-between min-h-[460px] bg-[#0B1424] text-white border-slate-800">
+                  <div>
+                    <div class="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-[#25D366]/20 text-[#25D366] text-[10px] font-black uppercase tracking-wider mb-3">
+                      <i data-lucide="message-circle" class="w-3 h-3"></i> WhatsApp Direct
+                    </div>
+                    <h3 id="wa-p-biz" class="text-base font-black uppercase tracking-tight line-clamp-2">AL-BARAKA RESTAURANT & CAFE</h3>
+                    <div id="wa-p-table" class="text-[11px] font-semibold text-slate-400 mt-1">Table #04 (Ground Floor)</div>
+                  </div>
+
+                  <div class="my-4 flex flex-col items-center">
+                    <div class="p-3.5 bg-white rounded-2xl shadow-inner inline-block">
+                      <div id="wa-qrcode" class="w-[160px] h-[160px] flex items-center justify-center"></div>
+                    </div>
+                    <span class="text-xs font-bold mt-3 text-slate-300">Point Camera & Scan to Order</span>
+                  </div>
+
+                  <!-- Subtle Watermark for Viral Promotion -->
+                  <div class="pt-3 border-t border-white/10 text-[10px] text-slate-400 flex items-center justify-between">
+                    <span class="font-mono">Instant Response</span>
+                    <span class="font-bold text-[#67c80f]">SmartHUB 360 Edge</span>
+                  </div>
+                </div>
+
+                <div class="flex gap-2.5 mt-5 w-full max-w-[320px]">
+                  <button onclick="downloadWaStandeePNG()" class="flex-1 py-3 bg-[#163a7d] hover:bg-[#0f2856] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-md">
+                    <i data-lucide="download" class="w-4 h-4 text-[#67c80f]"></i> Download Image
+                  </button>
+                  <button onclick="printWaStandee()" class="px-4 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-xs">
+                    <i data-lucide="printer" class="w-4 h-4 text-slate-600"></i> Print
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= NEW VIRAL TOOL 2: GOOGLE REVIEWS STANDEE ================= -->
+          <div id="tab-g-review" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-amber-50 text-amber-700 text-[10px] font-black uppercase tracking-wider mb-2">
+                    <i data-lucide="star" class="w-3 h-3 text-amber-500 fill-amber-500"></i> Reputation & Local SEO
+                  </div>
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">Google Reviews "Tap & Scan" Counter Card</h3>
+                  <p class="text-xs text-slate-500">Generate sleek checkout cards that direct happy in-store diners and shoppers directly to your Google Maps review form.</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Business Name on Google</label>
+                  <input type="text" id="gr-name" value="SENTAMA AUTOMOTIVE & ACCESSORIES" oninput="genGoogleReviewCard()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-bold uppercase focus:outline-hidden focus:border-[#163a7d]" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Google Review Link / Place URL</label>
+                  <input type="text" id="gr-url" value="https://g.page/r/sentama/review" oninput="genGoogleReviewCard()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono focus:outline-hidden focus:border-[#163a7d]" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Custom Call To Action Tagline</label>
+                  <input type="text" id="gr-tagline" value="Loved our service? Please leave us a 5-star review!" oninput="genGoogleReviewCard()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                </div>
+              </div>
+
+              <!-- Google Review Standee Card -->
+              <div class="lg:col-span-6 flex flex-col items-center">
+                <div id="gr-card" class="w-full max-w-[320px] rounded-3xl p-7 shadow-xl border border-slate-200 text-center flex flex-col justify-between min-h-[460px] bg-white text-slate-900">
+                  <div>
+                    <div class="flex justify-center gap-1 text-amber-400 mb-2">
+                      <i data-lucide="star" class="w-5 h-5 fill-amber-400 text-amber-400"></i>
+                      <i data-lucide="star" class="w-5 h-5 fill-amber-400 text-amber-400"></i>
+                      <i data-lucide="star" class="w-5 h-5 fill-amber-400 text-amber-400"></i>
+                      <i data-lucide="star" class="w-5 h-5 fill-amber-400 text-amber-400"></i>
+                      <i data-lucide="star" class="w-5 h-5 fill-amber-400 text-amber-400"></i>
+                    </div>
+                    <h3 id="gr-p-name" class="text-base font-black uppercase tracking-tight line-clamp-2">SENTAMA AUTOMOTIVE</h3>
+                    <p id="gr-p-tag" class="text-xs text-slate-600 mt-2 font-medium">Loved our service? Please leave us a 5-star review!</p>
+                  </div>
+
+                  <div class="my-4 flex flex-col items-center">
+                    <div class="p-3.5 bg-slate-50 border border-slate-200 rounded-2xl shadow-inner inline-block">
+                      <div id="gr-qrcode" class="w-[160px] h-[160px] flex items-center justify-center"></div>
+                    </div>
+                    <span class="text-[11px] font-bold mt-3 text-slate-500 uppercase tracking-wider">Scan with any smartphone</span>
+                  </div>
+
+                  <div class="pt-3 border-t border-slate-100 text-[10px] text-slate-400 flex items-center justify-between">
+                    <span>Google Verified Review</span>
+                    <span class="font-bold text-[#163a7d]">Sentama Free Utility</span>
+                  </div>
+                </div>
+
+                <div class="flex gap-2.5 mt-5 w-full max-w-[320px]">
+                  <button onclick="downloadGoogleCardPNG()" class="flex-1 py-3 bg-[#163a7d] hover:bg-[#0f2856] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-md">
+                    <i data-lucide="download" class="w-4 h-4 text-[#67c80f]"></i> Download Card
+                  </button>
+                  <button onclick="printGoogleCard()" class="px-4 py-3 bg-white border border-slate-300 hover:bg-slate-50 text-slate-800 text-xs font-bold rounded-xl flex items-center justify-center gap-1.5 shadow-xs">
+                    <i data-lucide="printer" class="w-4 h-4 text-slate-600"></i> Print
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= NEW VIRAL TOOL 3: A4 BARCODE SHEET PRINTER ================= -->
+          <div id="tab-a4-barcode" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-5 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-indigo-50 text-indigo-700 text-[10px] font-black uppercase tracking-wider mb-2">
+                    <i data-lucide="layers" class="w-3 h-3"></i> High-Speed Inventory Tagging
+                  </div>
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">A4 Multi-Barcode Sheet Grid Studio</h3>
+                  <p class="text-xs text-slate-500">Fill standard self-adhesive A4 sheets (24 or 40 stickers per page) for supermarket shelves and garment labels.</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">SKU / Code String <span class="text-rose-500">*</span></label>
+                  <input type="text" id="a4-sku" value="SEN-89024" oninput="genA4Sheet()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:outline-hidden focus:border-[#163a7d]" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Product Name</label>
+                  <input type="text" id="a4-name" value="KERALA ORGANIC CASHEWS 200G" oninput="genA4Sheet()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">MRP / Price (₹)</label>
+                    <input type="text" id="a4-price" value="₹ 399.00" oninput="genA4Sheet()" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Sheet Layout Grid</label>
+                    <select id="a4-layout" onchange="genA4Sheet()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700">
+                      <option value="24" selected>24 Labels (3 x 8 Grid)</option>
+                      <option value="40">40 Labels (4 x 10 Grid)</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="pt-2">
+                  <button onclick="printA4BarcodeSheet()" class="w-full py-3 bg-[#163a7d] hover:bg-[#0f2856] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-md">
+                    <i data-lucide="printer" class="w-4 h-4 text-[#67c80f]"></i> Print Clean A4 Adhesive Sheet
+                  </button>
+                </div>
+              </div>
+
+              <!-- Sheet Preview (Zoomed Container) -->
+              <div class="lg:col-span-7 bg-slate-100 p-6 rounded-3xl border border-slate-200 flex flex-col items-center">
+                <div class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Live A4 Sheet Print Simulation</div>
+                <div id="a4-sheet-preview" class="bg-white p-4 border border-slate-300 shadow-lg rounded-sm w-full max-h-[500px] overflow-y-auto custom-scrollbar">
+                  <!-- Injected sticker grid -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= NEW VIRAL TOOL 4: INSTANT GST CASH MEMO ================= -->
+          <div id="tab-quick-memo" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-5 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-teal-50 text-teal-700 text-[10px] font-black uppercase tracking-wider mb-2">
+                    <i data-lucide="file-check" class="w-3 h-3"></i> Instant Billing
+                  </div>
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">Quick GST Cash Memo & Estimate Maker</h3>
+                  <p class="text-xs text-slate-500">Draft professional invoices and estimates instantly. Print directly or save as PDF without requiring login.</p>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Supplier Name</label>
+                    <input type="text" id="memo-seller" value="SENTAMA HARDWARE SOLUTIONS" oninput="renderCashMemo()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">GSTIN #</label>
+                    <input type="text" id="memo-gstin" value="32AAECS1234F1Z5" oninput="renderCashMemo()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Customer Name</label>
+                    <input type="text" id="memo-buyer" value="Malabar Trading Co." oninput="renderCashMemo()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Invoice #</label>
+                    <input type="text" id="memo-no" value="MEMO-1092" oninput="renderCashMemo()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Items (Item Name, Qty, Rate, GST%):</label>
+                  <textarea id="memo-lines" rows="4" oninput="renderCashMemo()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800">Cat6 Gigabit Cable Roll, 2, 4200, 18
+8-Port Gigabit PoE Switch, 1, 3100, 18
+Hardware Punchdown Tool, 1, 450, 12</textarea>
+                </div>
+                <button onclick="printCashMemo()" class="w-full py-3 bg-[#163a7d] hover:bg-[#0f2856] text-white text-xs font-bold rounded-xl flex items-center justify-center gap-2 shadow-md">
+                  <i data-lucide="printer" class="w-4 h-4 text-[#67c80f]"></i> Print / Export PDF Cash Memo
+                </button>
+              </div>
+
+              <!-- Cash Memo Document Mockup -->
+              <div class="lg:col-span-7 bg-white p-8 rounded-3xl border border-slate-200 shadow-sm" id="memo-render-container">
+                <div class="border-b-2 border-slate-900 pb-4 flex justify-between items-start">
+                  <div>
+                    <h2 class="text-lg font-black text-slate-900" id="memo-p-seller">SENTAMA HARDWARE SOLUTIONS</h2>
+                    <div class="text-[11px] text-slate-600">GSTIN: <span id="memo-p-gstin" class="font-mono font-bold">32AAECS1234F1Z5</span></div>
+                    <div class="text-[11px] text-slate-600">Kannur & Kasargod, Kerala</div>
+                  </div>
+                  <div class="text-right">
+                    <span class="text-xs font-black uppercase bg-slate-900 text-white px-2 py-1 rounded">ESTIMATE / CASH MEMO</span>
+                    <div class="text-[11px] font-mono font-bold text-slate-700 mt-2">NO: <span id="memo-p-no">MEMO-1092</span></div>
+                    <div class="text-[10px] text-slate-500" id="memo-p-date"></div>
+                  </div>
+                </div>
+
+                <div class="py-3 text-xs border-b border-slate-100">
+                  <span class="text-slate-500 block text-[10px] uppercase font-bold">Billed To:</span>
+                  <span class="font-bold text-slate-900" id="memo-p-buyer">Malabar Trading Co.</span>
+                </div>
+
+                <table class="w-full text-left my-4 text-xs">
+                  <thead>
+                    <tr class="border-b border-slate-300 font-bold text-slate-700 text-[11px]">
+                      <th class="py-2">DESCRIPTION</th>
+                      <th class="py-2 text-center">QTY</th>
+                      <th class="py-2 text-right">RATE</th>
+                      <th class="py-2 text-right">GST</th>
+                      <th class="py-2 text-right">TOTAL</th>
+                    </tr>
+                  </thead>
+                  <tbody id="memo-p-rows"></tbody>
+                </table>
+
+                <div class="border-t border-slate-300 pt-3 flex justify-between items-end">
+                  <div class="text-[10px] text-slate-400">
+                    <div>* Computer generated cash memo. Requires no signature.</div>
+                    <div class="font-semibold text-slate-600 mt-1">Upgrade to SmartHUB 360 for full double-entry accounting.</div>
+                  </div>
+                  <div class="text-right space-y-1 font-mono text-xs">
+                    <div>Taxable: <span id="memo-p-subtot" class="font-bold">₹ 0.00</span></div>
+                    <div>GST Tax: <span id="memo-p-tax" class="font-bold">₹ 0.00</span></div>
+                    <div class="text-base font-black text-slate-900 pt-1 border-t border-slate-400">NET: <span id="memo-p-net">₹ 0.00</span></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TOOL 5: OFFLINE DOWNTIME & ROI AUDITOR ================= -->
+          <div id="tab-roi" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-5">
+                <div class="border-b border-slate-100 pb-3">
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 text-[10px] font-black uppercase tracking-wider mb-2">Cloud Latency Audit</div>
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">POS Outage & Latency Cost Calculator</h3>
+                  <p class="text-xs text-slate-500">Calculate the actual annual revenue lost to cloud SaaS latency, counter queues, and intermittent ISP drops.</p>
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs font-bold mb-1.5">
+                    <span class="text-slate-700">Daily Counter Transactions:</span>
+                    <span id="roi-tx-val" class="text-[#163a7d] font-mono font-bold">450 Bills / day</span>
+                  </div>
+                  <input type="range" id="roi-tx" min="50" max="2500" step="50" value="450" oninput="calcROI()" class="w-full accent-[#163a7d] cursor-pointer" />
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs font-bold mb-1.5">
+                    <span class="text-slate-700">Average Bill Value:</span>
+                    <span id="roi-abv-val" class="text-[#163a7d] font-mono font-bold">₹ 650</span>
+                  </div>
+                  <input type="range" id="roi-abv" min="50" max="5000" step="50" value="650" oninput="calcROI()" class="w-full accent-[#163a7d] cursor-pointer" />
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs font-bold mb-1.5">
+                    <span class="text-slate-700">Internet Downtime / Flapping (Hrs / month):</span>
+                    <span id="roi-down-val" class="text-rose-600 font-mono font-bold">6 Hours / mo</span>
+                  </div>
+                  <input type="range" id="roi-down" min="1" max="40" step="1" value="6" oninput="calcROI()" class="w-full accent-rose-600 cursor-pointer" />
+                </div>
+                <div>
+                  <div class="flex justify-between text-xs font-bold mb-1.5">
+                    <span class="text-slate-700">Cloud Roundtrip Latency vs. Local LAN (&lt;200ms):</span>
+                    <span id="roi-lat-val" class="text-amber-600 font-mono font-bold">2.5s per customer</span>
+                  </div>
+                  <input type="range" id="roi-lat" min="1" max="8" step="0.5" value="2.5" oninput="calcROI()" class="w-full accent-amber-600 cursor-pointer" />
+                </div>
+              </div>
+              <div class="lg:col-span-6 space-y-4">
+                <div class="bg-[#0B1424] text-white p-7 sm:p-8 rounded-3xl shadow-xl relative overflow-hidden">
+                  <div class="absolute -top-10 -right-10 w-48 h-48 bg-rose-500/10 rounded-full blur-2xl"></div>
+                  <div class="relative z-10 space-y-5">
+                    <div class="text-xs font-bold uppercase tracking-widest text-slate-400">Total Operational Drain (Pure Cloud SaaS)</div>
+                    <div>
+                      <div id="roi-total-loss" class="text-3xl sm:text-4xl font-black text-rose-400 tracking-tight">₹ 1,75,500 / yr</div>
+                      <div class="text-xs text-slate-300 mt-1">Direct lost sales and unproductive counter idle time.</div>
+                    </div>
+                    <div class="pt-4 border-t border-white/10 grid grid-cols-2 gap-4 text-xs font-mono">
+                      <div>
+                        <span class="text-slate-400 block text-[11px]">Downtime Lost Revenue:</span>
+                        <span id="roi-outage-amt" class="text-base font-bold text-white">₹ 1,21,500</span>
+                      </div>
+                      <div>
+                        <span class="text-slate-400 block text-[11px]">Staff Time Burned:</span>
+                        <span id="roi-time-lost" class="text-base font-bold text-amber-400">114 Hours / yr</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 flex items-center justify-between">
+                  <div>
+                    <h4 class="font-bold text-xs text-slate-900 uppercase">SmartHUB 360 Edge Guarantee</h4>
+                    <p class="text-[11px] text-slate-600">Local LAN deployment reduces downtime to 0% and eliminates roundtrip lag.</p>
+                  </div>
+                  <button onclick="openModal('demoModal')" class="bg-[#163a7d] hover:bg-[#0f2856] text-white text-xs font-bold px-4 py-2 rounded-xl whitespace-nowrap">
+                    Schedule Migration
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TOOL 6: ESC/POS RAW BYTE STREAMER ================= -->
+          <div id="tab-hex" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-purple-50 text-purple-700 text-[10px] font-black uppercase tracking-wider mb-2">Thermal Driver Hardware Bridge</div>
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">ESC/POS Hex & Bytecode Packet Streamer</h3>
+                  <p class="text-xs text-slate-500">Live convert thermal printer commands into raw hex arrays and Base64 payloads for direct USB/LAN socket transmission.</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Header Alignment</label>
+                  <div class="grid grid-cols-3 gap-2">
+                    <button onclick="setEscAlign(0)" id="esc-a-left" class="py-2 text-xs font-bold rounded-lg border border-slate-200 text-slate-700">Left (1B 61 00)</button>
+                    <button onclick="setEscAlign(1)" id="esc-a-center" class="py-2 text-xs font-bold rounded-lg bg-[#163a7d] text-white">Center (1B 61 01)</button>
+                    <button onclick="setEscAlign(2)" id="esc-a-right" class="py-2 text-xs font-bold rounded-lg border border-slate-200 text-slate-700">Right (1B 61 02)</button>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Payload Text Content</label>
+                  <textarea id="esc-text" rows="4" oninput="genEscHex()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800">SENTAMA SMART-HUB 360
+CASH RECEIPT #00492
+TOTAL: INR 2,450.00
+--------------------------------</textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-3 pt-2">
+                  <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+                    <input type="checkbox" id="esc-cut" checked onchange="genEscHex()" class="w-4 h-4 accent-[#163a7d]" /> Full Cut Paper (1D 56 42 00)
+                  </label>
+                  <label class="flex items-center gap-2 text-xs font-bold text-slate-700 cursor-pointer">
+                    <input type="checkbox" id="esc-drawer" checked onchange="genEscHex()" class="w-4 h-4 accent-[#163a7d]" /> Pulse Cash Drawer (1B 70)
+                  </label>
+                </div>
+              </div>
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <h4 class="text-sm font-bold text-[#090E17] uppercase tracking-wider">Raw ESC/POS Hex Output</h4>
+                  <button onclick="copySnippet('esc-hex-out', this)" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1">
+                    <i data-lucide="copy" class="w-3 h-3"></i> <span>Copy Hex</span>
+                  </button>
+                </div>
+                <pre id="esc-hex-out" class="p-4 bg-slate-900 text-purple-400 rounded-2xl text-[11px] font-mono-code overflow-x-auto custom-scrollbar max-h-48 select-all whitespace-pre-wrap"></pre>
+                <div>
+                  <label class="block text-[11px] font-mono text-slate-500 mb-1">Base64 Socket Packet (Direct Raw LAN/Bluetooth Push):</label>
+                  <div id="esc-b64-out" class="p-3 bg-slate-100 rounded-xl text-[11px] font-mono break-all text-slate-700 select-all border border-slate-200"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TOOL 7: SHELF BARCODE STUDIO ================= -->
+          <div id="tab-barcode" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-black uppercase tracking-wider mb-2">Inventory Tagging</div>
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">Code-128 Shelf Barcode Studio</h3>
+                  <p class="text-xs text-slate-500">Generate high-density, standardized retail barcode tags locally with instant SVG export for laser shelf-strip printing.</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Item Name / Tag Description</label>
+                  <input type="text" id="bc-title" value="KERALA SPICES - CARDAMOM 50G" oninput="genBarcode()" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">SKU / Code String <span class="text-rose-500">*</span></label>
+                    <input type="text" id="bc-code" value="SEN-890123" oninput="genBarcode()" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono font-bold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Price Display (₹)</label>
+                    <input type="text" id="bc-price" value="₹ 240.00" oninput="genBarcode()" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                </div>
+              </div>
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center">
+                <!-- Shelf Sticker Container -->
+                <div id="barcode-sticker" class="border-2 border-slate-900 p-4 rounded-xl bg-white w-full max-w-xs shadow-sm mb-5 text-left">
+                  <div class="text-[11px] font-black text-slate-900 truncate uppercase mb-1" id="bc-p-title">KERALA SPICES - CARDAMOM 50G</div>
+                  <div class="flex justify-center my-2 bg-white">
+                    <svg id="bc-svg" class="w-full max-h-20" xmlns="http://www.w3.org/2000/svg"></svg>
+                  </div>
+                  <div class="flex justify-between items-center text-xs font-mono font-bold border-t border-slate-200 pt-1.5">
+                    <span id="bc-p-code">SEN-890123</span>
+                    <span class="text-sm font-black text-slate-900" id="bc-p-price">₹ 240.00</span>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex flex-wrap gap-2 justify-center w-full max-w-xs">
+                  <button onclick="downloadFullStickerSVG()" class="flex-1 bg-[#163a7d] hover:bg-[#0f2856] text-white text-xs font-bold px-3.5 py-2.5 rounded-xl flex items-center justify-center gap-1.5 shadow-xs whitespace-nowrap">
+                    <i data-lucide="tag" class="w-3.5 h-3.5 text-[#67c80f]"></i> Full Tag (SVG)
+                  </button>
+                  <button onclick="printSingleLabel()" class="bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-bold px-3.5 py-2.5 rounded-xl flex items-center justify-center gap-1.5 border border-slate-200">
+                    <i data-lucide="printer" class="w-3.5 h-3.5"></i> Print
+                  </button>
+                  <button onclick="downloadBarcodeOnlySVG()" class="w-full bg-slate-50 hover:bg-slate-100 text-slate-600 text-[11px] font-semibold px-3 py-1.5 rounded-lg flex items-center justify-center gap-1 border border-slate-200">
+                    <i data-lucide="download" class="w-3 h-3"></i> Barcode Stripes Only (SVG)
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TOOL 8: UPI QR GENERATOR ================= -->
+          <div id="tab-upi" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-7 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">NPCI Dynamic UPI QR Code Generator</h3>
+                  <p class="text-xs text-slate-500">Generate static or transaction-specific UPI payment codes formatted for counters, invoices, and thermal receipt printouts.</p>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">UPI ID / VPA <span class="text-rose-500">*</span></label>
+                    <input type="text" id="upi-vpa" value="sentamatech@okaxis" oninput="genUpiQR()" placeholder="e.g. merchant@okicici" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Payee Name <span class="text-rose-500">*</span></label>
+                    <input type="text" id="upi-name" value="Sentama Technologies" oninput="genUpiQR()" placeholder="e.g. Acme Supermarket" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                </div>
+                <div class="grid sm:grid-cols-3 gap-4">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Amount (₹ INR)</label>
+                    <input type="number" id="upi-amt" value="5999" step="0.5" oninput="genUpiQR()" placeholder="Optional" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Invoice / Ref #</label>
+                    <input type="text" id="upi-ref" value="INV-2026-081" oninput="genUpiQR()" placeholder="e.g. BILL-1024" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Payment Note</label>
+                    <input type="text" id="upi-note" value="SmartHUB 360 Subscription" oninput="genUpiQR()" placeholder="Note" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                </div>
+                <div class="pt-2">
+                  <label class="block text-[11px] font-mono text-slate-500 mb-1">Generated Raw Intent URI (NPCI standard):</label>
+                  <div id="upi-raw-uri" class="p-3 bg-slate-100 rounded-xl text-[11px] font-mono break-all text-slate-700 select-all border border-slate-200"></div>
+                </div>
+              </div>
+              <div class="lg:col-span-5 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center">
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700 text-[10px] font-bold uppercase tracking-wider mb-4">
+                  <i data-lucide="check" class="w-3 h-3 text-[#67c80f]"></i> Standard NPCI Compliant
+                </div>
+                <div id="qrcode" class="p-4 bg-white border-2 border-dashed border-slate-200 rounded-2xl shadow-inner mb-4 flex items-center justify-center min-h-[220px]"></div>
+                <div class="text-xs font-bold text-slate-800 mb-1" id="upi-qr-title">Scan via GPay, PhonePe, Paytm</div>
+                <div class="text-[11px] text-slate-500 mb-4" id="upi-qr-sub">Amount pre-fills automatically</div>
+                <button onclick="downloadUpiQR()" class="bg-[#163a7d] hover:bg-[#0f2856] text-white text-xs font-bold px-5 py-2.5 rounded-xl flex items-center gap-2 shadow-xs">
+                  <i data-lucide="download" class="w-3.5 h-3.5"></i> Download QR (PNG)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TOOL 9: GST CALCULATOR ================= -->
+          <div id="tab-gst" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">Forward & Reverse GST Split Calculator</h3>
+                  <p class="text-xs text-slate-500">Easily split invoice line-items into taxable value, CGST, SGST, and IGST for double-entry ledger vouchers.</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Calculation Type</label>
+                  <div class="grid grid-cols-2 gap-2">
+                    <button onclick="setGstMode('inclusive')" id="btn-gst-inc" class="py-2.5 text-xs font-bold rounded-xl bg-[#163a7d] text-white">GST Inclusive (Reverse)</button>
+                    <button onclick="setGstMode('exclusive')" id="btn-gst-exc" class="py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200">GST Exclusive (Forward)</button>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5" id="gst-amt-label">Total Inclusive Gross Amount (₹)</label>
+                  <input type="number" id="gst-input-amt" value="11800" oninput="calcGST()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-base font-bold text-slate-900 focus:outline-hidden focus:border-[#163a7d]" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Statutory GST Slab</label>
+                  <div class="grid grid-cols-5 gap-2">
+                    <button onclick="setGstSlab(0)" class="gst-slab-btn py-2 text-xs font-bold rounded-lg border border-slate-200 text-slate-700">0%</button>
+                    <button onclick="setGstSlab(5)" class="gst-slab-btn py-2 text-xs font-bold rounded-lg border border-slate-200 text-slate-700">5%</button>
+                    <button onclick="setGstSlab(12)" class="gst-slab-btn py-2 text-xs font-bold rounded-lg border border-slate-200 text-slate-700">12%</button>
+                    <button onclick="setGstSlab(18)" id="gst-slab-default" class="gst-slab-btn py-2 text-xs font-bold rounded-lg bg-[#163a7d] text-white">18%</button>
+                    <button onclick="setGstSlab(28)" class="gst-slab-btn py-2 text-xs font-bold rounded-lg border border-slate-200 text-slate-700">28%</button>
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Supply Type</label>
+                  <select id="gst-supply" onchange="calcGST()" class="w-full px-3.5 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700">
+                    <option value="intra">Intra-State (CGST + SGST) - Within Kerala</option>
+                    <option value="inter">Inter-State (IGST) - Outside Kerala</option>
+                  </select>
+                </div>
+              </div>
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <h4 class="text-sm font-bold text-[#090E17] uppercase tracking-wider">Accounting Voucher Breakdown</h4>
+                  <span class="text-[11px] font-mono text-[#54a50b] bg-emerald-50 px-2.5 py-0.5 rounded-full font-bold">BALANCED</span>
+                </div>
+                <div class="space-y-3 font-mono text-xs">
+                  <div class="flex justify-between items-center p-3 rounded-xl bg-slate-50">
+                    <span class="text-slate-600 font-medium">Net Taxable Amount:</span>
+                    <span id="res-taxable" class="font-bold text-slate-900 text-sm">₹ 10,000.00</span>
+                  </div>
+                  <div id="row-cgst" class="flex justify-between items-center p-3 rounded-xl bg-slate-50">
+                    <span class="text-slate-600 font-medium">CGST (<span id="res-cgst-pct">9</span>%):</span>
+                    <span id="res-cgst" class="font-bold text-slate-900 text-sm">₹ 900.00</span>
+                  </div>
+                  <div id="row-sgst" class="flex justify-between items-center p-3 rounded-xl bg-slate-50">
+                    <span class="text-slate-600 font-medium">SGST / UTGST (<span id="res-sgst-pct">9</span>%):</span>
+                    <span id="res-sgst" class="font-bold text-slate-900 text-sm">₹ 900.00</span>
+                  </div>
+                  <div id="row-igst" class="hidden justify-between items-center p-3 rounded-xl bg-slate-50">
+                    <span class="text-slate-600 font-medium">IGST (<span id="res-igst-pct">18</span>%):</span>
+                    <span id="res-igst" class="font-bold text-slate-900 text-sm">₹ 1,800.00</span>
+                  </div>
+                  <div class="flex justify-between items-center p-3 rounded-xl bg-blue-50/70 border border-blue-100">
+                    <span class="text-[#163a7d] font-bold">Total GST Amount:</span>
+                    <span id="res-total-gst" class="font-black text-[#163a7d] text-base">₹ 1,800.00</span>
+                  </div>
+                  <div class="flex justify-between items-center p-4 rounded-xl bg-[#0B1424] text-white">
+                    <span class="font-bold uppercase tracking-wider text-xs">Total Gross Invoice Value:</span>
+                    <span id="res-gross" class="font-black text-lg text-[#67c80f]">₹ 11,800.00</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TOOL 10: ESC/POS THERMAL RECEIPT PREVIEWER ================= -->
+          <div id="tab-thermal" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-7 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">ESC/POS Thermal Receipt Layout Simulator</h3>
+                  <p class="text-xs text-slate-500">Test how restaurant bills, retail counter slips, and tax headers render across 2-inch (58mm) and 3-inch (80mm) thermal printers before driver deployment.</p>
+                </div>
+                <div class="grid sm:grid-cols-3 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Printer Width</label>
+                    <select id="rcpt-width" onchange="renderReceipt()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-700">
+                      <option value="80mm" selected>3-Inch (80mm / 48 chars)</option>
+                      <option value="58mm">2-Inch (58mm / 32 chars)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Business Name</label>
+                    <input type="text" id="rcpt-biz" value="SENTAMA BISTRO & RETAIL" oninput="renderReceipt()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">GSTIN #</label>
+                    <input type="text" id="rcpt-gstin" value="32AAECS1234F1Z5" oninput="renderReceipt()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800" />
+                  </div>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Receipt Line Items (Comma Separated: Item, Qty, Rate)</label>
+                  <textarea id="rcpt-items" rows="4" oninput="renderReceipt()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-mono text-slate-800">Kerala Porotta, 4, 15
+Malabar Chicken Curry, 1, 180
+Cold Lime Juice, 2, 35</textarea>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Footer Note</label>
+                    <input type="text" id="rcpt-footer" value="Thank You! Visit Again" oninput="renderReceipt()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold text-slate-800" />
+                  </div>
+                  <div class="flex items-end">
+                    <button onclick="window.print()" class="w-full bg-[#163a7d] hover:bg-[#0f2856] text-white text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-center gap-2">
+                      <i data-lucide="printer" class="w-3.5 h-3.5"></i> Send to Physical Printer
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="lg:col-span-5 flex flex-col items-center">
+                <!-- Thermal paper mockup -->
+                <div id="receipt-paper" class="thermal-paper p-6 text-slate-900 border border-slate-300 w-full max-w-[340px] text-xs transition-all">
+                  <div class="text-center space-y-0.5">
+                    <div class="font-bold text-sm" id="p-biz">SENTAMA BISTRO & RETAIL</div>
+                    <div class="text-[10px]" id="p-addr">Kannur & Kasargod, Kerala</div>
+                    <div class="text-[10px]">GSTIN: <span id="p-gstin">32AAECS1234F1Z5</span></div>
+                    <div class="text-[10px] text-slate-500" id="p-time"></div>
+                  </div>
+                  <div class="border-b border-dashed border-slate-400 my-3"></div>
+                  <div class="grid grid-cols-12 font-bold text-[11px] mb-1">
+                    <span class="col-span-6">ITEM</span>
+                    <span class="col-span-2 text-center">QTY</span>
+                    <span class="col-span-4 text-right">TOTAL</span>
+                  </div>
+                  <div class="border-b border-slate-300 mb-2"></div>
+                  <div id="p-items" class="space-y-1 text-[11px]">
+                    <!-- Rendered items -->
+                  </div>
+                  <div class="border-b border-dashed border-slate-400 my-3"></div>
+                  <div class="space-y-1 text-[11px]">
+                    <div class="flex justify-between"><span>SUBTOTAL:</span><span id="p-subtot">₹ 0.00</span></div>
+                    <div class="flex justify-between"><span>GST (5%):</span><span id="p-gst">₹ 0.00</span></div>
+                    <div class="flex justify-between font-bold text-xs pt-1 border-t border-slate-300"><span>NET PAYABLE:</span><span id="p-net">₹ 0.00</span></div>
+                  </div>
+                  <div class="border-b border-dashed border-slate-400 my-3"></div>
+                  <div class="text-center text-[10px] space-y-1">
+                    <div id="p-foot" class="font-bold">Thank You! Visit Again</div>
+                    <div class="text-[9px] text-slate-500">SmartHUB 360 Edge POS Engine</div>
+                  </div>
+                  <div class="thermal-jagged-bottom mt-4"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TOOL 11: PWA AUDITOR ================= -->
+          <div id="tab-pwa" class="util-pane hidden">
+            <div class="bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+              <div class="border-b border-slate-100 pb-3">
+                <h3 class="text-xl font-black text-[#090E17] mb-1">Offline PWA Readiness & Sovereign App Checklist</h3>
+                <p class="text-xs text-slate-500">Sentama's core architectural benchmark for high-resilience web applications. Check your app's offline posture against these standard engineering vectors.</p>
+              </div>
+              <div class="grid md:grid-cols-2 gap-4">
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-xs text-slate-800 flex items-center gap-2"><i data-lucide="wifi-off" class="w-4 h-4 text-blue-600"></i> Service Worker & Cache Storage</span>
+                    <input type="checkbox" checked onchange="calcPwaScore()" class="pwa-check w-4 h-4 accent-[#163a7d]" />
+                  </div>
+                  <p class="text-[11px] text-slate-600">Registers a Service Worker intercepting fetch events and caches primary CSS/JS and shell assets via CacheStorage API.</p>
+                </div>
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-xs text-slate-800 flex items-center gap-2"><i data-lucide="file-json" class="w-4 h-4 text-emerald-600"></i> Web App Manifest (manifest.json)</span>
+                    <input type="checkbox" checked onchange="calcPwaScore()" class="pwa-check w-4 h-4 accent-[#163a7d]" />
+                  </div>
+                  <p class="text-[11px] text-slate-600">Contains `standalone` display mode, valid 192px/512px icons, theme colors, and start_url for home screen installs.</p>
+                </div>
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-xs text-slate-800 flex items-center gap-2"><i data-lucide="database" class="w-4 h-4 text-purple-600"></i> Local Client Database (IndexedDB)</span>
+                    <input type="checkbox" checked onchange="calcPwaScore()" class="pwa-check w-4 h-4 accent-[#163a7d]" />
+                  </div>
+                  <p class="text-[11px] text-slate-600">Stores active offline vouchers, items, and transactions locally on device storage without depending on live network APIs.</p>
+                </div>
+                <div class="p-4 rounded-2xl border border-slate-200 bg-slate-50 space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-xs text-slate-800 flex items-center gap-2"><i data-lucide="refresh-cw" class="w-4 h-4 text-amber-600"></i> Background Asynchronous Sync</span>
+                    <input type="checkbox" onchange="calcPwaScore()" class="pwa-check w-4 h-4 accent-[#163a7d]" />
+                  </div>
+                  <p class="text-[11px] text-slate-600">Queues background tasks using the Background Sync API to push vouchers when connection recovers without user intervention.</p>
+                </div>
+              </div>
+              <div class="p-6 rounded-2xl bg-[#0B1424] text-white flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                  <div class="text-xs font-black text-[#67c80f] uppercase tracking-wider mb-1">Architecture Score</div>
+                  <div class="text-2xl font-black" id="pwa-score-text">Score: 75% — Resilient Ready</div>
+                </div>
+                <div class="text-right text-xs text-slate-400 max-w-xs">
+                  Sentama's SmartHUB 360 platform achieves a certified 100% offline rating on edge LAN nodes.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TOOL 12: METATAG STUDIO ================= -->
+          <div id="tab-meta" class="util-pane hidden">
+            <div class="grid lg:grid-cols-12 gap-8 items-start">
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="border-b border-slate-100 pb-3">
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">SEO & OpenGraph Meta Studio</h3>
+                  <p class="text-xs text-slate-500">Craft social preview cards for LinkedIn, WhatsApp, and search engines.</p>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Page Title (Max 60 chars)</label>
+                  <input type="text" id="meta-title" value="Sentama Technologies | Enterprise Software & Cloud Platforms" oninput="genMeta()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Meta Description (Max 160 chars)</label>
+                  <textarea id="meta-desc" rows="2" oninput="genMeta()" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-xs text-slate-700">Architecting high-resilience cloud infrastructure and SmartHUB 360 turnkey offline-first ERP & POS management platforms.</textarea>
+                </div>
+                <div class="grid sm:grid-cols-2 gap-3">
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Canonical URL</label>
+                    <input type="text" id="meta-url" value="https://www.sentama.in/" oninput="genMeta()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                  <div>
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">OG Image URL</label>
+                    <input type="text" id="meta-img" value="https://www.sentama.in/sentama-logo.png" oninput="genMeta()" class="w-full px-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs font-semibold focus:outline-hidden focus:border-[#163a7d]" />
+                  </div>
+                </div>
+              </div>
+              <div class="lg:col-span-6 bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+                <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+                  <h4 class="text-sm font-bold text-[#090E17] uppercase tracking-wider">Generated HTML Snippet</h4>
+                  <button onclick="copySnippet('meta-code-out', this)" class="px-3 py-1 bg-slate-100 hover:bg-slate-200 rounded-lg text-xs font-semibold text-slate-700 flex items-center gap-1"><i data-lucide="copy" class="w-3 h-3"></i> <span>Copy</span></button>
+                </div>
+                <pre id="meta-code-out" class="p-4 bg-slate-900 text-slate-200 rounded-2xl text-[11px] font-mono-code overflow-x-auto custom-scrollbar max-h-80 select-all"></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- ================= TOOL 13: JSON BEAUTIFIER ================= -->
+          <div id="tab-json" class="util-pane hidden">
+            <div class="bg-white p-7 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
+              <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center border-b border-slate-100 pb-3 gap-2">
+                <div>
+                  <h3 class="text-xl font-black text-[#090E17] mb-1">Local JSON / API Payload Beautifier & Schema Validator</h3>
+                  <p class="text-xs text-slate-500">Format and validate API requests locally. Zero bytes leave your browser.</p>
+                </div>
+                <div class="flex gap-2">
+                  <button onclick="formatJSON()" class="px-4 py-2 bg-[#163a7d] hover:bg-[#0f2856] text-white text-xs font-bold rounded-xl flex items-center gap-1.5"><i data-lucide="check" class="w-3.5 h-3.5"></i> Beautify JSON</button>
+                  <button onclick="minifyJSON()" class="px-3 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold rounded-xl">Minify</button>
+                </div>
+              </div>
+              <div class="grid lg:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1.5">Input JSON / Raw API Response</label>
+                  <textarea id="json-input" rows="12" placeholder='Paste raw JSON here...' class="w-full p-4 bg-slate-50 border border-slate-200 rounded-2xl font-mono-code text-xs text-slate-800 focus:outline-hidden focus:border-[#163a7d]">{"company":"Sentama Technologies","platform":"SmartHUB 360","features":["Offline-First POS","LAN KOT Routing","Double-Entry Accounts"],"latencyMs":0.18,"sovereignty":true}</textarea>
+                </div>
+                <div>
+                  <div class="flex justify-between items-center mb-1.5">
+                    <label class="block text-xs font-bold text-slate-700 uppercase tracking-wider">Formatted Output</label>
+                    <span id="json-status" class="text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700">VALID JSON</span>
+                  </div>
+                  <pre id="json-output" class="w-full p-4 bg-slate-900 text-emerald-400 rounded-2xl font-mono-code text-xs overflow-auto custom-scrollbar h-[275px] select-all"></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+
   </main>
 
   <!-- ==================== CONTACT SECTION (PERSISTENT) ==================== -->
@@ -796,7 +1658,6 @@
       </div>
     </div>
   </section>
-
   <!-- ==================== FOOTER ==================== -->
   <footer class="w-full bg-slate-900 text-white border-t border-slate-800 pt-16 pb-10 mt-auto">
     <div class="w-full max-w-7xl mx-auto px-6">
@@ -820,8 +1681,9 @@
             <li><button onclick="nav('services')" class="hover:text-white">Enterprise Services</button></li>
             <li><button onclick="nav('smarthub')" class="hover:text-white">SmartHUB 360 ERP</button></li>
             <li><button onclick="nav('partner')" class="hover:text-white">Partner Network</button></li>
+            <li><button onclick="nav('utilities')" class="hover:text-white text-[#67c80f] font-semibold">Web & Commerce Utilities</button></li>
             <li><button onclick="openModal('demoModal')" class="hover:text-white">Schedule Live Demo</button></li>
-			  <li><a href="https://sentama.in/brochure/" class="hover:text-white" style="text-decoration:none">Company Brochure</a></li>
+            <li><a href="https://sentama.in/brochure/" class="hover:text-white" style="text-decoration:none">Company Brochure</a></li>
           </ul>
         </div>
         <div>
@@ -940,7 +1802,7 @@
   </div>
 
   <script>
-    // Module Data (Exact array from React source)
+    // Module Data (Complete array)
     const T0=[{id:"kot",title:"Kitchen Order Tickets (KOT)",short:"Instant order routing & kitchen displays",category:"dining_hospitality",categoryLabel:"Hospitality & Dining",hook:"Are you facing bottlenecks and lost tickets during peak dining rush?",desc:"SmartHUB 360's low-latency wireless KOT routes table orders to multi-station kitchen displays in under 200 milliseconds. Eliminate miscommunication, manage order priorities, and delight diners with faster turnover.",features:["Multi-station split routing (Grill, Bar, Pastry, Cold counter)","Sub-200ms latency over local WiFi or mesh network","Table-side steward order taking on Android/iOS","Audio & visual alerts for priority & timed tickets","Item cancellation & modification audit log"],bgImage:"https://images.unsplash.com/photo-1556155092-490a1ba16284?auto=format&fit=crop&w=1200&q=80",iconName:"chef-hat"},{id:"crm",title:"CRM & Lifecycle Management",short:"Lead pipelines, profiles & loyalty tiers",category:"enterprise_core",categoryLabel:"Enterprise Core",hook:"Struggling with disconnected customer touchpoints and missed follow-ups?",desc:"Centralize your complete client lifecycle. Gain 360-degree purchase visibility, automate multi-channel reminders, monitor credit limits, and drive retention with customized VIP loyalty tiers.",features:["Unified 360-degree customer purchase history and outstanding ledger","Configurable VIP tiers with automated points accrual & redemption","Automated WhatsApp & SMS payment and renewal reminders","Omnichannel lead capture with SLA stage progression","Credit limit enforcement with managerial override credentials"],bgImage:"https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80",iconName:"users"},{id:"inventory",title:"Warehouse & Inventory",short:"Multi-godown stock & automated alerts",category:"operations_supply",categoryLabel:"Operations & Supply",hook:"Experiencing stock shrinkages or sudden stock-outs on fast-selling items?",desc:"Enterprise-grade stock synchronization across multiple warehouses. Real-time batch/expiry intelligence, automated barcode labeling, minimum safety reorder thresholds, and dynamic inventory valuation.",features:["Multi-godown & bin-level stock location mapping","Batch tracking with automated FIFO / FEFO expiry deprecation","Automated purchase indent generation on reaching safety threshold","Physical stock audit with barcode scanner reconciliation","Inter-branch stock transfer with in-transit tracking"],bgImage:"https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=1200&q=80",iconName:"package"},{id:"pos",title:"Point of Sale (POS)",short:"Sub-second checkout & split payments",category:"retail_commerce",categoryLabel:"Retail & Commerce",hook:"Are slow checkout counters creating friction for impatient shoppers?",desc:"Engineered for high-volume cash counters. Supports high-speed barcode scanning, split billing (Cash, UPI, Cards, Store Credit), offline transactional queues, and thermal receipt printing.",features:["Sub-second keystroke response & multi-barcode format scanning","Split payment support (Cash, UPI QR, Credit Cards, Gift Cards)","100% offline billing queue with automatic cloud reconciliation","Direct thermal ESC/POS printer driver support without print dialogs","Cash drawer integration, shift handover tallies & day-end Z-reports"],bgImage:"https://images.unsplash.com/photo-1556742502-ec7c0e9f34b1?auto=format&fit=crop&w=1200&q=80",iconName:"credit-card"},{id:"hotel",title:"Hotel & Property PMS",short:"Visual room grids & housekeeping status",category:"dining_hospitality",categoryLabel:"Hospitality & Lodging",hook:"Is managing room allocation, tariffs, and turn-around times causing chaos?",desc:"Intuitive interactive floor and room grid. Manage online reservations, walk-in check-ins, advance tariff security deposits, ID card records, and live housekeeping statuses to accelerate room turnover.",features:["Visual floor matrix with clean, dirty, occupied & reserved states","Govt-compliant guest ID scanning & digital registration card","Direct room service, minibar and laundry billing to room folio","Housekeeping mobile companion for instant room status release","Seasonal dynamic tariff engine with advance deposit tracking"],bgImage:"https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=1200&q=80",iconName:"hotel"},{id:"hospital",title:"Healthcare & Clinic EMR",short:"Live token queues & integrated pharmacy",category:"healthcare_services",categoryLabel:"Healthcare & Wellness",hook:"Are patients burdened with long waiting queues and fragmented records?",desc:"End-to-end clinical workflow. Generates Electronic Medical Records (EMR), powers live digital token boards in waiting lounges, and routes doctor digital prescriptions straight to internal dispensary POS.",features:["Digital token queue with waiting room TV display integration","Electronic Health Records (EMR) with customizable clinical templates","Instant prescription dispatch to in-house dispensary inventory","Diagnostic lab test order tracking & report attachment","Appointment scheduling with patient WhatsApp token updates"],bgImage:"https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80",iconName:"activity"},{id:"sales",title:"Sales & Invoicing",short:"Quotations, dispatch & GST invoicing",category:"retail_commerce",categoryLabel:"Retail & Commerce",hook:"Losing time converting estimates into approved tax invoices?",desc:"Accelerate your revenue cycle. Convert proforma estimates into signed delivery notes and GST-compliant invoices with automatic tax splits, discount approvals, and balance ledgers.",features:["One-click conversion: Lead → Quotation → Proforma → Tax Invoice","Full statutory GST compliance with HSN/SAC code automated lookups","Customer credit ceiling check before invoice generation","Multi-currency support for international export consignments","Automated PDF invoice generation with digital signature & QR verification"],bgImage:"https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",iconName:"file-text"},{id:"purchase",title:"Procurement & Vendors",short:"Purchase orders & GRN validation",category:"operations_supply",categoryLabel:"Operations & Supply",hook:"Finding it difficult to track supplier payment dues and goods deliveries?",desc:"Gain complete transparency over input costs. Manage purchase requisitions, match vendor bills against Goods Receipt Notes (GRN), track landed costs, and maintain balanced supplier ledgers.",features:["3-Way matching: Purchase Order vs Goods Receipt (GRN) vs Vendor Bill","Vendor price comparison sheets and historic rate analysis","Landed cost allocation (freight, customs, handling) to unit pricing","Supplier payment aging reports and scheduled disbursement schedules","Return to Vendor (RTV) debit note workflow"],bgImage:"https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=1200&q=80",iconName:"shopping-bag"},{id:"laundry",title:"Laundry & Dry Cleaning",short:"Garment tagging & delivery dispatch",category:"healthcare_services",categoryLabel:"Specialized Operations",hook:"Struggling with misplaced garments or delivery schedule errors?",desc:"Track every piece with durable barcode tagging. Record fabric treatments, monitor wash/ironing stages, and notify customers automatically via SMS/WhatsApp upon dispatch.",features:["Thermal waterproof fabric tag printing with garment ID","Multi-stage process tracking (Sorting, Stain treatment, Wash, Press, Pack)","Defect and existing damage notation with photo attachment","Route-optimized home pickup and delivery driver dispatching","Express delivery surcharges and bundle subscription packages"],bgImage:"https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=1200&q=80",iconName:"sparkles"},{id:"education",title:"Education & Campus",short:"Student rosters, terms & fee collection",category:"healthcare_services",categoryLabel:"Institutional & Campus",hook:"Tired of dealing with manual fee collection spreadsheets and notices?",desc:"Comprehensive academic administration. Track student attendance, automate recurring term fee billing with online receipts, catalog library books, and compile automated report cards.",features:["Student master profile with family records & academic documents","Configurable fee structure (Tuition, Transport, Hostel, Lab)","Automated payment gateway links sent to parents via SMS/WhatsApp","Biometric / RFID student attendance with parent entry alerts","Automated grade book and term report card compilation"],bgImage:"https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1200&q=80",iconName:"graduation-cap"},{id:"fitness",title:"Fitness & Gym PMS",short:"Biometric access & recurring memberships",category:"healthcare_services",categoryLabel:"Fitness & Club",hook:"Losing revenue to expired memberships and uncontrolled access?",desc:"Connects with biometric turnstiles for automated access control. Oversee personal trainer schedules, track body metric progression, and automate recurring membership subscription renewals.",features:["Turnstile gate lock integration based on active membership validity","Personal Trainer allocation, session tracking, and commission payouts","Member fitness assessment logs & body composition tracking","Automated membership renewal reminders before expiry","Locker allocation & supplementary nutrition retail billing"],bgImage:"https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1200&q=80",iconName:"dumbbell"},{id:"accounting",title:"Financial Accounting",short:"Double-entry, GST filing & P&L balance",category:"enterprise_core",categoryLabel:"Enterprise Core",hook:"Spending sleepless nights preparing books for audits and tax filings?",desc:"Robust double-entry accounting engine. Real-time Day Book, automatic bank statement reconciliation, automated GST return registers, and dynamic P&L and Balance Sheet compilation.",features:["Rigorous double-entry general ledger with audit-locked periods","Instant financial statements: Balance Sheet, Profit & Loss, Trial Balance","Bank statement CSV reconciliation and auto-matching rules","Automated GST GSTR-1, GSTR-3B summary registers & e-Invoicing","Multi-cost-center and branch profitability breakdown"],bgImage:"https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80",iconName:"calculator"},{id:"hr",title:"HR & Payroll Engine",short:"Biometric attendance, leaves & salary",category:"enterprise_core",categoryLabel:"Enterprise Core",hook:"Wasting hours calculating shift overtime and deductions manually?",desc:"Synchronize biometric attendance devices. Configure complex rotational shift rosters, calculate PF/ESI and tax deductions, manage employee leaves, and distribute encrypted salary slips.",features:["Direct API sync with biometric fingerprint & face attendance devices","Rotational shift scheduling, late grace periods & overtime calculations","Statutory compliance calculations: PF, ESI, TDS, Professional Tax","Employee self-service mobile portal for leave requests and slip downloads","One-click direct bank payout file generation"],bgImage:"https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=1200&q=80",iconName:"user-check"},{id:"reports",title:"Business Intelligence",short:"Executive dashboards & KPI metrics",category:"enterprise_core",categoryLabel:"Enterprise Core",hook:"Operating your enterprise without real-time gross margin insights?",desc:"Extract actionable insights from raw operational data. Pre-built executive dashboards, trend forecasting, category profit margins, and automated daily performance emails for owners.",features:["Executive KPI command dashboard with daily gross & net profit metrics","Product-wise gross margin analysis and dead-stock indicators","Branch vs branch comparative performance benchmarking","Scheduled daily morning summary reports pushed to CEO email/WhatsApp","Interactive drill-downs to individual transactional source vouchers"],bgImage:"https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1200&q=80",iconName:"chart-column"},{id:"service",title:"Field Service & AMC",short:"Digital job cards, SLA & technician apps",category:"operations_supply",categoryLabel:"Operations & Maintenance",hook:"Missing annual maintenance renewals and letting service SLAs slip?",desc:"Dispatch field technicians with digital job cards. Track spare parts consumed in repairs, monitor SLA countdown timers, and automate Annual Maintenance Contract (AMC) renewals with clients.",features:["Digital job card creation with customer digital signature capture","GPS location logging for technician on-site check-in & check-out","Spare parts consumption linked to main warehouse inventory deduction","Preventive maintenance schedules and AMC warranty tracking","SLA countdown alerts before escalation to service managers"],bgImage:"https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",iconName:"wrench"},{id:"projects",title:"Projects & Milestones",short:"Kanban timelines, tasks & timesheets",category:"operations_supply",categoryLabel:"Operations & Planning",hook:"Are enterprise project deliverables slipping past committed deadlines?",desc:"Organize cross-functional team initiatives. Plan milestones with interactive Kanban boards, log billable project hours, maintain document repositories, and ensure client deliveries on budget.",features:["Interactive Kanban board with drag-and-drop status stages","Gantt milestone timeline with dependency tracking","Daily staff timesheet submissions and client billing logs","Project-level budget vs actual expenditure margin monitoring","Centralized asset & contract document repository"],bgImage:"https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=1200&q=80",iconName:"check-square"},{id:"mobile",title:"Executive Mobile App",short:"Real-time command center anywhere",category:"enterprise_core",categoryLabel:"Mobile & Cloud",hook:"Need to approve critical purchase orders while traveling away from desk?",desc:"Native command center for iOS and Android. Review live daily sales, authorize large purchase orders, verify bank balances, and receive critical operational alerts on the go.",features:["Live revenue dashboard with branch-by-branch telemetry","Push notification alerts for high-value transactions or stock anomalies","Managerial authorization for discounts and purchase orders","Encrypted biometric login (Face ID / Fingerprint)","Cross-platform flutter/native builds for executive ease"],bgImage:"https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&w=1200&q=80",iconName:"smartphone"},{id:"settings",title:"Governance & Security",short:"Role permissions, audits & daily backup",category:"enterprise_core",categoryLabel:"Governance & Security",hook:"Concerned about data integrity, unauthorized deletions, or leaks?",desc:"Hardened security posture. Granular role-based access controls (RBAC), immutable system audit trails for every transaction edit, and automated multi-destination encrypted database backups.",features:["Granular Role-Based Access Control (RBAC) down to button-level rights","Immutable audit trail recording every voucher edit, deletion & login IP","Automated daily encrypted local & offsite cloud backups","IP whitelisting and two-factor authentication (2FA) for admin panels","Database integrity verification and automated cold-storage archiving"],bgImage:"https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80",iconName:"shield-check"}];
     const catFilters = [{id:"all",label:"All Modules (18)"},{id:"dining_hospitality",label:"Hospitality & Dining"},{id:"retail_commerce",label:"Retail & Commerce"},{id:"operations_supply",label:"Operations & Supply"},{id:"healthcare_services",label:"Healthcare & Specialized"},{id:"enterprise_core",label:"Enterprise Core & ERP"}];
     let curCat = "all", actMod = null;
@@ -948,12 +1810,26 @@
     // Initialize Page & Icons
     document.addEventListener("DOMContentLoaded", () => {
       lucide.createIcons();
-      // Populate demo dropdown
       const dSel = document.getElementById("demoMod");
       T0.forEach(m => dSel.innerHTML += `<option value="${m.title}">${m.title} (${m.categoryLabel})</option>`);
       renderFilters();
       renderModules();
-	  recalculate();
+      recalculate();
+      
+      // Init All Utilities
+      genWaStandee();
+      genGoogleReviewCard();
+      genA4Sheet();
+      renderCashMemo();
+      calcROI();
+      genEscHex();
+      genBarcode();
+      genUpiQR();
+      calcGST();
+      renderReceipt();
+      calcPwaScore();
+      genMeta();
+      formatJSON();
     });
 
     // Routing Logic
@@ -978,6 +1854,7 @@
         }
       });
       window.scrollTo({top:0, behavior:'smooth'});
+      lucide.createIcons();
     }
 
     // Ping Simulator
@@ -1093,6 +1970,735 @@
       document.getElementById('pt-annual-num').innerText = '₹ ' + totAnn.toLocaleString('en-IN');
       document.getElementById('pt-per-client').innerText = '₹ ' + annPer.toLocaleString('en-IN') + ' / client / yr';
       document.getElementById('pt-monthly-num').innerText = '₹ ' + totMo.toLocaleString('en-IN') + ' / mo';
+    }
+
+    // ==================== UTILITIES SECTION ROUTING ====================
+    function switchUtilTab(tabId) {
+      document.querySelectorAll('.util-pane').forEach(p => p.classList.add('hidden'));
+      const activePane = document.getElementById(tabId);
+      if(activePane) activePane.classList.remove('hidden');
+
+      document.querySelectorAll('.util-nav-btn').forEach(btn => {
+        btn.className = 'util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-white border border-slate-200 text-slate-700 hover:bg-slate-100 flex items-center gap-2';
+      });
+      const activeBtn = document.getElementById('btn-' + tabId);
+      if(activeBtn) activeBtn.className = 'util-nav-btn px-4 py-2.5 rounded-xl text-xs font-bold bg-[#163a7d] text-white shadow-xs flex items-center gap-2';
+      lucide.createIcons();
+    }
+
+    // 1. WhatsApp Order Standee Engine
+    let waQr = null;
+    let currentWaTheme = 'dark';
+    function setWaTheme(t) {
+      currentWaTheme = t;
+      const card = document.getElementById('wa-standee-card');
+      ['dark','emerald','minimal'].forEach(th => {
+        const btn = document.getElementById('btn-wa-theme-' + th);
+        if(btn) btn.className = th === t ? 'py-2 text-xs font-bold rounded-xl bg-[#163a7d] text-white' : 'py-2 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200';
+      });
+      if(t === 'dark') {
+        card.className = "w-full max-w-[320px] rounded-3xl p-7 shadow-2xl transition-all border text-center flex flex-col justify-between min-h-[460px] bg-[#0B1424] text-white border-slate-800";
+      } else if(t === 'emerald') {
+        card.className = "w-full max-w-[320px] rounded-3xl p-7 shadow-2xl transition-all border text-center flex flex-col justify-between min-h-[460px] bg-gradient-to-br from-emerald-950 to-slate-950 text-white border-emerald-800";
+      } else {
+        card.className = "w-full max-w-[320px] rounded-3xl p-7 shadow-2xl transition-all border text-center flex flex-col justify-between min-h-[460px] bg-white text-slate-900 border-slate-300";
+      }
+    }
+
+    function genWaStandee() {
+      const biz = document.getElementById('wa-biz-name').value || "YOUR BUSINESS NAME";
+      const phone = document.getElementById('wa-phone').value.replace(/[^0-9]/g, '');
+      const table = document.getElementById('wa-table-id').value || "";
+      const msg = document.getElementById('wa-msg').value || "Hello!";
+
+      document.getElementById('wa-p-biz').innerText = biz;
+      document.getElementById('wa-p-table').innerText = table;
+
+      const fullMsg = `${msg}${table ? ` (${table})` : ''}`;
+      const waUrl = `https://wa.me/${phone}?text=${encodeURIComponent(fullMsg)}`;
+
+      const qrContainer = document.getElementById('wa-qrcode');
+      qrContainer.innerHTML = "";
+      waQr = new QRCode(qrContainer, {
+        text: waUrl,
+        width: 160,
+        height: 160,
+        colorDark: "#0B1424",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    function downloadWaStandeePNG() {
+      const biz = document.getElementById('wa-biz-name').value || "Business";
+      const table = document.getElementById('wa-table-id').value || "";
+      const qrImg = document.querySelector('#wa-qrcode img');
+      if(!qrImg) return;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 1100;
+      const ctx = canvas.getContext('2d');
+
+      // Background
+      ctx.fillStyle = currentWaTheme === 'minimal' ? '#FFFFFF' : '#0B1424';
+      ctx.fillRect(0, 0, 800, 1100);
+
+      // Border outline
+      ctx.lineWidth = 8;
+      ctx.strokeStyle = currentWaTheme === 'minimal' ? '#E2E8F0' : '#1E293B';
+      ctx.strokeRect(20, 20, 760, 1060);
+
+      // WhatsApp badge
+      ctx.fillStyle = '#25D366';
+      ctx.font = 'bold 22px Inter, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('• WHATSAPP INSTANT ORDERING •', 400, 90);
+
+      // Business Name
+      ctx.fillStyle = currentWaTheme === 'minimal' ? '#0F172A' : '#FFFFFF';
+      ctx.font = '900 36px Inter, sans-serif';
+      ctx.fillText(biz.toUpperCase(), 400, 150);
+
+      // Table ID
+      if(table) {
+        ctx.fillStyle = '#67c80f';
+        ctx.font = 'bold 22px Inter, sans-serif';
+        ctx.fillText(table, 400, 195);
+      }
+
+      // QR Code container box
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(175, 250, 450, 450);
+      ctx.drawImage(qrImg, 200, 275, 400, 400);
+
+      // Instruction
+      ctx.fillStyle = currentWaTheme === 'minimal' ? '#334155' : '#F1F5F9';
+      ctx.font = 'bold 26px Inter, sans-serif';
+      ctx.fillText('POINT CAMERA & SCAN TO ORDER', 400, 780);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '18px Inter, sans-serif';
+      ctx.fillText('No app download required. Connects straight to WhatsApp.', 400, 820);
+
+      // Promotional footer watermark
+      ctx.fillStyle = '#67c80f';
+      ctx.font = 'bold 20px Inter, sans-serif';
+      ctx.fillText('POWERED BY SMARTHUB 360', 400, 990);
+      ctx.fillStyle = '#64748B';
+      ctx.font = '14px Inter, sans-serif';
+      ctx.fillText('Sentama Technologies • www.sentama.in', 400, 1025);
+
+      const a = document.createElement('a');
+      a.download = `WhatsApp-Standee-${biz.replace(/\s+/g,'_')}.png`;
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    }
+
+    function printWaStandee() {
+      const content = document.getElementById('wa-standee-card').outerHTML;
+      const w = window.open('','_blank','width=500,height=700');
+      w.document.write(`<html><head><title>Print Standee</title><script src="https://cdn.tailwindcss.com"><\/script></head><body class="flex items-center justify-center min-h-screen bg-white" onload="window.print();window.close();">${content}</body></html>`);
+      w.document.close();
+    }
+
+    // 2. Google Reviews Standee Engine
+    function genGoogleReviewCard() {
+      const name = document.getElementById('gr-name').value || "OUR STORE";
+      const url = document.getElementById('gr-url').value || "https://google.com";
+      const tag = document.getElementById('gr-tagline').value || "Review us on Google!";
+
+      document.getElementById('gr-p-name').innerText = name;
+      document.getElementById('gr-p-tag').innerText = tag;
+
+      const qrContainer = document.getElementById('gr-qrcode');
+      qrContainer.innerHTML = "";
+      new QRCode(qrContainer, {
+        text: url,
+        width: 160,
+        height: 160,
+        colorDark: "#0B1424",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    function downloadGoogleCardPNG() {
+      const name = document.getElementById('gr-name').value || "Business";
+      const qrImg = document.querySelector('#gr-qrcode img');
+      if(!qrImg) return;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = 800;
+      canvas.height = 1000;
+      const ctx = canvas.getContext('2d');
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, 800, 1000);
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = '#E2E8F0';
+      ctx.strokeRect(20, 20, 760, 960);
+
+      // Gold stars
+      ctx.fillStyle = '#FBBF24';
+      ctx.font = '36px sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('★★★★★', 400, 110);
+
+      ctx.fillStyle = '#0F172A';
+      ctx.font = '900 34px Inter, sans-serif';
+      ctx.fillText(name.toUpperCase(), 400, 170);
+
+      ctx.fillStyle = '#475569';
+      ctx.font = '20px Inter, sans-serif';
+      ctx.fillText(document.getElementById('gr-tagline').value, 400, 215);
+
+      ctx.drawImage(qrImg, 225, 270, 350, 350);
+
+      ctx.fillStyle = '#1E293B';
+      ctx.font = 'bold 24px Inter, sans-serif';
+      ctx.fillText('SCAN WITH PHONE TO REVIEW US', 400, 700);
+
+      ctx.fillStyle = '#94A3B8';
+      ctx.font = '14px Inter, sans-serif';
+      ctx.fillText('Generated Free via Sentama Technologies • www.sentama.in', 400, 920);
+
+      const a = document.createElement('a');
+      a.download = `Google-Review-${name.replace(/\s+/g,'_')}.png`;
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    }
+
+    function printGoogleCard() {
+      const content = document.getElementById('gr-card').outerHTML;
+      const w = window.open('','_blank','width=500,height=700');
+      w.document.write(`<html><head><title>Print Google Review Card</title><script src="https://cdn.tailwindcss.com"><\/script></head><body class="flex items-center justify-center min-h-screen bg-white" onload="window.print();window.close();">${content}</body></html>`);
+      w.document.close();
+    }
+
+    // 3. A4 Multi-Barcode Sheet Grid Engine
+    function genA4Sheet() {
+      const sku = (document.getElementById('a4-sku').value || "SKU-100").toUpperCase();
+      const name = document.getElementById('a4-name').value || "PRODUCT NAME";
+      const price = document.getElementById('a4-price').value || "₹ 0.00";
+      const count = parseInt(document.getElementById('a4-layout').value, 10) || 24;
+
+      // Generate barcode SVG snippet
+      let x = 5;
+      let bars = '';
+      for (let i = 0; i < sku.length; i++) {
+        const val = sku.charCodeAt(i);
+        const pat = [(val % 3) + 1, ((val >> 1) % 3) + 1, ((val >> 2) % 3) + 1, ((val >> 3) % 2) + 1];
+        pat.forEach((w, idx) => {
+          if (idx % 2 === 0) bars += `<rect x="${x}" y="0" width="${w * 1.5}" height="32" fill="#000" />`;
+          x += w * 2.0;
+        });
+      }
+      const svgCode = `<svg viewBox="0 0 ${x + 5} 32" class="w-full h-8">${bars}</svg>`;
+
+      const cols = count === 24 ? 3 : 4;
+      let gridHtml = `<div class="grid grid-cols-${cols} gap-2">`;
+      for (let i = 0; i < count; i++) {
+        gridHtml += `
+          <div class="border border-slate-300 p-2 rounded text-center bg-white">
+            <div class="text-[9px] font-black truncate uppercase">${name}</div>
+            <div class="my-1">${svgCode}</div>
+            <div class="flex justify-between text-[10px] font-mono font-bold">
+              <span>${sku}</span>
+              <span class="font-black">${price}</span>
+            </div>
+          </div>
+        `;
+      }
+      gridHtml += `</div>`;
+      document.getElementById('a4-sheet-preview').innerHTML = gridHtml;
+    }
+
+    function printA4BarcodeSheet() {
+      const previewHtml = document.getElementById('a4-sheet-preview').innerHTML;
+      const w = window.open('','_blank','width=800,height=1000');
+      w.document.write(`
+        <html>
+          <head>
+            <title>Print A4 Barcode Sheet</title>
+            <style>
+              @page { size: A4; margin: 8mm; }
+              body { font-family: system-ui, sans-serif; margin: 0; background: #fff; }
+              .grid { display: grid; gap: 3mm; }
+              .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+              .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
+              .border { border: 1px dashed #cbd5e1; padding: 2.5mm; text-align: center; box-sizing: border-box; }
+              .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 8pt; font-weight: bold; }
+              svg { width: 100%; height: 8mm; margin: 1mm 0; }
+              .flex { display: flex; justify-content: space-between; font-family: monospace; font-size: 8pt; font-weight: bold; }
+            </style>
+          </head>
+          <body onload="window.print(); window.close();">
+            ${previewHtml}
+          </body>
+        </html>
+      `);
+      w.document.close();
+    }
+
+    // 4. Instant GST Cash Memo Engine
+    function renderCashMemo() {
+      document.getElementById('memo-p-seller').innerText = document.getElementById('memo-seller').value;
+      document.getElementById('memo-p-gstin').innerText = document.getElementById('memo-gstin').value;
+      document.getElementById('memo-p-buyer').innerText = document.getElementById('memo-buyer').value;
+      document.getElementById('memo-p-no').innerText = document.getElementById('memo-no').value;
+      document.getElementById('memo-p-date').innerText = new Date().toLocaleDateString('en-IN', {dateStyle: 'medium'});
+
+      const lines = document.getElementById('memo-lines').value.split('\n');
+      let rowsHtml = '', taxable = 0, taxTotal = 0;
+
+      lines.forEach(l => {
+        const p = l.split(',');
+        if(p.length >= 4) {
+          const desc = p[0].trim();
+          const qty = parseFloat(p[1]) || 1;
+          const rate = parseFloat(p[2]) || 0;
+          const gstPct = parseFloat(p[3]) || 0;
+
+          const base = qty * rate;
+          const tax = base * (gstPct / 100);
+          const total = base + tax;
+
+          taxable += base;
+          taxTotal += tax;
+
+          rowsHtml += `
+            <tr class="border-b border-slate-100">
+              <td class="py-2 font-medium">${desc}</td>
+              <td class="py-2 text-center">${qty}</td>
+              <td class="py-2 text-right">₹${rate.toFixed(2)}</td>
+              <td class="py-2 text-right">${gstPct}%</td>
+              <td class="py-2 text-right font-bold">₹${total.toFixed(2)}</td>
+            </tr>
+          `;
+        }
+      });
+
+      document.getElementById('memo-p-rows').innerHTML = rowsHtml;
+      document.getElementById('memo-p-subtot').innerText = '₹ ' + taxable.toFixed(2);
+      document.getElementById('memo-p-tax').innerText = '₹ ' + taxTotal.toFixed(2);
+      document.getElementById('memo-p-net').innerText = '₹ ' + (taxable + taxTotal).toFixed(2);
+    }
+
+    function printCashMemo() {
+      const content = document.getElementById('memo-render-container').outerHTML;
+      const w = window.open('','_blank','width=750,height=900');
+      w.document.write(`
+        <html>
+          <head>
+            <title>Cash Memo Print</title>
+            <script src="https://cdn.tailwindcss.com"><\/script>
+            <style>@page { size: A4; margin: 10mm; }</style>
+          </head>
+          <body class="p-8 bg-white" onload="window.print(); window.close();">
+            ${content}
+          </body>
+        </html>
+      `);
+      w.document.close();
+    }
+
+    // 5. Offline ROI & Downtime Calculator
+    function calcROI() {
+      const tx = parseFloat(document.getElementById('roi-tx').value);
+      const abv = parseFloat(document.getElementById('roi-abv').value);
+      const downHrs = parseFloat(document.getElementById('roi-down').value);
+      const latSec = parseFloat(document.getElementById('roi-lat').value);
+
+      document.getElementById('roi-tx-val').innerText = tx + ' Bills / day';
+      document.getElementById('roi-abv-val').innerText = '₹ ' + abv.toLocaleString('en-IN');
+      document.getElementById('roi-down-val').innerText = downHrs + ' Hours / mo';
+      document.getElementById('roi-lat-val').innerText = latSec + 's per customer';
+
+      const txPerHour = tx / 10;
+      const lostAnnualRevenue = Math.round(txPerHour * downHrs * 12 * abv * 0.45);
+      const staffHoursWasted = Math.round((tx * 300 * latSec) / 3600 + (downHrs * 12));
+
+      document.getElementById('roi-total-loss').innerText = '₹ ' + lostAnnualRevenue.toLocaleString('en-IN') + ' / yr';
+      document.getElementById('roi-outage-amt').innerText = '₹ ' + lostAnnualRevenue.toLocaleString('en-IN');
+      document.getElementById('roi-time-lost').innerText = staffHoursWasted + ' Hours / yr';
+    }
+
+    // 6. Raw ESC/POS Streamer
+    let escAlign = 1;
+    function setEscAlign(a) {
+      escAlign = a;
+      ['esc-a-left', 'esc-a-center', 'esc-a-right'].forEach((id, idx) => {
+        document.getElementById(id).className = idx === a 
+          ? 'py-2 text-xs font-bold rounded-lg bg-[#163a7d] text-white' 
+          : 'py-2 text-xs font-bold rounded-lg border border-slate-200 text-slate-700';
+      });
+      genEscHex();
+    }
+
+    function genEscHex() {
+      const text = document.getElementById('esc-text').value;
+      const cut = document.getElementById('esc-cut').checked;
+      const drawer = document.getElementById('esc-drawer').checked;
+
+      let bytes = [0x1B, 0x40];
+      if (drawer) bytes.push(0x1B, 0x70, 0x00, 0x19, 0xFA);
+      bytes.push(0x1B, 0x61, escAlign);
+
+      for (let i = 0; i < text.length; i++) {
+        const code = text.charCodeAt(i);
+        bytes.push(code === 10 ? 0x0A : code);
+      }
+      bytes.push(0x0A, 0x0A);
+
+      if (cut) bytes.push(0x1D, 0x56, 0x42, 0x00);
+
+      const hexString = bytes.map(b => b.toString(16).padStart(2, '0').toUpperCase()).join(' ');
+      document.getElementById('esc-hex-out').innerText = hexString;
+
+      const b64 = btoa(String.fromCharCode.apply(null, bytes));
+      document.getElementById('esc-b64-out').innerText = b64;
+    }
+
+    // 7. Shelf Barcode Tag Studio
+    function genBarcode() {
+      const code = (document.getElementById('bc-code').value || 'SEN-890123').toUpperCase();
+      const title = document.getElementById('bc-title').value || 'ITEM DESCRIPTION';
+      const price = document.getElementById('bc-price').value || '₹ 0.00';
+
+      document.getElementById('bc-p-title').innerText = title;
+      document.getElementById('bc-p-code').innerText = code;
+      document.getElementById('bc-p-price').innerText = price;
+
+      const svg = document.getElementById('bc-svg');
+      let x = 10;
+      let barsHtml = '';
+      
+      for (let i = 0; i < code.length; i++) {
+        const val = code.charCodeAt(i);
+        const pattern = [(val % 3) + 1, ((val >> 1) % 3) + 1, ((val >> 2) % 3) + 1, ((val >> 3) % 2) + 1];
+        pattern.forEach((width, idx) => {
+          if (idx % 2 === 0) barsHtml += `<rect x="${x}" y="0" width="${width * 1.6}" height="60" fill="#000000" />`;
+          x += width * 2.2;
+        });
+      }
+
+      svg.setAttribute('viewBox', `0 0 ${x + 10} 60`);
+      svg.innerHTML = barsHtml;
+    }
+
+    function downloadFullStickerSVG() {
+      const code = (document.getElementById('bc-code').value || 'SEN-890123').toUpperCase();
+      const title = document.getElementById('bc-title').value || 'ITEM DESCRIPTION';
+      const price = document.getElementById('bc-price').value || '₹ 0.00';
+      const barcodeSvgInner = document.getElementById('bc-svg').innerHTML;
+      const viewBox = document.getElementById('bc-svg').getAttribute('viewBox') || '0 0 260 60';
+      const totalWidth = parseInt(viewBox.split(' ')[2], 10) || 260;
+
+      const svgWidth = Math.max(totalWidth + 40, 300);
+      const svgHeight = 150;
+
+      const fullTagSvg = `<?xml version="1.0" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}">
+  <style>
+    .tag-title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 11px; font-weight: 900; fill: #0f172a; text-transform: uppercase; }
+    .tag-mono  { font-family: "Courier New", Courier, monospace; font-size: 13px; font-weight: 700; fill: #0f172a; }
+    .tag-price { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; font-size: 15px; font-weight: 900; fill: #0f172a; }
+  </style>
+  <rect x="2" y="2" width="${svgWidth - 4}" height="${svgHeight - 4}" rx="10" fill="#ffffff" stroke="#0f172a" stroke-width="2"/>
+  <text x="15" y="24" class="tag-title">${escapeXml(title)}</text>
+  <g transform="translate(15, 35)">
+    ${barcodeSvgInner}
+  </g>
+  <line x1="15" y1="110" x2="${svgWidth - 15}" y2="110" stroke="#e2e8f0" stroke-width="1.5"/>
+  <text x="15" y="132" class="tag-mono">${escapeXml(code)}</text>
+  <text x="${svgWidth - 15}" y="132" text-anchor="end" class="tag-price">${escapeXml(price)}</text>
+</svg>`;
+
+      triggerDownload(fullTagSvg, `Shelf-Tag-${code}.svg`);
+    }
+
+    function downloadBarcodeOnlySVG() {
+      const code = (document.getElementById('bc-code').value || 'SEN-890123').toUpperCase();
+      const svg = document.getElementById('bc-svg');
+      const serializer = new XMLSerializer();
+      const source = '<?xml version="1.0" standalone="no"?>\r\n' + serializer.serializeToString(svg);
+      triggerDownload(source, `Barcode-${code}.svg`);
+    }
+
+    function printSingleLabel() {
+      const stickerHtml = document.getElementById('barcode-sticker').outerHTML;
+      const printWindow = window.open('', '_blank', 'width=450,height=300');
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Print Shelf Tag</title>
+            <style>
+              @page { size: auto; margin: 5mm; }
+              body { font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; margin: 0; background: #fff; }
+              #barcode-sticker { width: 65mm; border: 1.5px solid #000; padding: 3mm; box-sizing: border-box; }
+              .truncate { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 10px; font-weight: bold; margin-bottom: 2mm; }
+              svg { width: 100%; height: 15mm; }
+              .flex { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #ccc; padding-top: 2mm; margin-top: 2mm; font-family: monospace; font-size: 11px; font-weight: bold; }
+            </style>
+          </head>
+          <body onload="window.print(); window.close();">
+            ${stickerHtml}
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+    }
+
+    // 8. UPI QR Engine
+    function genUpiQR() {
+      const vpa = document.getElementById('upi-vpa').value.trim();
+      const name = document.getElementById('upi-name').value.trim();
+      const amt = document.getElementById('upi-amt').value.trim();
+      const ref = document.getElementById('upi-ref').value.trim();
+      const note = document.getElementById('upi-note').value.trim();
+
+      let uri = `upi://pay?pa=${encodeURIComponent(vpa)}&pn=${encodeURIComponent(name)}`;
+      if (amt && parseFloat(amt) > 0) uri += `&am=${parseFloat(amt).toFixed(2)}&cu=INR`;
+      if (ref) uri += `&tr=${encodeURIComponent(ref)}`;
+      if (note) uri += `&tn=${encodeURIComponent(note)}`;
+
+      document.getElementById('upi-raw-uri').innerText = uri;
+      document.getElementById('upi-qr-title').innerText = name || "Scan via UPI";
+      document.getElementById('upi-qr-sub').innerText = amt ? `Amount: ₹${parseFloat(amt).toLocaleString('en-IN')}` : "Any custom amount";
+
+      const qrContainer = document.getElementById('qrcode');
+      qrContainer.innerHTML = "";
+      new QRCode(qrContainer, {
+        text: uri,
+        width: 180,
+        height: 180,
+        colorDark: "#0B1424",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.M
+      });
+    }
+
+    function downloadUpiQR() {
+      const img = document.querySelector('#qrcode img');
+      if (!img) return;
+      const a = document.createElement('a');
+      a.href = img.src;
+      a.download = `UPI-QR-${document.getElementById('upi-ref').value || 'sentama'}.png`;
+      a.click();
+    }
+
+    // 9. GST Calculator
+    let gstMode = 'inclusive';
+    let gstSlab = 18;
+    function setGstMode(m) {
+      gstMode = m;
+      document.getElementById('btn-gst-inc').className = m === 'inclusive' ? 'py-2.5 text-xs font-bold rounded-xl bg-[#163a7d] text-white' : 'py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200';
+      document.getElementById('btn-gst-exc').className = m === 'exclusive' ? 'py-2.5 text-xs font-bold rounded-xl bg-[#163a7d] text-white' : 'py-2.5 text-xs font-bold rounded-xl bg-slate-100 text-slate-700 hover:bg-slate-200';
+      document.getElementById('gst-amt-label').innerText = m === 'inclusive' ? 'Total Inclusive Gross Amount (₹)' : 'Base Taxable Amount (₹)';
+      calcGST();
+    }
+
+    function setGstSlab(s) {
+      gstSlab = s;
+      document.querySelectorAll('.gst-slab-btn').forEach(b => {
+        b.className = 'gst-slab-btn py-2 text-xs font-bold rounded-lg border border-slate-200 text-slate-700';
+        if (b.innerText === `${s}%`) b.className = 'gst-slab-btn py-2 text-xs font-bold rounded-lg bg-[#163a7d] text-white';
+      });
+      calcGST();
+    }
+
+    function calcGST() {
+      const inputVal = parseFloat(document.getElementById('gst-input-amt').value) || 0;
+      const isInter = document.getElementById('gst-supply').value === 'inter';
+      let taxable = 0, gstTotal = 0, gross = 0;
+
+      if (gstMode === 'inclusive') {
+        gross = inputVal;
+        taxable = inputVal / (1 + (gstSlab / 100));
+        gstTotal = gross - taxable;
+      } else {
+        taxable = inputVal;
+        gstTotal = inputVal * (gstSlab / 100);
+        gross = taxable + gstTotal;
+      }
+
+      document.getElementById('res-taxable').innerText = '₹ ' + taxable.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      document.getElementById('res-total-gst').innerText = '₹ ' + gstTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      document.getElementById('res-gross').innerText = '₹ ' + gross.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+
+      if (isInter) {
+        document.getElementById('row-cgst').classList.add('hidden');
+        document.getElementById('row-sgst').classList.add('hidden');
+        document.getElementById('row-igst').classList.remove('hidden');
+        document.getElementById('row-igst').classList.add('flex');
+        document.getElementById('res-igst-pct').innerText = gstSlab;
+        document.getElementById('res-igst').innerText = '₹ ' + gstTotal.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      } else {
+        document.getElementById('row-cgst').classList.remove('hidden');
+        document.getElementById('row-sgst').classList.remove('hidden');
+        document.getElementById('row-igst').classList.add('hidden');
+        document.getElementById('row-igst').classList.remove('flex');
+        const halfSlab = (gstSlab / 2).toFixed(1).replace('.0', '');
+        const halfGst = gstTotal / 2;
+        document.getElementById('res-cgst-pct').innerText = halfSlab;
+        document.getElementById('res-sgst-pct').innerText = halfSlab;
+        document.getElementById('res-cgst').innerText = '₹ ' + halfGst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        document.getElementById('res-sgst').innerText = '₹ ' + halfGst.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+      }
+    }
+
+    // 10. Thermal Receipt Simulator
+    function renderReceipt() {
+      const width = document.getElementById('rcpt-width').value;
+      const paper = document.getElementById('receipt-paper');
+      if (width === '58mm') {
+        paper.style.maxWidth = '250px';
+        paper.style.fontSize = '10px';
+      } else {
+        paper.style.maxWidth = '340px';
+        paper.style.fontSize = '12px';
+      }
+
+      document.getElementById('p-biz').innerText = document.getElementById('rcpt-biz').value || "SENTAMA BISTRO";
+      document.getElementById('p-gstin').innerText = document.getElementById('rcpt-gstin').value || "32AAECS1234F1Z5";
+      document.getElementById('p-foot').innerText = document.getElementById('rcpt-footer').value || "Thank You!";
+      document.getElementById('p-time').innerText = new Date().toLocaleString('en-IN', {dateStyle: 'short', timeStyle: 'short'});
+
+      const rawItems = document.getElementById('rcpt-items').value.split('\n');
+      let itemsHtml = '', subtotal = 0;
+
+      rawItems.forEach(line => {
+        const parts = line.split(',');
+        if (parts.length >= 3) {
+          const name = parts[0].trim();
+          const qty = parseFloat(parts[1]) || 1;
+          const rate = parseFloat(parts[2]) || 0;
+          const total = qty * rate;
+          subtotal += total;
+          itemsHtml += `
+            <div class="grid grid-cols-12">
+              <span class="col-span-6 truncate">${name}</span>
+              <span class="col-span-2 text-center">${qty}</span>
+              <span class="col-span-4 text-right">₹${total.toFixed(2)}</span>
+            </div>
+          `;
+        }
+      });
+
+      document.getElementById('p-items').innerHTML = itemsHtml || '<div class="text-center text-slate-400">No items entered</div>';
+      const gst = subtotal * 0.05;
+      const net = subtotal + gst;
+      document.getElementById('p-subtot').innerText = '₹ ' + subtotal.toFixed(2);
+      document.getElementById('p-gst').innerText = '₹ ' + gst.toFixed(2);
+      document.getElementById('p-net').innerText = '₹ ' + net.toFixed(2);
+    }
+
+    // 11. PWA Readiness Score
+    function calcPwaScore() {
+      const boxes = document.querySelectorAll('.pwa-check');
+      let checked = 0;
+      boxes.forEach(b => { if(b.checked) checked++; });
+      const score = Math.round((checked / boxes.length) * 100);
+      const txt = document.getElementById('pwa-score-text');
+      if (score === 100) txt.innerText = `Score: 100% — Enterprise Sovereign Grade`;
+      else if (score >= 75) txt.innerText = `Score: ${score}% — Resilient Ready`;
+      else txt.innerText = `Score: ${score}% — Missing Offline Redundancy`;
+    }
+
+    // 12. Meta Tag Generator
+    function genMeta() {
+      const title = document.getElementById('meta-title').value.trim();
+      const desc = document.getElementById('meta-desc').value.trim();
+      const url = document.getElementById('meta-url').value.trim();
+      const img = document.getElementById('meta-img').value.trim();
+
+      const out = `<!-- Primary Meta Tags -->
+<title>${title}</title>
+<meta name="title" content="${title}" />
+<meta name="description" content="${desc}" />
+<link rel="canonical" href="${url}" />
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="website" />
+<meta property="og:url" content="${url}" />
+<meta property="og:title" content="${title}" />
+<meta property="og:description" content="${desc}" />
+<meta property="og:image" content="${img}" />
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image" />
+<meta property="twitter:url" content="${url}" />
+<meta property="twitter:title" content="${title}" />
+<meta property="twitter:description" content="${desc}" />
+<meta property="twitter:image" content="${img}" />`;
+
+      document.getElementById('meta-code-out').textContent = out;
+    }
+
+    // 13. JSON Beautifier
+    function formatJSON() {
+      const input = document.getElementById('json-input').value;
+      const status = document.getElementById('json-status');
+      try {
+        const parsed = JSON.parse(input);
+        document.getElementById('json-output').textContent = JSON.stringify(parsed, null, 2);
+        status.innerText = "VALID JSON";
+        status.className = "text-[10px] font-bold px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-700";
+      } catch (err) {
+        document.getElementById('json-output').textContent = "Syntax Error: " + err.message;
+        status.innerText = "INVALID JSON";
+        status.className = "text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-50 text-rose-700";
+      }
+    }
+
+    function minifyJSON() {
+      const input = document.getElementById('json-input').value;
+      const status = document.getElementById('json-status');
+      try {
+        const parsed = JSON.parse(input);
+        document.getElementById('json-output').textContent = JSON.stringify(parsed);
+        status.innerText = "MINIFIED";
+        status.className = "text-[10px] font-bold px-2 py-0.5 rounded-md bg-blue-50 text-blue-700";
+      } catch (err) {
+        document.getElementById('json-output').textContent = "Syntax Error: " + err.message;
+        status.innerText = "INVALID JSON";
+        status.className = "text-[10px] font-bold px-2 py-0.5 rounded-md bg-rose-50 text-rose-700";
+      }
+    }
+
+    // Utility Helpers
+    function copySnippet(elemId, btn) {
+      const txt = document.getElementById(elemId).textContent;
+      navigator.clipboard.writeText(txt);
+      const orig = btn.innerHTML;
+      btn.innerHTML = `<i data-lucide="check" class="w-3 h-3 text-[#54a50b]"></i> <span class="text-[#54a50b]">Copied</span>`;
+      lucide.createIcons();
+      setTimeout(() => { btn.innerHTML = orig; lucide.createIcons(); }, 2000);
+    }
+
+    function triggerDownload(content, filename) {
+      const blob = new Blob([content], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function escapeXml(str) {
+      return str.replace(/[<>&'"]/g, c => {
+        switch (c) {
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '&': return '&amp;';
+          case '\'': return '&apos;';
+          case '"': return '&quot;';
+        }
+      });
     }
   </script>
 </body>
