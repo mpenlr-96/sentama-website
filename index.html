@@ -171,7 +171,7 @@
     </div>
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3 flex justify-between items-center gap-2">
       <div class="cursor-pointer flex items-center hover:opacity-90 transition-opacity min-w-0" onclick="nav('home')">
-        <img src="sentama-logo.png" alt="Sentama Technologies Logo" class="h-9 sm:h-14 w-auto object-contain flex-shrink-0 block" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('block');" />
+        <img src="sentama-logo.png" alt="Sentama Technologies Logo" class="h-9 sm:h-12 w-auto object-contain flex-shrink-0 block" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('block');" />
         <div class="hidden">
           <span class="text-lg sm:text-xl font-black tracking-tight text-[#163a7d]">SENTAMA <span class="text-[#67c80f]">TECHNOLOGIES</span></span>
         </div>
@@ -180,12 +180,12 @@
         <button onclick="nav('home')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-[#163a7d]" data-target="home">Company Overview <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full"></span></button>
         <button onclick="nav('services')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="services">Enterprise Services <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
         <button onclick="nav('smarthub')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="smarthub">SmartHUB 360 <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
-        <button onclick="nav('partner')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="partner">Partner Network <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
-        <button onclick="nav('utilities')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d] flex items-center gap-1.5" data-target="utilities">
-          <span>Web & Commerce Utilities</span><br>
-          <span class="px-1.5 py-0.2 bg-emerald-100 text-[#54a50b] text-[9px] font-black rounded-sm uppercase tracking-tighter">Tools</span>
-          <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span>
-        </button>
+        <button onclick="nav('partner')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="partner">
+			Partner Network <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
+       <button onclick="nav('utilities')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-[#54a50b] hover:text-[#3f7d08] flex items-center gap-1.5" data-target="utilities">
+    <span>Web & Commerce Tools</span>
+    <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span>
+  </button>
       </div>
       <div class="hidden sm:flex items-center gap-2.5">
         <button onclick="openModal('demoModal')" class="border border-slate-300 text-slate-700 hover:bg-slate-50 px-3.5 py-2 rounded-lg font-semibold text-xs flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-[#67c80f]"></i> Book Demo</button>
@@ -1845,14 +1845,22 @@ Cold Lime Juice, 2, 35</textarea>
       }
       
       document.querySelectorAll('.nav-btn').forEach(b => {
-        b.className = 'nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]';
-        const ind = b.querySelector('.nav-ind');
-        if(ind) ind.classList.add('hidden');
-        if(b.dataset.target === viewId) {
-          b.classList.replace('text-slate-600', 'text-[#163a7d]');
-          if(ind) ind.classList.remove('hidden');
-        }
-      });
+  const isUtil = b.dataset.target === 'utilities';
+  const defaultClass = isUtil 
+    ? 'text-[#54a50b] hover:text-[#3f7d08]' 
+    : 'text-slate-600 hover:text-[#163a7d]';
+  
+  b.className = `nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 ${defaultClass} flex items-center gap-1.5`;
+  
+  const ind = b.querySelector('.nav-ind');
+  if (ind) ind.classList.add('hidden');
+  
+  if (b.dataset.target === viewId) {
+    b.classList.remove('text-slate-600');
+    b.classList.add(isUtil ? 'text-[#3f7d08]' : 'text-[#163a7d]');
+    if (ind) ind.classList.remove('hidden');
+  }
+});
       window.scrollTo({top:0, behavior:'smooth'});
       lucide.createIcons();
     }
@@ -2032,8 +2040,9 @@ Cold Lime Juice, 2, 35</textarea>
     function downloadWaStandeePNG() {
       const biz = document.getElementById('wa-biz-name').value || "Business";
       const table = document.getElementById('wa-table-id').value || "";
-      const qrImg = document.querySelector('#wa-qrcode img');
-      if(!qrImg) return;
+      const qrContainer = document.getElementById('wa-qrcode');
+		const qrImg = qrContainer.querySelector('img') || qrContainer.querySelector('canvas');
+		if(!qrImg) return;
 
       const canvas = document.createElement('canvas');
       canvas.width = 800;
@@ -2125,8 +2134,9 @@ Cold Lime Juice, 2, 35</textarea>
 
     function downloadGoogleCardPNG() {
       const name = document.getElementById('gr-name').value || "Business";
-      const qrImg = document.querySelector('#gr-qrcode img');
-      if(!qrImg) return;
+      const qrContainer = document.getElementById('gr-qrcode');
+		const qrImg = qrContainer.querySelector('img') || qrContainer.querySelector('canvas');
+		if(!qrImg) return;
 
       const canvas = document.createElement('canvas');
       canvas.width = 800;
