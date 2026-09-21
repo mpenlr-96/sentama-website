@@ -151,6 +151,7 @@
 <body class="bg-white text-slate-900 antialiased min-h-screen flex flex-col">
 
   <!-- ==================== HEADER & NAVBAR ==================== -->
+    <!-- ==================== HEADER & NAVBAR ==================== -->
   <header class="fixed w-full top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-200 transition-all shadow-xs">
     <div class="bg-[#090e17] text-slate-300 text-[10px] sm:text-[11px] py-1 px-4 sm:px-6 border-b border-slate-800">
       <div class="max-w-7xl mx-auto flex justify-between items-center gap-2">
@@ -169,29 +170,70 @@
         </div>
       </div>
     </div>
+    
     <nav class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 sm:py-3 flex justify-between items-center gap-2">
+      <!-- Logo -->
       <div class="cursor-pointer flex items-center hover:opacity-90 transition-opacity min-w-0" onclick="nav('home')">
-        <img src="sentama-logo.png" alt="Sentama Technologies Logo" class="h-9 sm:h-12 w-auto object-contain flex-shrink-0 block" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('block');" />
+        <img src="sentama-logo.png" alt="Sentama Technologies Logo" class="h-9 sm:h-10 w-auto object-contain flex-shrink-0 block" onerror="this.style.display='none'; this.nextElementSibling.classList.remove('hidden'); this.nextElementSibling.classList.add('block');" />
         <div class="hidden">
           <span class="text-lg sm:text-xl font-black tracking-tight text-[#163a7d]">SENTAMA <span class="text-[#67c80f]">TECHNOLOGIES</span></span>
         </div>
       </div>
+
+      <!-- Desktop Navigation Menu -->
       <div class="hidden md:flex items-center space-x-5 lg:space-x-7">
         <button onclick="nav('home')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-[#163a7d]" data-target="home">Company Overview <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full"></span></button>
         <button onclick="nav('services')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="services">Enterprise Services <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
         <button onclick="nav('smarthub')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="smarthub">SmartHUB 360 <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
-        <button onclick="nav('partner')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="partner">
-			Partner Network <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
-       <button onclick="nav('utilities')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-[#54a50b] hover:text-[#3f7d08] flex items-center gap-1.5" data-target="utilities">
-    <span>Web & Commerce Tools</span>
-    <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span>
-  </button>
+        <button onclick="nav('partner')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-slate-600 hover:text-[#163a7d]" data-target="partner">Partner Network <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span></button>
+        <button onclick="nav('utilities')" class="nav-btn font-bold text-xs lg:text-[13px] tracking-wider uppercase transition-colors relative py-1 text-[#54a50b] hover:text-[#3f7d08] flex items-center gap-1.5" data-target="utilities">
+          <span>Web & Commerce Tools</span>
+          <span class="nav-ind absolute bottom-0 left-0 w-full h-0.5 bg-[#67c80f] rounded-full hidden"></span>
+        </button>
       </div>
+
+      <!-- Desktop Action Buttons -->
       <div class="hidden sm:flex items-center gap-2.5">
         <button onclick="openModal('demoModal')" class="border border-slate-300 text-slate-700 hover:bg-slate-50 px-3.5 py-2 rounded-lg font-semibold text-xs flex items-center gap-1.5"><i data-lucide="shield-check" class="w-3.5 h-3.5 text-[#67c80f]"></i> Book Demo</button>
         <button onclick="scrollToContact()" class="bg-[#163a7d] text-white px-4 py-2 rounded-lg font-semibold text-xs hover:bg-[#0f2856] flex items-center gap-1.5">Connect With Us <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-[#67c80f]"></i></button>
       </div>
+
+      <!-- Mobile Hamburger Button (Visible only on mobile/tablets < 768px) -->
+      <div class="flex items-center gap-2 md:hidden">
+        <button onclick="openModal('demoModal')" class="bg-slate-100 text-slate-800 text-[11px] font-bold px-2.5 py-1.5 rounded-lg border border-slate-200">Demo</button>
+        <button onclick="toggleMobileMenu()" class="p-2 text-slate-700 hover:text-[#163a7d] hover:bg-slate-100 rounded-lg focus:outline-hidden" aria-label="Toggle Navigation">
+          <i data-lucide="menu" id="menuOpenIcon" class="w-6 h-6"></i>
+          <i data-lucide="x" id="menuCloseIcon" class="w-6 h-6 hidden"></i>
+        </button>
+      </div>
     </nav>
+
+    <!-- Mobile Slide-Down Dropdown Menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-slate-200 bg-white/98 px-5 py-4 shadow-xl space-y-3">
+      <div class="flex flex-col space-y-2">
+        <button onclick="mobileNav('home')" class="text-left font-bold text-sm tracking-wide uppercase py-2 border-b border-slate-100 text-[#163a7d] flex justify-between items-center">
+          Company Overview <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+        </button>
+        <button onclick="mobileNav('services')" class="text-left font-bold text-sm tracking-wide uppercase py-2 border-b border-slate-100 text-slate-700 hover:text-[#163a7d] flex justify-between items-center">
+          Enterprise Services <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+        </button>
+        <button onclick="mobileNav('smarthub')" class="text-left font-bold text-sm tracking-wide uppercase py-2 border-b border-slate-100 text-slate-700 hover:text-[#163a7d] flex justify-between items-center">
+          SmartHUB 360 <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+        </button>
+        <button onclick="mobileNav('partner')" class="text-left font-bold text-sm tracking-wide uppercase py-2 border-b border-slate-100 text-slate-700 hover:text-[#163a7d] flex justify-between items-center">
+          Partner Network <i data-lucide="chevron-right" class="w-4 h-4 text-slate-400"></i>
+        </button>
+        <button onclick="mobileNav('utilities')" class="text-left font-bold text-sm tracking-wide uppercase py-2 text-[#54a50b] flex justify-between items-center bg-emerald-50/50 px-2 rounded-lg">
+          <span>Web & Commerce Tools</span> <span class="text-[10px] bg-emerald-100 text-[#54a50b] font-black px-1.5 py-0.5 rounded">FREE TOOLS</span>
+        </button>
+      </div>
+
+      <div class="pt-2 flex flex-col gap-2">
+        <button onclick="closeMobileMenu(); scrollToContact();" class="w-full bg-[#163a7d] text-white py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 shadow-xs">
+          Connect With Us <i data-lucide="arrow-right" class="w-3.5 h-3.5 text-[#67c80f]"></i>
+        </button>
+      </div>
+    </div>
   </header>
 
   <main class="flex-grow w-full pt-24 sm:pt-28">
@@ -2110,6 +2152,41 @@ Cold Lime Juice, 2, 35</textarea>
       w.document.write(`<html><head><title>Print Standee</title><script src="https://cdn.tailwindcss.com"><\/script></head><body class="flex items-center justify-center min-h-screen bg-white" onload="window.print();window.close();">${content}</body></html>`);
       w.document.close();
     }
+// Mobile Navigation Toggle Handlers
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const openIcon = document.getElementById('menuOpenIcon');
+  const closeIcon = document.getElementById('menuCloseIcon');
+  const isHidden = menu.classList.contains('hidden');
+
+  if (isHidden) {
+    menu.classList.remove('hidden');
+    openIcon.classList.add('hidden');
+    closeIcon.classList.remove('hidden');
+  } else {
+    menu.classList.add('hidden');
+    openIcon.classList.remove('hidden');
+    closeIcon.classList.add('hidden');
+  }
+  lucide.createIcons();
+}
+
+function closeMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  const openIcon = document.getElementById('menuOpenIcon');
+  const closeIcon = document.getElementById('menuCloseIcon');
+  if (menu && !menu.classList.contains('hidden')) {
+    menu.classList.add('hidden');
+    if (openIcon) openIcon.classList.remove('hidden');
+    if (closeIcon) closeIcon.classList.add('hidden');
+    lucide.createIcons();
+  }
+}
+
+function mobileNav(viewId) {
+  closeMobileMenu();
+  nav(viewId);
+}
 
     // 2. Google Reviews Standee Engine
     function genGoogleReviewCard() {
