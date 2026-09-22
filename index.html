@@ -241,47 +241,255 @@
     <!-- ==================== VIEW 1: HOME ==================== -->
     <div id="view-home" class="page-view active">
       <section class="relative border-b border-slate-200 bg-white overflow-hidden">
-        <div class="absolute inset-0 bg-grid-fine opacity-60 pointer-events-none"></div>
-        <div class="absolute top-0 right-1/4 w-96 h-96 bg-blue-50 rounded-full blur-3xl -z-10 opacity-70"></div>
-        <div class="absolute bottom-0 left-1/4 w-80 h-80 bg-green-50 rounded-full blur-3xl -z-10 opacity-60"></div>
-        <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-12 lg:pt-20 pb-16 relative z-10">
-          <div class="max-w-3xl">
-            <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold text-[#163a7d] uppercase tracking-wider mb-5">
-              <span class="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span> Enterprise Software & Engineering Division
-            </div>
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-[#090E17] tracking-tight leading-[1.14] mb-6">Engineering Mission-Critical Software & Digital Platforms.</h1>
-            <p class="text-sm sm:text-lg lg:text-xl text-slate-700 font-normal leading-relaxed mb-10 max-w-2xl">Sentama Technologies architects resilient cloud infrastructure, bespoke enterprise applications, and turnkey vertical management platforms designed for operational sovereignty and high-velocity scale.</p>
-            <div class="flex flex-wrap gap-4">
-              <button onclick="nav('smarthub')" class="bg-[#163a7d] text-white px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-[#0f2856] shadow-md flex items-center gap-1">Explore SmartHUB 360 <i data-lucide="arrow-right" class="w-4 h-4 text-[#67c80f]"></i></button>
-              <button onclick="nav('services')" class="bg-white text-slate-800 border border-slate-300 px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-50 flex items-center gap-1">Our Engineering Capabilities <i data-lucide="chevron-right" class="w-4 h-4 text-slate-500"></i></button>
-              <button onclick="nav('utilities')" class="bg-slate-100 text-slate-800 border border-slate-200 px-5 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-200 flex items-center gap-1.5"><i data-lucide="wrench" class="w-4 h-4 text-[#163a7d]"></i> Free Web Utilities</button>
-              <button onclick="openModal('demoModal')" class="bg-emerald-50 text-emerald-800 border border-emerald-200 px-5 py-3.5 rounded-xl font-bold text-sm hover:bg-emerald-100 flex items-center gap-1"><i data-lucide="sparkles" class="w-4 h-4 text-[#67c80f]"></i> Book Live Walkthrough</button>
-            </div>
-          </div>
-          <div class="mt-16 pt-10 border-t border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-6">
-            <div class="space-y-1 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div class="text-4xl font-black text-[#163a7d] tracking-tight">16+</div>
-              <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Integrated Modules</div>
-              <p class="text-[11px] text-slate-600">Unified under a single synchronous database schema.</p>
-            </div>
-            <div class="space-y-1 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div class="text-4xl font-black text-[#163a7d] tracking-tight">100%</div>
-              <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Offline Resilience</div>
-              <p class="text-[11px] text-slate-600">Zero cloud latency; continues billing when network drops.</p>
-            </div>
-            <div class="space-y-1 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div class="text-4xl font-black text-[#163a7d] tracking-tight">&lt; 200ms</div>
-              <div class="text-xs font-bold uppercase tracking-wider text-slate-500">POS Execution Speed</div>
-              <p class="text-[11px] text-slate-600">Engineered for high-volume checkout counters.</p>
-            </div>
-            <div class="space-y-1 p-3 rounded-xl hover:bg-slate-50 transition-colors">
-              <div class="text-4xl font-black text-[#67c80f] tracking-tight">ISO / MSME</div>
-              <div class="text-xs font-bold uppercase tracking-wider text-slate-500">Govt. Registered</div>
-              <p class="text-[11px] text-slate-600">Recognized enterprise entity under Ministry of MSME.</p>
-            </div>
-          </div>
+
+  <!-- Background Grid -->
+  <div class="absolute inset-0 bg-grid-fine opacity-60 pointer-events-none"></div>
+
+  <!-- Soft Background Glow -->
+  <div class="absolute top-0 right-1/4 w-96 h-96 bg-blue-50 rounded-full blur-3xl -z-10 opacity-70"></div>
+  <div class="absolute bottom-0 left-1/4 w-80 h-80 bg-green-50 rounded-full blur-3xl -z-10 opacity-60"></div>
+
+
+  <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 pt-12 lg:pt-16 pb-16 relative z-10">
+
+    <!-- ==================== HERO CONTENT ==================== -->
+    <div class="grid lg:grid-cols-[minmax(0,1fr)_520px] xl:grid-cols-[minmax(0,1fr)_560px] gap-10 xl:gap-14 items-center">
+
+
+      <!-- ==================== LEFT CONTENT ==================== -->
+      <div class="max-w-3xl">
+
+        <!-- Section Label -->
+        <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-bold text-[#163a7d] uppercase tracking-wider mb-5">
+
+          <span class="w-2 h-2 rounded-full bg-[#67c80f] animate-pulse"></span>
+
+          Business Software & Digital Solutions
+
         </div>
-      </section>
+
+
+        <!-- Main Heading -->
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-black text-[#090E17] tracking-tight leading-[1.12] mb-6">
+
+          Business Software & Digital Solutions,
+          <span class="text-[#163a7d]">Built for Growth.</span>
+
+        </h1>
+
+
+        <!-- Description -->
+        <p class="text-sm sm:text-lg lg:text-xl text-slate-700 font-normal leading-relaxed mb-9 max-w-2xl">
+
+          Sentama Technologies builds practical business software,
+          enterprise applications, and digital solutions that help
+          businesses simplify operations, serve customers better,
+          and grow with confidence.
+
+        </p>
+
+
+       <!-- ==================== ACTION BUTTONS ==================== -->
+<div class="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-4">
+
+  <!-- SmartHUB -->
+  <button
+    onclick="nav('smarthub')"
+    class="col-span-2 sm:col-span-auto w-full sm:w-auto bg-[#163a7d] text-white px-5 sm:px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-[#0f2856] shadow-md flex items-center justify-center gap-1">
+
+    Explore SmartHUB 360
+
+    <i
+      data-lucide="arrow-right"
+      class="w-4 h-4 text-[#67c80f]">
+    </i>
+
+  </button>
+
+
+  <!-- Engineering Services -->
+  <button
+    onclick="nav('services')"
+    class="col-span-2 sm:col-span-auto w-full sm:w-auto bg-white text-slate-800 border border-slate-300 px-5 sm:px-7 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-50 flex items-center justify-center gap-1">
+
+    Our Engineering Capabilities
+
+    <i
+      data-lucide="chevron-right"
+      class="w-4 h-4 text-slate-500">
+    </i>
+
+  </button>
+
+
+  <!-- Free Tools -->
+  <button
+    onclick="nav('utilities')"
+    class="col-span-1 w-full sm:w-auto bg-slate-100 text-slate-800 border border-slate-200 px-3 sm:px-5 py-3.5 rounded-xl font-bold text-sm hover:bg-slate-200 flex items-center justify-center gap-1.5">
+
+    <i
+      data-lucide="wrench"
+      class="w-4 h-4 text-[#163a7d] flex-shrink-0">
+    </i>
+
+    <span>Free Web Utilities</span>
+
+  </button>
+
+
+  <!-- Walkthrough -->
+  <button
+    onclick="openModal('demoModal')"
+    class="col-span-1 w-full sm:w-auto bg-emerald-50 text-emerald-800 border border-emerald-200 px-3 sm:px-5 py-3.5 rounded-xl font-bold text-sm hover:bg-emerald-100 flex items-center justify-center gap-1">
+
+    <i
+      data-lucide="sparkles"
+      class="w-4 h-4 text-[#67c80f] flex-shrink-0">
+    </i>
+
+    <span>Book Walkthrough</span>
+
+  </button>
+
+</div>
+
+      </div>
+
+
+
+      <!-- ==================== RIGHT VIDEO ==================== -->
+      <div class="w-full flex justify-center lg:justify-end">
+
+        <div class="relative w-full max-w-[560px]">
+
+          <!-- Soft Video Glow -->
+          <div
+            class="absolute -inset-4 bg-gradient-to-br from-blue-50 via-transparent to-green-50 rounded-[2rem] blur-2xl opacity-80 pointer-events-none">
+          </div>
+
+
+          <!-- Video Container -->
+          <div
+            class="relative overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-100 shadow-xl shadow-slate-900/10">
+
+            <video
+              class="w-full aspect-video object-cover block"
+              controls
+              playsinline
+              preload="metadata"
+              aria-label="Sentama Technologies business presentation">
+
+              <source
+                src="sentama-presenter.mp4"
+                type="video/mp4">
+
+              Your browser does not support HTML5 video.
+
+            </video>
+
+          </div>
+
+
+          <!-- Brand Label -->
+          <div
+            class="relative mt-3 flex items-center justify-center gap-2 text-[10px] font-bold uppercase tracking-widest text-slate-500">
+
+            <span
+              class="w-1.5 h-1.5 rounded-full bg-[#67c80f]">
+            </span>
+
+            Sentama Technologies
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+
+    <!-- ==================== HERO STATISTICS ==================== -->
+    <div class="mt-14 pt-10 border-t border-slate-200 grid grid-cols-2 md:grid-cols-4 gap-6">
+
+
+      <!-- 16+ Modules -->
+      <div class="space-y-1 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+
+        <div class="text-4xl font-black text-[#163a7d] tracking-tight">
+          16+
+        </div>
+
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">
+          Integrated Modules
+        </div>
+
+        <p class="text-[11px] text-slate-600">
+          Unified under a single synchronous database schema.
+        </p>
+
+      </div>
+
+
+      <!-- Offline -->
+      <div class="space-y-1 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+
+        <div class="text-4xl font-black text-[#163a7d] tracking-tight">
+          100%
+        </div>
+
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">
+          Offline Resilience
+        </div>
+
+        <p class="text-[11px] text-slate-600">
+          Zero cloud latency; continues billing when network drops.
+        </p>
+
+      </div>
+
+
+      <!-- POS Speed -->
+      <div class="space-y-1 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+
+        <div class="text-4xl font-black text-[#163a7d] tracking-tight">
+          &lt; 200ms
+        </div>
+
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">
+          POS Execution Speed
+        </div>
+
+        <p class="text-[11px] text-slate-600">
+          Engineered for high-volume checkout counters.
+        </p>
+
+      </div>
+
+
+      <!-- MSME -->
+      <div class="space-y-1 p-3 rounded-xl hover:bg-slate-50 transition-colors">
+
+        <div class="text-4xl font-black text-[#67c80f] tracking-tight">
+          ISO / MSME
+        </div>
+
+        <div class="text-xs font-bold uppercase tracking-wider text-slate-500">
+          Govt. Registered
+        </div>
+
+        <p class="text-[11px] text-slate-600">
+          Recognized enterprise entity under Ministry of MSME.
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
       <section class="py-20 bg-[#F8FAFC] border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-6">
